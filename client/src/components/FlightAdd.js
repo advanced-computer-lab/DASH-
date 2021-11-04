@@ -14,25 +14,25 @@ class FlightAdd extends Component {
         this.onChangeArrival = this.onChangeArrival.bind(this);
         this.onChangeDep = this.onChangeDep.bind(this);
         this.onChangeEcon = this.onChangeEcon.bind(this);
-        this.onChangeBusiness = this.onChangeBusiness.bind(this);
+        this.onChangeBusniess = this.onChangeBusniess.bind(this);
         this.onChangeFirst = this.onChangeFirst.bind(this);
 
     this.state = {
-        flNumb : 0,
-        toAir:"",
-        fromAir:"",
-        noEconomySeats:0,
-        noBusinessSeats:0,
-        noFirstSeats:0,
-        depTime:"",
-        arrTime:"",
-        dateFlight: new Date()
+        id : 0,
+        toAir:'',
+        fromAir:'',
+        noEconomySeats : 0,
+        noBusinessSeats : 0,
+        noFirstSeats : 0,
+        depTime:'',
+        arrTime:'',
+        dateFlight: new Date(),
     }
     }
 
     onChangeID(e){
         this.setState({
-            flNumb : e.target.value
+            id : e.target.value
         });
 
     }
@@ -41,6 +41,8 @@ class FlightAdd extends Component {
         this.setState({
             toAir : e.target.value
         });
+
+       
 
     }
 
@@ -67,45 +69,50 @@ class FlightAdd extends Component {
             depTime:e.target.value
         })
     }
-
     onChangeEcon(e){
         this.setState({
             noEconomySeats:e.target.value
         })
+
     }
 
-    onChangeBusiness(e){
+    onChangeBusniess(e){
         this.setState({
             noBusinessSeats:e.target.value
         })
-    }
 
-    
+    }
     onChangeFirst(e){
         this.setState({
             noFirstSeats:e.target.value
         })
+
     }
 
-    
 
     submit(e){
         e.preventDefault();
         const fl = {
-            flNumb : this.state.flNumb,
+            id : this.state.id,
             toAir:this.state.toAir,
-           //fromAir:this.state.fromAir,
-            //noEconomySeats:this.state.noEconomySeats,
-            /*noBusinessSeats:this.state.noBusinessSeats,
+            fromAir:this.state.fromAir,
+            noEconomySeats:this.state.noEconomySeats,
             noFirstSeats:this.state.noFirstSeats,
+            noBusinessSeats:this.state.noBusinessSeats,
+            dateFlight:this.state.dateFlight,
             arrTime:this.state.arrTime,
             depTime:this.state.depTime,
-            dateFlight:this.state.dateFlight*/
         }
+
+        
         console.log(fl);
 
         axios.post('http://localhost:8000/Flight/add',fl)
-        .then(res=> console.log(res.data))
+        .then(res => console.log(res.data))
+        .catch((error) => {
+            console.error(error)});
+
+        window.location = '/';
 
         
     }
@@ -118,48 +125,48 @@ class FlightAdd extends Component {
                 <h1 >Create Flight</h1>
             <div className="Flight">
                 
-      <form class="pure-form pure-form-aligned"   onSubmit={this.submit}>
+      <form className="pure-form pure-form-aligned"   onSubmit={this.submit}>
     <fieldset>
-        <div class="pure-control-group" >
-            <label for ="aligned-ID"  >ID </label>
+        <div className="pure-control-group" >
+            <label htmlFor ="aligned-ID"  >ID </label>
             <input type="number" id="aligned-ID"  placeholder="ID" name ="id" value = {this.state.id} onChange={this.onChangeID} />
         </div>
-        <div class="pure-control-group" >
-            <label for="aligned-toAir" >toAirport</label>
-            <input type="text" id = "aligned-toAir" name ="to" value = {this.state.toAir} onChange={this.onChangetoAir} />
+        <div className="pure-control-group" >
+            <label htmlFor="aligned-toAir" >toAirport</label>
+            <input type="text" id = "aligned-toAir" name ="toAir" value = {this.state.toAir} onChange={this.onChangetoAir} />
         </div>
-        <div class="pure-control-group" >
-            <label for="aligned-fromAir" >fromAirport</label>
+        <div className="pure-control-group" >
+            <label htmlFor="aligned-fromAir" >fromAirport</label>
             <input type="text" id = "aligned-fromAir" name ="from" value = {this.state.fromAir} onChange={this.onChangefromAir} />
         </div>
-        <div class="pure-control-group" >
-            <label for="aligned-econ" >Number of Economy class seats</label>
-            <input type="number" id = "aligned-econ" name ="econ" value = {this.state.noEconomySeats} onChange={this.onChangeEcon}  />
+        <div className="pure-control-group" >
+            <label htmlFor="aligned-econ" >Number of Economy class seats</label>
+            <input type="number" id = "aligned-econ" name ="econ"  value = {this.state.noEconomySeats} onChange={this.onChangeEcon} />
         </div>
-        <div class="pure-control-group" >
-            <label for="aligned-business" >Number of business class seats</label>
-            <input type="number" id = "aligned-business" name ="business" value = {this.state.noBusinessSeats} onChange={this.onChangeBusiness}  />
+        <div className="pure-control-group" >
+            <label htmlFor="aligned-business" >Number of business class seats</label>
+            <input type="number" id = "aligned-business" name ="business"  value = {this.state.noBusinessSeats} onChange={this.onChangeBusniess} />
         </div>
 
-        <div class="pure-control-group" >
-            <label for="aligned-first" >Number of first class seats</label>
-            <input type="number" id = "aligned-first" name ="first" value = {this.state.noFirstSeats} onChange={this.onChangeID}   />
+        <div className="pure-control-group" >
+            <label htmlFor="aligned-first" >Number of first class seats</label>
+            <input type="number" id = "aligned-first" name ="first"  value = {this.state.noFirstSeats} onChange={this.onChangeFirst} />
         </div>
-        <div class="pure-control-group" >
-            <label for="aligned-Arr" >Arrival time</label>
+        <div className="pure-control-group" >
+            <label htmlFor="aligned-Arr" >Arrival time</label>
             <input type="time" id = "aligned-Arr" name ="arr"  value = {this.state.arrTime} onChange={this.onChangeArrival}  />
         </div>
-        <div  class="pure-control-group" >
-            <label for="aligned-Dep" >Departure time</label>
+        <div  className="pure-control-group" >
+            <label htmlFor="aligned-Dep" >Departure time</label>
             <input type="time" id = "aligned-Dep" name ="dep" value = {this.state.depTime} onChange={this.onChangeDep}   />
         </div>
-        <div class="pure-control-group" >
-            <label for="aligned-Date" >Flight Date</label>
+        <div className="pure-control-group" >
+            <label htmlFor="aligned-Date" >Flight Date</label>
             <input type="date" id="aligned-Date" name ="dep" value = {this.state.dateFlight} onChange={this.onChangeDate}  />
         </div>
-        <div class="pure-controls" >
+        <div className="pure-controls" >
            
-            <button type="submit" class="pure-button pure-button-primary" >Add</button>
+            <button type="submit" className="pure-button pure-button-primary" >Add</button>
         </div>
     </fieldset>
 </form>

@@ -1,23 +1,29 @@
 const Flight = require('../models/Flight');
 exports.addFlight = (req, res) =>
  {
-    
+  
+
     const flight = new Flight(
      { 
-         flNumb : req.body.id,
-         toAir : req.body.to,
-         fromAir : req.body.from,
-         noEconomySeats : req.body.econ,
-         noBusinessSeats : req.body.business,
-         noFirstSeats : req.body.first,
-         depTime : req.body.dep,
-         arrTime :req.body.arr,
-         dateFlight :req.body.date,
+       
+         id : req.body.id,
+         toAir : req.body.toAir,
+         fromAir : req.body.fromAir,
+         noEconomySeats : req.body.noEconomySeats,
+         noBusinessSeats : req.body.noBusinessSeats,
+         noFirstSeats : req.body.noFirstSeats,
+         depTime : req.body.depTime,
+         arrTime :req.body.arrTime,
+         dateFlight :req.body.dateFlight,
+        
      });
-      flight.save(function(err,data){
-          if(err) throw err;
-            console.log(data);
-      });
+     flight.save().then((result)=>{
+      // console.log(result.data);
+     
+  }).catch((err)=>
+  {
+    console.log(err);  
+  });
 
     }
   

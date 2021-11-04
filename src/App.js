@@ -1,7 +1,7 @@
 // External variables
 const express = require('express');
 const mongoose = require('mongoose');
-var cors = require('cors');
+const cors = require('cors')
 // THIS IS WRONG NEVER DO THAT !! Only for the task we put the DB Link here!! NEVER DO THAAAT AGAIN !!
 const MongoURI = 'mongodb+srv://dash_hamada:Adhom_Shosho_Dodo_Hamada@dashcluster.yrwpn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority' ;
 
@@ -10,7 +10,6 @@ const MongoURI = 'mongodb+srv://dash_hamada:Adhom_Shosho_Dodo_Hamada@dashcluster
 const app = express();
 const port = process.env.PORT || "8000";
 app.use(cors());
-
 const Flight = require('./models/Flight');
 const FlightRouter = require('./routes/FlightRoutes') ;
 mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })

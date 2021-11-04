@@ -5,16 +5,13 @@ const Schema = mongoose.Schema;
 
 
 const userSchema = new Schema({
-    flNumb: {
+    id: {
         type: Number,
-        unique:true,
-        sparse:true,
+       // unique:true,
       },
     toAir: {
         type: String,
-        //required: true,
-        unique:true,
-        sparse:true,
+        required: true,
       },
       fromAir: {
         type: String,
@@ -22,7 +19,7 @@ const userSchema = new Schema({
       },
       noEconomySeats: {
         type: Number,
-        //required: true,
+       // required: true,
       },
       noBusinessSeats: {
         type: Number,
