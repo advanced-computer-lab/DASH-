@@ -1,0 +1,18 @@
+.Flight{
+    position: static;
+    background-color: white;
+    width: 30%;
+    padding: 20px;
+    box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.3) ;
+    border-radius: 20px;
+    margin-top: 13vh;
+    margin-left: 570px;
+    
+}
+
+h1{
+    position: static;
+    margin-left: 650px;
+    margin-top: 20px;
+
+}
