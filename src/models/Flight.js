@@ -5,41 +5,44 @@ const Schema = mongoose.Schema;
 
 
 const userSchema = new Schema({
-    id: {
+    flNumb: {
         type: Number,
         unique:true,
+        sparse:true,
       },
     toAir: {
         type: String,
-        required: true,
+        //required: true,
+        unique:true,
+        sparse:true,
       },
       fromAir: {
         type: String,
-        required: true,
+        //required: true,
       },
       noEconomySeats: {
         type: Number,
-        required: true,
+        //required: true,
       },
       noBusinessSeats: {
         type: Number,
-        required: true,
+        //required: true,
       },
       noFirstSeats: {
         type: Number,
-        required: true,
+        //required: true,
       },
       depTime: {
         type: String,
-        required: true,
+        //required: true,
       },
       arrTime: {
         type: String,
-        required: true,
+        //required: true,
       },
       dateFlight: {
         type: Date,
-        required: true,
+        //required: true,
       },
 
 

@@ -1,8 +1,7 @@
-
 import './App.css';
 import{ useState } from 'react' ;
 import FlightAdd from './components/FlightAdd'
-import {BrowserRouter as Router , Route} from 'react-router-dom'
+import {BrowserRouter as Router , Routes , Route} from 'react-router-dom'
 //import axios from 'axios';
 //import ReactDOM from "react-dom";
 
@@ -17,11 +16,11 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <div>
+        <Routes>
           
-          <Route exact path='/' component={FlightAdd} />
+          <Route exact path='/' element={<FlightAdd />} />
           
-        </div>
+        </Routes>
         </Router>
       
       
@@ -29,4 +28,4 @@ function App() {
   );
 }
 
-export default App;
+export default App

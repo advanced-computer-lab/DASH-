@@ -13,9 +13,12 @@ class FlightAdd extends Component {
         this.onChangeDate = this.onChangeDate.bind(this);
         this.onChangeArrival = this.onChangeArrival.bind(this);
         this.onChangeDep = this.onChangeDep.bind(this);
+        this.onChangeEcon = this.onChangeEcon.bind(this);
+        this.onChangeBusiness = this.onChangeBusiness.bind(this);
+        this.onChangeFirst = this.onChangeFirst.bind(this);
 
     this.state = {
-        id : 0,
+        flNumb : 0,
         toAir:"",
         fromAir:"",
         noEconomySeats:0,
@@ -29,7 +32,7 @@ class FlightAdd extends Component {
 
     onChangeID(e){
         this.setState({
-            id : e.target.value
+            flNumb : e.target.value
         });
 
     }
@@ -64,17 +67,45 @@ class FlightAdd extends Component {
             depTime:e.target.value
         })
     }
+
+    onChangeEcon(e){
+        this.setState({
+            noEconomySeats:e.target.value
+        })
+    }
+
+    onChangeBusiness(e){
+        this.setState({
+            noBusinessSeats:e.target.value
+        })
+    }
+
+    
+    onChangeFirst(e){
+        this.setState({
+            noFirstSeats:e.target.value
+        })
+    }
+
+    
+
     submit(e){
         e.preventDefault();
         const fl = {
-            id : this.state.id,
+            flNumb : this.state.flNumb,
             toAir:this.state.toAir,
-            fromAir:this.state.fromAir,
-            dateFlight:this.state.dateFlight,
+           //fromAir:this.state.fromAir,
+            //noEconomySeats:this.state.noEconomySeats,
+            /*noBusinessSeats:this.state.noBusinessSeats,
+            noFirstSeats:this.state.noFirstSeats,
             arrTime:this.state.arrTime,
-            depTime:this.state.depTime
+            depTime:this.state.depTime,
+            dateFlight:this.state.dateFlight*/
         }
         console.log(fl);
+
+        axios.post('http://localhost:8000/Flight/add',fl)
+        .then(res=> console.log(res.data))
 
         
     }
@@ -103,16 +134,16 @@ class FlightAdd extends Component {
         </div>
         <div class="pure-control-group" >
             <label for="aligned-econ" >Number of Economy class seats</label>
-            <input type="number" id = "aligned-econ" name ="econ"  />
+            <input type="number" id = "aligned-econ" name ="econ" value = {this.state.noEconomySeats} onChange={this.onChangeEcon}  />
         </div>
         <div class="pure-control-group" >
             <label for="aligned-business" >Number of business class seats</label>
-            <input type="number" id = "aligned-business" name ="business"  />
+            <input type="number" id = "aligned-business" name ="business" value = {this.state.noBusinessSeats} onChange={this.onChangeBusiness}  />
         </div>
 
         <div class="pure-control-group" >
             <label for="aligned-first" >Number of first class seats</label>
-            <input type="number" id = "aligned-first" name ="first"  />
+            <input type="number" id = "aligned-first" name ="first" value = {this.state.noFirstSeats} onChange={this.onChangeID}   />
         </div>
         <div class="pure-control-group" >
             <label for="aligned-Arr" >Arrival time</label>

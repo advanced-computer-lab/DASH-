@@ -1,10 +1,10 @@
-const User = require('../models/Flight');
+const Flight = require('../models/Flight');
 exports.addFlight = (req, res) =>
  {
     
-    const flight = new flight(
+    const flight = new Flight(
      { 
-         id : req.body.id,
+         flNumb : req.body.id,
          toAir : req.body.to,
          fromAir : req.body.from,
          noEconomySeats : req.body.econ,
