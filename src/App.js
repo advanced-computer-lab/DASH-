@@ -9,6 +9,7 @@ const MongoURI = 'mongodb+srv://dash_hamada:Adhom_Shosho_Dodo_Hamada@dashcluster
 //App variables
 const app = express();
 const port = process.env.PORT || "8000";
+
 app.use(cors());
 const Flight = require('./models/Flight');
 const FlightRouter = require('./routes/FlightRoutes') ;
@@ -30,21 +31,6 @@ app.get("/",(req,res)=> {
     res.status(200).send("all good");
 })
 
-/*Flight.count({}, function( err, count){
-    console.log( "Number of users:", count );
-})*/
-    
-
-
-/*Flight.find({}).sort({_id: -1}).limit(1).then((fl) => {
-    idint = fl[0].id
-    console.log(idint);
-}
-
-)
-.catch(idint = 0 );
-console.log(idint);*/
-
 /*Flight.findOneAndDelete({id: 205 }, function (err, docs) {
     if (err){
         console.log(err)
@@ -64,7 +50,9 @@ console.log(idint);*/
     console.log(doc);
 });*/
 
+const adminRouter = require("./routes/adminRouter");
 
+app.use('/admins',adminRouter);
 app.use('/Flight' , FlightRouter);
 
 app.listen(port, () => {

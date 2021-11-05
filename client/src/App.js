@@ -1,9 +1,7 @@
 
 import './App.css';
-import{ useState } from 'react' ;
 import FlightAdd from './components/FlightAdd'
-import Search from './components/search'
-
+import FlightGetAllFlights from './components/FlightGetAllFlights';
 import {BrowserRouter as Router,Routes , Route} from 'react-router-dom'
 //import axios from 'axios';
 //import ReactDOM from "react-dom";
@@ -23,7 +21,7 @@ function App() {
         <Routes>
           
           <Route exact path='/' element={<FlightAdd />} />
-          <Route exact path='/search' element={<Search />} />
+          <Route exact path='/getFlights' element = {<FlightGetAllFlights/>} />
           </Routes>
         
         </Router>

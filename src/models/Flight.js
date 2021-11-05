@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 
 const userSchema = new Schema({
-    id: {
+    FlightNumber: {
         type: Number,
         unique:true,
       },
