@@ -1,5 +1,5 @@
 const Admin=require('../Models/Admin');
-const Flight = require('../Models/Flight');
+const Flight = require('../Models/flight');
 
 const home=(req,res)=>
 {

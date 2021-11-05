@@ -6,7 +6,7 @@ adminRouter.use(express.urlencoded({extended:false}));
 
 
 adminRouter.get('/',adminController.home);
-adminRouter.get('/getFlights',adminController.getAllFlights);
+//adminRouter.get('/getFlights',adminController.getAllFlights);
 adminRouter.get('/getAdmins',adminController.getAllAdmins);
 
 module.exports = adminRouter;

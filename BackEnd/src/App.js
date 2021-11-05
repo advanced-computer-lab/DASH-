@@ -3,8 +3,10 @@ var cors = require("cors");
 const mongoose = require("mongoose");
 
 const adminRouter = require("./Routes/adminRouter");
+const flightRouter = require("./Routes/flightRouter");
+
 const Admin = require("./Models/Admin");
-const Flight = require("./Models/Flight");
+const Flight = require("./Models/flight");
 
 const app = express();
 
@@ -27,7 +29,7 @@ app.use(cors());
 
 
 app.use('/admins',adminRouter);
-
+app.use('/admins/flights',flightRouter);
 
 app.listen(8000);
 console.log("Back-end Listening on port 8000");
