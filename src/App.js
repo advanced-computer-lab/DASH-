@@ -30,6 +30,21 @@ app.get("/",(req,res)=> {
     res.status(200).send("all good");
 })
 
+/*Flight.count({}, function( err, count){
+    console.log( "Number of users:", count );
+})*/
+    
+
+
+/*Flight.find({}).sort({_id: -1}).limit(1).then((fl) => {
+    idint = fl[0].id
+    console.log(idint);
+}
+
+)
+.catch(idint = 0 );
+console.log(idint);*/
+
 /*Flight.findOneAndDelete({id: 205 }, function (err, docs) {
     if (err){
         console.log(err)
@@ -41,13 +56,13 @@ app.get("/",(req,res)=> {
 
 //Flight.findOneAndUpdate
 
-Flight.findOneAndUpdate({id: 112}, {$set:{id:444}}, {new: true}, (err, doc) => {
+/*Flight.findOneAndUpdate({id: 112}, {$set:{id:444}}, {new: true}, (err, doc) => {
     if (err) {
         console.log("Something wrong when updating data!");
     }
 
     console.log(doc);
-});
+});*/
 
 
 app.use('/Flight' , FlightRouter);

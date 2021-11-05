@@ -6,6 +6,8 @@ FlightRouter.use(express.urlencoded({extended:false}));
 
 
 FlightRouter.post('/add',FlightControl.addFlight);
+FlightRouter.get('/get',FlightControl.getallFlights);
+
 
 
 
