@@ -4,7 +4,7 @@ import axios from 'axios';
 import React from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
-import { Component, useState,useEffect ,setState} from 'react';
+import { Component} from 'react';
 
 
 const Flight = (props)=>(
@@ -38,8 +38,8 @@ class GetFlights extends Component{
 
 
     componentDidMount(){
-        axios.get('http://localhost:8000/Flight/getAllFlights').
-            then((res)=>{
+        axios.get('http://localhost:8000/Flight/getAllFlights')
+            .then((res)=>{
                 this.setState({flights:res.data});
                 
             })
@@ -56,14 +56,23 @@ class GetFlights extends Component{
     }
 
     deleteFlight(FlightNumber){
-        axios.post("http://localhost:8000/Flight/deleteFlight",{ data: FlightNumber}).then(
+        if (window.confirm('Are you sure you want to delete this Flight from the database')) {
+            // Save it!
+            axios.post("http://localhost:8000/Flight/deleteFlight",{ data: FlightNumber}).then(
             res=>(console.log(res.data))
         ).catch(err=>{console.log(err )});
         this.setState({
             flights:this.state.flights.filter(element=>element.FlightNumber !== FlightNumber)
         })
+          } else {
+            // Do nothing!
+           
+          }
+        
+        
         
     }
+    
     
    
     render(){

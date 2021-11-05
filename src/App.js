@@ -31,16 +31,7 @@ app.get("/",(req,res)=> {
     res.status(200).send("all good");
 })
 
-/*Flight.findOneAndDelete({id: 205 }, function (err, docs) {
-    if (err){
-        console.log(err)
-    }
-    else{
-        console.log("Deleted User : ", docs);
-    }
-});*/
 
-//Flight.findOneAndUpdate
 
 /*Flight.findOneAndUpdate({id: 112}, {$set:{id:444}}, {new: true}, (err, doc) => {
     if (err) {

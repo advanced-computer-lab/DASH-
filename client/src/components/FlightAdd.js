@@ -111,7 +111,7 @@ class FlightAdd extends Component {
           .then(res=> {
             console.log(res.data);
           
-  if (res.data == 0){
+  if (res.data === 0){
         axios.post('http://localhost:8000/Flight/add',fl)
         .then(res => console.log(res.data),
         window.location = '/',
