@@ -1,0 +1,12 @@
+h1{
+}
+
+.header{
+    position: fixed;
+    bottom: 50vh;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+ }
+
+ 

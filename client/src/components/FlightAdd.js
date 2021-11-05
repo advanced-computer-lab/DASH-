@@ -125,7 +125,7 @@ class FlightAdd extends Component {
         });
     }
     else {
-        window.location = '/';
+        window.location = '/add';
         alert("Flight Number already exist");
     }
 

@@ -61,4 +61,29 @@ exports.getAllFlights = (req , res)=>{
   });
 
 };
+
+exports.getFlightbyNumb = (req,res) =>{
+  console.log(req.body.FlightNumber.length);
+  console.log(req.body.toAir);
+  var Numb = '' ;
+  if (req.body.FlightNumber.length == 0){
+    Numb = '' ;
+  }
+  else {
+    Numb = req.body.FlightNumber
+  }
+
+  Flight.find({$or:[{FlightNumber: req.body.FlightNumber},{toAir:req.body.toAir},{fromAir:req.body.fromAir},{dateFlight:req.body.dateFlight},
+    {depTime:req.body.depTime},{arrTime:req.body.arrTime}]})
+
+  .then(result =>{
+    res.send(JSON.stringify(result, null, 4));
+    console.log(result);
+    
+  }
+    
+  )
+}
+
+
   

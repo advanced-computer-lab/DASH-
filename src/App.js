@@ -18,12 +18,11 @@ mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .catch(err => console.log(err));
 // #Importing the userController
 /*var all = "" ;
-
-Flight.find({},function(err,docs){
+*/
+/*Flight.find({FlightNumer :'', toAir : 'LHR'},function(err,docs){
     if(err){}
     else {
        console.log(docs);
-       all = docs ;
     }
 })*/
 app.get("/",(req,res)=> {
