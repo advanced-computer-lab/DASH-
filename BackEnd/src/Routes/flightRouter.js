@@ -10,7 +10,7 @@ FlightRouter.post('/add',FlightController.addFlight);
 FlightRouter.get('/getAllFlights',FlightController.getAllFlights);
 
 
-FlightRouter.get('/deleteFlight',FlightController.deleteFlight);
+FlightRouter.post('/deleteFlight',FlightController.deleteFlight);
 
 
 module.exports=FlightRouter;

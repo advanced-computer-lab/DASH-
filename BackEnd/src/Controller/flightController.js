@@ -39,12 +39,16 @@ exports.getAllFlights = (req , res)=>{
 
 
 exports.deleteFlight = (req,res)=>{
-    Flight.findOneAndDelete({id:req.id }, function (err, docs) {
+    
+  
+    deletedId=req.body.data;
+    Flight.findOneAndDelete({id:deletedId }, function (err, docs) {
       if (err){
-          console.log(err)
+         console.log(err);
       }
       else{
           console.log("Deleted User : ", docs);
+          
       }
   });
 }

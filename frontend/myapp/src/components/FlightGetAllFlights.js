@@ -2,6 +2,8 @@ import styles from '../styles/Flight.css'
 import "bootstrap/dist/css/bootstrap.min.css"
 import axios from 'axios';
 import React from 'react';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { IconButton } from '@mui/material';
 import { Component, useState,useEffect ,setState} from 'react';
 
 
@@ -17,6 +19,9 @@ const Flight = (props)=>(
         <td>{props.flight.arrTime}</td>
         <td>{props.flight.dateFlight}</td>
         
+        <td> 
+            
+            <IconButton onClick={()=>{ props.deleteFlight(props.flight.id)  }}><DeleteForeverIcon style={{color:"white"}}></DeleteForeverIcon></IconButton>  </td>
 
     </tr>
 )
@@ -40,21 +45,23 @@ class GetFlights extends Component{
             })
             .catch((err)=>{
                 console.log(err);
-                console.log("omk ar3a");
+               // console.log("omk ar3a");
             })
     }
 
     flightsList(){
         return( this.state.flights.map(currentFlight=>{
-            return <Flight flight={currentFlight}  />
+            return <Flight flight={currentFlight} deleteFlight = {this.deleteFlight} />
         }) )
     }
 
     deleteFlight(id){
-        axios.delete("http://localhost:8000/admins/flights/deleteFlight"+id).then(
+        axios.post("http://localhost:8000/admins/flights/deleteFlight",{ data:id}).then(
             res=>(console.log(res.data))
-        );
-        this.setState
+        ).catch(err=>{console.log(err )});
+        this.setState({
+            flights:this.state.flights.filter(element=>element.id !== id)
+        })
         
     }
     
@@ -84,6 +91,7 @@ class GetFlights extends Component{
                                     <th>Departure Time</th>
                                     <th>Arrival Time</th>
                                     <th>Date Of Flight</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                                 <tbody>
