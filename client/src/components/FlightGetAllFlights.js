@@ -6,7 +6,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
 import { Component} from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-
+import {Navbar, Nav, NavItem,Container , Table} from 'react-bootstrap';
 
 const Flight = (props)=>(
     <tr >
@@ -92,18 +92,33 @@ class GetFlights extends Component{
    
     render(){
         return(
-            <div className="container">
-                
-                <div className="row ">
 
-                    <h1 className="col-12 align-self-center">Flights List</h1>
-                </div>
+           <body className="">
+
+    <div className="container">    
+
+            <Navbar bg="dark" variant="dark">
+                <Container>
+                <Navbar.Brand href="./">Dash</Navbar.Brand>
+                <Nav className="me-auto">
+                  <Nav.Link href="/">Home</Nav.Link>
+                  <Nav.Link href="./search">Search</Nav.Link>
+                  <Nav.Link href="">Flights List</Nav.Link>
+                </Nav>
+                </Container>
+              </Navbar>
+  
+
+            
+            
+                
+                <br/>
 
                 <div className="row row-header ">
 
                     <div className="col-12 ">
 
-                        <table className="table table-dark d-felx">
+                        <Table className="table table-dark d-felx "  striped bordered hover size="xs">
                             <thead >
                                 <tr >
                                     <th>Flight Number</th>
@@ -123,15 +138,19 @@ class GetFlights extends Component{
                                 </tbody>
                 
                             
-                        </table>
+                        </Table>
                     </div>
 
                     <div className="col-12 col-md-6">
-                        <h4>ahmed mostafa ahmed fawzy</h4>
+                        
                     </div>
 
                 </div>
             </div>
+
+           </body>
+
+
 
         ) 
     }

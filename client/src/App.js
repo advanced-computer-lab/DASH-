@@ -2,8 +2,8 @@
 import './App.css';
 import FlightAdd from './components/FlightAdd'
 import FlightGetAllFlights from './components/FlightGetAllFlights';
-import NavBar from  './components/NavBar';
-import Search from  './components/Search';
+import NavBar from  './components/navBar';
+import Search from  './components/search';
 import EditFlight from './components/EditFlight';
 
 import {BrowserRouter as Router,Routes , Route} from 'react-router-dom'
