@@ -1,15 +1,11 @@
-const User = require('../models/Flight');
+const { appendFile } = require('fs');
+const Flight = require('../models/Flight');
+
 exports.addFlight = (req, res) =>
  {
-<<<<<<< Updated upstream
-    
-    const flight = new flight(
-=======
   
     const flight = new Flight(
->>>>>>> Stashed changes
      { 
-       
          id : req.body.id,
          toAir : req.body.to,
          fromAir : req.body.from,
@@ -20,13 +16,6 @@ exports.addFlight = (req, res) =>
          arrTime :req.body.arr,
          dateFlight :req.body.date,
      });
-<<<<<<< Updated upstream
-      flight.save(function(err,data){
-          if(err) throw err;
-            console.log(data);
-      });
-      console.log("Hamada Normal")
-=======
      flight.save().then((result)=>{
       // console.log(result.data);
      
@@ -34,8 +23,7 @@ exports.addFlight = (req, res) =>
   {
     console.log(err);  
   });
-  
->>>>>>> Stashed changes
+
     }
   
 
@@ -45,3 +33,62 @@ exports.serachFlight = (req, res) =>
    
   }
   
+   
+exports.searchFlight = (req, res) =>
+{
+
+  var searchId = req.body.id;
+  var flight = [];
+
+  Flight.find({FlightNumber : searchId}).then(result=>{
+    res.header("Content-Type",'application/json');
+    res.send(JSON.stringify(result, null, 4));
+  });
+
+  //User.find({FlightNumber:searchId},function (err,docs){
+  //  if (err){
+  //    console.log(err);
+  //  }
+  //  else{
+  //    flight=docs;
+  //    res.header("Content-Type",'application/json');
+  //    res.send(JSON.stringify(flight));
+  //    
+  //  }
+  //});
+}
+  
+exports.findFlight = (req, res) =>
+{
+
+ Flight.find({FlightNumber : req.body.FlightNumber },function(err,docs){
+   if(err){}
+   else {
+     res.send(JSON.stringify(docs.length));
+   }
+});
+
+}
+
+exports.deleteFlight = (req,res)=>{
+   
+ 
+ deletedId=req.body.data;
+ Flight.findOneAndDelete({FlightNumber:deletedId }, function (err, docs) {
+   if (err){
+      console.log(err);
+   }
+   else{
+       console.log("Deleted User : ", docs);
+       
+   }
+});
+}
+
+exports.getAllFlights = (req , res)=>{
+ Flight.find().then(result=>{
+     res.header("Content-Type",'application/json');
+     res.send(JSON.stringify(result, null, 4));
+ });
+
+}

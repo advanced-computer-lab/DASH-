@@ -1,13 +1,8 @@
 import './App.css';
-import{ useState } from 'react' ;
+
 import FlightAdd from './components/FlightAdd'
 import FlightSearch from './components/FlightSearch'
 import {BrowserRouter as Router , Routes , Route} from 'react-router-dom'
-//import axios from 'axios';
-//import ReactDOM from "react-dom";
-
-
-
 
 
 

@@ -7,7 +7,8 @@ FlightRouter.use(express.urlencoded({extended:false}));
 
 FlightRouter.post('/add',FlightControl.addFlight);
 
-FlightRouter.post('/search',FlightControl.serachFlight);
+FlightRouter.post('/Search',FlightControl.searchFlight);
+
 
 app.post('/Search', function (req, res) {
     res.send('POST request to the homepage')
