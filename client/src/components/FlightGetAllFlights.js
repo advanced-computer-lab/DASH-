@@ -5,6 +5,7 @@ import React from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
 import { Component} from 'react';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const Flight = (props)=>(
@@ -21,7 +22,21 @@ const Flight = (props)=>(
         
         <td> 
             
-            <IconButton onClick={()=>{ props.deleteFlight(props.flight.FlightNumber)  }}><DeleteForeverIcon style={{color:"white"}}></DeleteForeverIcon></IconButton>  </td>
+            <IconButton onClick={()=>{ props.deleteFlight(props.flight.FlightNumber)  }}><DeleteForeverIcon style={{color:"white"}}></DeleteForeverIcon></IconButton>
+            <IconButton onClick={()=>{  window.location = "http://localhost:3000/getFlights/editFlight"+
+            props.flight.FlightNumber+" "+
+            props.flight.toAir+" "+
+            props.flight.fromAir+" "+
+            props.flight.noEconomySeats+" "+
+            props.flight.noBusinessSeats+" "+
+            props.flight.noFirstSeats+" "+
+            props.flight.depTime+" "+
+            props.flight.arrTime+" "+
+            props.flight.dateFlight
+
+        
+        }}  ><EditIcon  style={{color:"white"}}></EditIcon></IconButton>
+              </td>
 
     </tr>
 )

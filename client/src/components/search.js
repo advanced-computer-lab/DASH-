@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Component, useState,useEffect } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous"></link>
 
 const Flight = (props)=>(
@@ -19,6 +20,19 @@ const Flight = (props)=>(
         
         <td> 
         <IconButton onClick={()=>{ props.deleteFlight(props.flight.FlightNumber)  }}><DeleteForeverIcon style={{color:"white"}}></DeleteForeverIcon></IconButton>
+        <IconButton onClick={()=>{  window.location = "http://localhost:3000/getFlights/editFlight"+
+            props.flight.FlightNumber+" "+
+            props.flight.toAir+" "+
+            props.flight.fromAir+" "+
+            props.flight.noEconomySeats+" "+
+            props.flight.noBusinessSeats+" "+
+            props.flight.noFirstSeats+" "+
+            props.flight.depTime+" "+
+            props.flight.arrTime+" "+
+            props.flight.dateFlight
+
+        
+        }}  ><EditIcon  style={{color:"white"}}></EditIcon></IconButton>
               </td>
 
     </tr>
@@ -139,14 +153,32 @@ render(){
     return(
        <div>
             <form onSubmit={this.submit}>
-                
-            <input type="number" id="aligned-ID"  placeholder="ID" name ="id" value={this.state.FlightNumber}  onChange={this.onChangeN} />
-            <input type="text"  name ="id" value={this.state.toAir}  onChange={this.onChangetoAir} />
-            <input type="text" id = "aligned-fromAir"  name ="from" value = {this.state.fromAir} onChange={this.onChangefromAir} />
+            <label htmlFor ="aligned-ID"  >Flight Number </label>
+            &nbsp;&nbsp;
+            <input type="number" id="aligned-ID"  placeholder="Flight Number" name ="id" value={this.state.FlightNumber}  onChange={this.onChangeN} />
+            &nbsp;&nbsp;
+            
+            <label htmlFor="aligned-toAir" >toAirport</label>
+            &nbsp;&nbsp;
+            <input type="text" placeholder="to"  name ="id" value={this.state.toAir}  onChange={this.onChangetoAir} />
+            &nbsp;&nbsp;
+            <label htmlFor="aligned-fromAir" >fromAirport</label>
+            &nbsp;&nbsp;
+            <input type="text" placeholder="from" id = "aligned-fromAir"  name ="from" value = {this.state.fromAir} onChange={this.onChangefromAir} />
+            &nbsp;&nbsp;
+            <label htmlFor="aligned-Arr" >Arrival time</label>
+            &nbsp;&nbsp;
             <input type="time" id = "aligned-Arr"  name ="arr"  value = {this.state.arrTime} onChange={this.onChangeArrival}  />
+            &nbsp;&nbsp;
+            <label htmlFor="aligned-Dep" >Departure time</label>
+            &nbsp;&nbsp;
             <input type="time" id = "aligned-Dep"  name ="dep" value = {this.state.depTime} onChange={this.onChangeDep}   />
+            &nbsp;&nbsp;
+            <br></br>
+            <label htmlFor="aligned-Date" >Flight Date</label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <input type="date" id="aligned-Date" name ="dep" value = {this.state.dateFlight} onChange={this.onChangeDate}  />
-
+            &nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="submit">Search</button>
             </form>
             <div className="row row-header ">

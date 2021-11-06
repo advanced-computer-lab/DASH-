@@ -19,7 +19,7 @@ mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 // #Importing the userController
 /*var all = "" ;
 */
-/*Flight.find({FlightNumer :'', toAir : 'LHR'},function(err,docs){
+/*Flight.find({FlightNumer :'', toAir : 'MJA', fromAir : 'DXB'},function(err,docs){
     if(err){}
     else {
        console.log(docs);

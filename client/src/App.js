@@ -4,6 +4,7 @@ import FlightAdd from './components/FlightAdd'
 import FlightGetAllFlights from './components/FlightGetAllFlights';
 import NavBar from  './components/NavBar';
 import Search from  './components/Search';
+import EditFlight from './components/EditFlight';
 
 import {BrowserRouter as Router,Routes , Route} from 'react-router-dom'
 //import axios from 'axios';
@@ -27,6 +28,7 @@ function App() {
           <Route exact path='/getFlights' element = {<FlightGetAllFlights/>} />
           <Route exact path='/' element = {<NavBar/>} />
           <Route exact path='/search' element = {<Search/>} />
+          <Route exact path='/getFlights/editFlight:id' element = {<EditFlight/>} />
 
           </Routes>
         
