@@ -2,13 +2,19 @@ import './Flight.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+//react icons
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+//
 import { IconButton } from '@mui/material';
 import { Component, useState,useEffect ,setState} from 'react';
 
 
 const Flight = (props)=>(
     <tr >
+        
         <td>{props.flight.FlightNumber}</td>
         <td>{props.flight.toAir}</td>
         <td>{props.flight.fromAir}</td>
@@ -21,15 +27,33 @@ const Flight = (props)=>(
         
         <td> 
             
-            <IconButton onClick={()=>{ props.deleteFlight(props.flight.FlightNumber)  }}><DeleteForeverIcon style={{color:"white"}}></DeleteForeverIcon></IconButton>  </td>
+            <IconButton onClick={()=>{ props.deleteFlight(props.flight.FlightNumber)  }}><DeleteForeverIcon style={{color:"white"}}></DeleteForeverIcon></IconButton>  
+            
+            <IconButton onClick={()=>{  window.location = "http://localhost:3000/getFlights/editFlight"+
+            props.flight.FlightNumber+" "+
+            props.flight.toAir+" "+
+            props.flight.fromAir+" "+
+            props.flight.noEconomySeats+" "+
+            props.flight.noBusinessSeats+" "+
+            props.flight.noFirstSeats+" "+
+            props.flight.depTime+" "+
+            props.flight.arrTime+" "+
+            props.flight.dateFlight
 
+        
+        }}  ><EditIcon  style={{color:"white"}}></EditIcon></IconButton>
+        </td>
+        
     </tr>
 )
+
+
 
 class GetFlights extends Component{
     constructor(props){
         super(props);
         this.deleteFlight= this.deleteFlight.bind(this);
+      //  this.editFlight = this.editFlight.bind(this);
 
         this.state={
             flights : []
@@ -64,6 +88,11 @@ class GetFlights extends Component{
         })
         
     }
+
+
+    // editFlight(){
+    //     window.location = "http://localhost:3000/getFlights/editFlight";
+    // }
     
    
     render(){

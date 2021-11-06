@@ -61,4 +61,23 @@ exports.getAllFlights = (req , res)=>{
   });
 
 };
+
+
+exports.editFlight =(req,res)=> {Flight.findOneAndUpdate({FlightNumber:req.body.backFlightNumber}, {$set:{FlightNumber:req.body.FlightNumber,
+toAir:req.body.toAir,
+fromAir:req.body.fromAir,
+noEconomySeats:req.body.noEconomySeats,
+noBusinessSeats:req.body.noBusinessSeats,
+noFirstSeats:req.body.noFirstSeats,
+arrTime:req.body.arrTime,
+depTime:req.body.depTime,
+DateFlight:req.body.DateFlight,
+
+}}, {new: true}, (err, doc) => {
+  if (err) {
+      console.log("Something wrong when updating data!");
+  }
+
+  console.log(doc);
+});}
   
