@@ -55,7 +55,7 @@ class Search extends Component {
         fromAir:'',
         depTime:'',
         arrTime:'',
-        dateFlight: new Date(),
+        dateFlight: '' ,
        flights: [] ,
     }
     }
