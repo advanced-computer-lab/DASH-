@@ -6,14 +6,11 @@ FlightRouter.use(express.urlencoded({extended:false}));
 
 
 FlightRouter.post('/add',FlightControl.addFlight);
+FlightRouter.post('/find',FlightControl.findFlight);
+FlightRouter.get('/getAllFlights',FlightControl.getAllFlights);
+FlightRouter.post('/deleteFlight',FlightControl.deleteFlight);
+FlightRouter.post('/FindFlight',FlightControl.getFlightbyNumb);
 
-FlightRouter.post('/Search',FlightControl.searchFlight);
 
-
-app.post('/Search', function (req, res) {
-    res.send('POST request to the homepage')
-    console.log("Hamamamma");
-  })
-  
 
 module.exports=FlightRouter;

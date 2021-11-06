@@ -1,11 +1,7 @@
 // External variables
 const express = require('express');
 const mongoose = require('mongoose');
-<<<<<<< Updated upstream
-=======
 const cors = require('cors')
-
->>>>>>> Stashed changes
 // THIS IS WRONG NEVER DO THAT !! Only for the task we put the DB Link here!! NEVER DO THAAAT AGAIN !!
 const MongoURI = 'mongodb+srv://dash_hamada:Adhom_Shosho_Dodo_Hamada@dashcluster.yrwpn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority' ;
 
@@ -13,43 +9,42 @@ const MongoURI = 'mongodb+srv://dash_hamada:Adhom_Shosho_Dodo_Hamada@dashcluster
 //App variables
 const app = express();
 const port = process.env.PORT || "8000";
-<<<<<<< Updated upstream
 
-=======
 app.use(cors());
->>>>>>> Stashed changes
 const Flight = require('./models/Flight');
 const FlightRouter = require('./routes/FlightRoutes') ;
 mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(result =>console.log("MongoDB is now connected") )
 .catch(err => console.log(err));
-
-
+// #Importing the userController
+/*var all = "" ;
+*/
+/*Flight.find({FlightNumer :'', toAir : 'LHR'},function(err,docs){
+    if(err){}
+    else {
+       console.log(docs);
+    }
+})*/
 app.get("/",(req,res)=> {
-    res.status(200).send(all)
+   // Flight.findOneAndDelete({"id":112});
+    res.status(200).send("all good");
 })
 
+
+
+/*Flight.findOneAndUpdate({id: 112}, {$set:{id:444}}, {new: true}, (err, doc) => {
+    if (err) {
+        console.log("Something wrong when updating data!");
+    }
+
+    console.log(doc);
+});*/
+
+const adminRouter = require("./routes/adminRouter");
+
+app.use('/admins',adminRouter);
 app.use('/Flight' , FlightRouter);
-<<<<<<< Updated upstream
-
-console.log("ASDFASDF")
-
-app.post('/Search', function (req, res) {
-    res.send('POST request to the homepage')
-    console.log("Hamamamma");
-})
-  
 
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
   });
-
-  app.listen(port+"/Search", () => {
-    console.log(`Listening to requests on http://localhost:${port}/Search`);
-  });
-=======
-
-app.listen(port, () => {
-    console.log(`Listening to requests on http://localhost:${port}`);
-});
->>>>>>> Stashed changes
