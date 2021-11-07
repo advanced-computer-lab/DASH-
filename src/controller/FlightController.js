@@ -1,4 +1,3 @@
-
 const Flight = require('../models/Flight'); 
 exports.addFlight = (req, res) =>
  {
@@ -135,20 +134,57 @@ const convertTime12to24 = (time12h) => {
   return `${hours}:${minutes}`;
 }
 
-exports.editFlight =(req,res)=> {Flight.findOneAndUpdate({FlightNumber:req.body.backFlightNumber}, {$set:{FlightNumber:req.body.FlightNumber,
-  toAir:req.body.toAir,
-  fromAir:req.body.fromAir,
-  noEconomySeats:req.body.noEconomySeats,
-  noBusinessSeats:req.body.noBusinessSeats,
-  noFirstSeats:req.body.noFirstSeats,
-  arrTime:req.body.arrTime,
-  depTime:req.body.depTime,
+exports.editFlight =(req,res)=> {
+  var attrib = { FlightNumber: req.body.FlightNumber, toAir: req.body.toAir, fromAir: req.body.fromAir,noEconomySeats : req.body.noEconomySeats , noBusinessSeats : req.body.noBusinessSeats,noFirstSeats : req.body.noFirstSeats , depTime: req.body.depTime, arrTime: req.body.arrTime };
+  //var attrib2 =  [FlightNumber = req.body.FlightNumber, toAir = req.body.toAir, fromAir = req.body.fromAir,dateFlight =req.body.dateFlight, depTime =req.body.depTime,arrTime = req.body.arrTime];
+
+  var fil = "";
   
-  }}, {new: true}, (err, doc) => {
+  if (attrib.FlightNumber.length != 0)
+    fil += '"FlightNumber" : ' + attrib.FlightNumber + ((attrib.toAir.length != 0)  || (attrib.fromAir.length != 0)||     (attrib.depTime.length != 0) || (attrib.arrTime.length != 0)|| (attrib.noEconomySeats.length !=0) || (attrib.noFirstSeats.length !=0) || (attrib.noBusinessSeats.length !=0)  ? "," : "");
+
+  if (attrib.toAir.length != 0)
+    fil += '"toAir" : ' +  '"' +attrib.toAir + '"' + ((attrib.fromAir.length != 0) ||   (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) || (attrib.noEconomySeats.length !=0) || (attrib.noFirstSeats.length !=0) || (attrib.noBusinessSeats.length !=0) ? "," : "");
+
+  if (attrib.fromAir.length != 0)
+    fil += '"fromAir" : ' + '"' + attrib.fromAir + '"' + ( (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) || (attrib.noEconomySeats.length !=0) || (attrib.noFirstSeats.length !=0) || (attrib.noBusinessSeats.length !=0) ? "," : "");
+
+  if (attrib.noEconomySeats.length != 0)
+    fil += '"noEconomySeats" : ' + '"' + attrib.noEconomySeats + '"' + ((attrib.depTime.length != 0) || (attrib.arrTime.length != 0)  || (attrib.noFirstSeats.length !=0) || (attrib.noBusinessSeats.length !=0)  ? "," : "");
+    if (attrib.noBusinessSeats.length != 0)
+    fil += '"noBusinessSeats" : ' + '"' + attrib.noBusinessSeats + '"' + ((attrib.depTime.length != 0) || (attrib.arrTime.length != 0)  || (attrib.noFirstSeats.length !=0)   ? "," : "");
+
+    if (attrib.noFirstSeats.length != 0)
+    fil += '"noFirstSeats" : ' + '"' + attrib.noFirstSeats + '"' + ((attrib.depTime.length != 0) || (attrib.arrTime.length != 0) ? "," : "");
+
+  if (attrib.depTime.length != 0)
+    fil += '"depTime" : ' + '"' + attrib.depTime + '"'  + ((attrib.arrTime.length != 0) ? "," : "");
+
+  if (attrib.arrTime.length != 0)
+    fil += '"arrTime" : ' + '"' + attrib.arrTime + '"'; 
+
+
+
+  var filterObj = JSON.parse('{' + fil + '}');
+
+  
+  
+  
+  console.log(filterObj)
+  
+  
+  
+
+    Flight.findOneAndUpdate({FlightNumber:req.body.backFlightNumber}, {$set:filterObj}, {new: true}, (err, doc) => {
+      
+      })
+  /*Flight.findOneAndUpdate(filterObj)
     if (err) {
         console.log("Something wrong when updating data!");
     }
   
     console.log(doc);
-  });}
-  
+  });*/
+
+
+}
