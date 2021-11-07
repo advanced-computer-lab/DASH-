@@ -1,13 +1,13 @@
 import './Flight.css';
 import axios from 'axios';
-import { Component, useState, useEffect } from 'react';
+import { Component} from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 //popper.js/dist/umd/popper.min.js
 import "bootstrap/dist/css/bootstrap.min.css";
 //import "react/popper";
-import { Navbar, Nav, NavItem, Container, Table } from 'react-bootstrap';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 
 
 
@@ -63,7 +63,7 @@ class Search extends Component {
             fromAir: '',
             depTime: '',
             arrTime: '',
-            dateFlight: new Date(),
+            dateFlight: '',
             flights: [],
         }
     }
@@ -120,7 +120,7 @@ class Search extends Component {
 
         }
 
-        console.log(f);
+        
         axios.post('http://localhost:8000/Flight/FindFlight', f)
             .then(res => {
                 this.setState({ flights: res.data })
@@ -153,7 +153,7 @@ class Search extends Component {
             return <Flight flight={currentFlight} deleteFlight={this.deleteFlight} />
         }))
 
-        console.log(this.state.flights);
+        
     }
 
     render() {

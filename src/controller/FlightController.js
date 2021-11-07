@@ -1,3 +1,4 @@
+
 const Flight = require('../models/Flight');
 exports.addFlight = (req, res) =>
  {
@@ -18,7 +19,7 @@ exports.addFlight = (req, res) =>
         
      });
      flight.save().then((result)=>{
-      // console.log(result.data);
+     
      
   }).catch((err)=>
   {
@@ -48,7 +49,7 @@ exports.addFlight = (req, res) =>
        console.log(err);
     }
     else{
-        console.log("Deleted User : ", docs);
+        
         
     }
 });
@@ -62,32 +63,57 @@ exports.getAllFlights = (req , res)=>{
 
 };
 
-exports.getFlightbyNumb = (req,res) =>{
-  console.log(req.body.FlightNumber.length);
-  console.log(req.body.toAir);
-  console.log(req.body);
-  var Numb = '' ;
-  if (req.body.FlightNumber.length == 0){
-    Numb = '' ;
+exports.getFlightbyNumb = (req, res) => {
+  var Numb = '';
+  if (req.body.FlightNumber.length == 0) {
+    Numb = '';
   }
   else {
     Numb = req.body.FlightNumber
   }
-  
+
   var arr = convertTime12to24(req.body.arrTime);
   var dep = convertTime12to24(req.body.depTime);
-  
-  Flight.find({FlightNumber: req.body.FlightNumber,toAir:req.body.toAir,fromAir:req.body.fromAir,dateFlight:req.body.dateFlight,
-    depTime:dep,arrTime:arr  })
 
-  .then(result =>{
-    res.send(JSON.stringify(result, null, 4));
-    console.log(result);
-    
-    
-  }
-    
-  )
+
+
+  var attrib = { FlightNumber: req.body.FlightNumber, toAir: req.body.toAir, fromAir: req.body.fromAir, dateFlight: req.body.dateFlight, depTime: req.body.depTime, arrTime: req.body.arrTime };
+  //var attrib2 =  [FlightNumber = req.body.FlightNumber, toAir = req.body.toAir, fromAir = req.body.fromAir,dateFlight =req.body.dateFlight, depTime =req.body.depTime,arrTime = req.body.arrTime];
+
+  var fil = "";
+  
+  if (attrib.FlightNumber.length != 0)
+    fil += '"FlightNumber" : ' + attrib.FlightNumber + ((attrib.toAir.length != 0)  || (attrib.fromAir.length != 0)|| (attrib.dateFlight.length != 0) ||   (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) ? "," : "");
+
+  if (attrib.toAir.length != 0)
+    fil += '"toAir" : ' +  '"' +attrib.toAir + '"' + ((attrib.fromAir.length != 0)|| (attrib.dateFlight.length != 0) ||   (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) ? "," : "");
+
+  if (attrib.fromAir.length != 0)
+    fil += '"fromAir" : ' + '"' + attrib.fromAir + '"' + ((attrib.dateFlight.length != 0) || (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) ? "," : "");
+
+  if (attrib.dateFlight.length != 0)
+    fil += '"dateFlight" : ' + '"' + attrib.dateFlight + '"' + ((attrib.depTime.length != 0) || (attrib.arrTime.length != 0)  ? "," : "");
+
+  if (attrib.depTime.length != 0)
+    fil += '"depTime" : ' + '"' + attrib.depTime + '"'  + ((attrib.arrTime.length != 0) ? "," : "");
+
+  if (attrib.arrTime.length != 0)
+    fil += '"arrTime" : ' + '"' + attrib.arrTime + '"'; 
+
+
+  var filterObj = JSON.parse('{' + fil + '}');
+
+  
+
+  Flight.find(filterObj)
+    .then(result => {
+      res.send(JSON.stringify(result, null, 4));
+      
+
+
+    }
+
+    )
 }
 
 

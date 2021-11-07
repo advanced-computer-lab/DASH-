@@ -3,8 +3,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from 'react';
 import { Component} from 'react';
-import { Link } from 'react-router-dom'
-import {Navbar, Nav, NavItem,Container , Table} from 'react-bootstrap';
+import {Navbar, Nav, Container} from 'react-bootstrap';
 
 
 
@@ -47,7 +46,7 @@ class NavBar extends Component{
                 <div className="row">
 
                     <div className="col-12 text-center">
-                        
+                        <br/>
                         <h2 >Admin Home</h2>
                     </div>
                     

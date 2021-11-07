@@ -6,7 +6,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
 import { Component} from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-import {Navbar, Nav, NavItem,Container , Table} from 'react-bootstrap';
+import {Navbar, Nav,Container , Table} from 'react-bootstrap';
 
 const Flight = (props)=>(
     <tr >

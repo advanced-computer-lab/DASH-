@@ -1,8 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import React from 'react';
-import { IconButton } from '@mui/material';
-import { Component, useState, useEffect, setState } from 'react';
+import { Component } from 'react';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 
 
 
@@ -119,7 +119,7 @@ class EditFlight extends Component {
 
     submit(e) {
         e.preventDefault();
-       // console.log(this.state);
+        // console.log(this.state);
         const fl = {
             backFlightNumber: FlightNumber,
             FlightNumber: this.state.FlightNumber,
@@ -136,22 +136,23 @@ class EditFlight extends Component {
 
 
 
-        
+
 
         console.log(fl);
         axios.post('http://localhost:8000/Flight/editFlight', fl)
-        .then(res=> {alert("Flight Edited Successfuly")
-        window.location='http://localhost:3000/getFlights';
-    
-    }).catch((err)=>{
+            .then(res => {
+                alert("Flight Edited Successfuly")
+                window.location = 'http://localhost:3000/getFlights';
 
-        alert("error happened")
-        window.location="http://localhost:3000/getFlights"
-        
-    })
+            }).catch((err) => {
 
-    window.location = '/';
-    alert("Flight edited");
+                alert("error happened")
+                window.location = "http://localhost:3000/getFlights"
+
+            })
+
+        window.location = '/';
+        alert("Flight edited");
 
 
 
@@ -170,59 +171,131 @@ class EditFlight extends Component {
 
     render() {
         return (
-            <div>
 
+            <div className="container">
 
-                <h1  >Edit Flight</h1>
-                <div className="Flight">
+                <div className="row">
+                    <Navbar className="col-12" bg="dark" variant="dark">
+                        <Container>
+                            <Navbar.Brand href="./">Dash</Navbar.Brand>
+                            <Nav className="me-auto">
+                                <Nav.Link href="/">Home</Nav.Link>
+                                <Nav.Link href="./search">Search</Nav.Link>
+                                <Nav.Link href="/getFlights">Flights List</Nav.Link>
+                            </Nav>
+                        </Container>
+                    </Navbar>
 
-                    <form className="pure-form pure-form-aligned" onSubmit={this.submit}>
-                        <fieldset>
-                            <div className="pure-control-group" >
-                                <label htmlFor="aligned-ID"  >Flight Number </label>
-                                <input type="number" id="aligned-ID" required="true" name="id" placeholder={FlightNumber} value={this.state.FlightNumber} onChange={this.onChangeFlightNumber} />
-                            </div>
-                            <div className="pure-control-group" >
-                                <label htmlFor="aligned-toAir" >toAirport</label>
-                                <input type="text" id="aligned-toAir" required="true" name="toAir" placeholder={toAir} value={this.state.toAir} onChange={this.onChangeToAir} />
-                            </div>
-                            <div className="pure-control-group" >
-                                <label htmlFor="aligned-fromAir" >fromAirport</label>
-                                <input type="text" id="aligned-fromAir" required="true" name="from" placeholder={fromAir} value={this.state.fromAir} onChange={this.onChangeFromAir} />
-                            </div>
-                            <div className="pure-control-group" >
-                                <label htmlFor="aligned-econ" >Number of Economy class seats</label>
-                                <input type="number" id="aligned-econ" required="true" name="econ" placeholder={ecoSeats} value={this.state.noEconomySeats} onChange={this.onChangeNoEconomySeats} />
-                            </div>
-                            <div className="pure-control-group" >
-                                <label htmlFor="aligned-business" >Number of business class seats</label>
-                                <input type="number" id="aligned-business" required="true" name="business" placeholder={busSeats} value={this.state.noBusinessSeats} onChange={this.onChangeNoBusinessSeats} />
-                            </div>
-
-                            <div className="pure-control-group" >
-                                <label htmlFor="aligned-first" >Number of first class seats</label>
-                                <input type="number" id="aligned-first" required="true" name="first" placeholder={firstSeats} value={this.state.noFirstSeats} onChange={this.onChangeFirstSeats} />
-                            </div>
-                            <div className="pure-control-group" >
-                                <label htmlFor="aligned-Arr" >Arrival time</label>
-                                <input type="time" id="aligned-Arr" required="true" name="arr" placeholder={arrTime} value={this.state.arrTime} onChange={this.onChangeArrTime} />
-                            </div>
-                            <div className="pure-control-group" >
-                                <label htmlFor="aligned-Dep" >Departure time</label>
-                                <input type="time" id="aligned-Dep" required="true" name="dep" value={this.state.depTime} placeholder={depTime} onChange={this.onChangeDepTime} />
-                            </div>
-                            <div className="pure-control-group" >
-                                <label htmlFor="aligned-Date" >Flight Date</label>
-                                <input type="date" id="aligned-Date" required="true" name="dateFlight" value={this.state.DateFlight} placeholder={dateFlight} onChange={this.onChangeDateFlight} />
-                            </div>
-                            <div className="pure-controls" >
-
-                                <button type="submit" className="pure-button pure-button-primary" >Edit</button>
-                            </div>
-                        </fieldset>
-                    </form>
 
                 </div>
+
+                <br />
+
+                <div className="row row-content ">
+
+
+                    <h2 className="text-center">Edit Flight</h2>
+
+                    <div className="col-12 offset-md-3 col-md-6  ">
+                        <form className="search" onSubmit={this.submit}>
+                            <fieldset>
+                            <br/>
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+                                        <label htmlFor="aligned-ID"  >Flight Number </label>
+                                    </div>
+                                    <div className="col-12 col-sm-8">
+                                        <input className="form-control" type="number" id="aligned-ID" required="true" name="id" placeholder={FlightNumber} value={this.state.FlightNumber} onChange={this.onChangeFlightNumber} />
+                                    </div>
+                                </div>
+                                <br/>
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+                                        <label htmlFor="aligned-toAir" >Arrival Terminal</label>
+                                    </div>
+                                    <div className="col-12 col-sm-8">
+                                        <input className="form-control" type="text" id="aligned-toAir" required="true" name="toAir" placeholder={toAir} value={this.state.toAir} onChange={this.onChangeToAir} />
+                                    </div>
+                                </div>
+                                <br/>
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+                                        <label htmlFor="aligned-fromAir" >Departure Terminal</label>
+                                    </div>
+                                    <div className="col-12 col-sm-8">
+                                        <input className="form-control" type="text" id="aligned-fromAir" required="true" name="from" placeholder={fromAir} value={this.state.fromAir} onChange={this.onChangeFromAir} />
+                                    </div>
+                                </div>
+                                <br/>
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+                                        <label htmlFor="aligned-econ" >Number of Economy class seats</label>
+                                    </div>
+                                    <div className="col-12 col-sm-8">
+                                        <input type="number" className="form-control" id="aligned-econ" required="true" name="econ" placeholder={ecoSeats} value={this.state.noEconomySeats} onChange={this.onChangeNoEconomySeats} />
+                                    </div>
+                                </div>
+                                <br/>
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+                                        <label htmlFor="aligned-business" >Number of business class seats</label>
+                                    </div>
+                                    <div className="col-12 col-sm-8">
+                                        <input type="number" className="form-control" id="aligned-business" required="true" name="business" placeholder={busSeats} value={this.state.noBusinessSeats} onChange={this.onChangeNoBusinessSeats} />
+                                    </div>
+                                </div>
+                                <br/>
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+                                        <label htmlFor="aligned-first" >Number of first class seats</label>
+                                    </div>
+                                    <div className="col-12 col-sm-8">
+                                        <input type="number" className="form-control" id="aligned-first" required="true" name="first" placeholder={firstSeats} value={this.state.noFirstSeats} onChange={this.onChangeFirstSeats} />
+                                    </div>
+                                </div>
+                                <br/>
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+
+                                        <label htmlFor="aligned-Arr" >Arrival time</label>
+                                    </div>
+                                    <div className="col-12 col-sm-8">
+                                        <input type="time" className="form-control" id="aligned-Arr" required="true" name="arr" placeholder={arrTime} value={this.state.arrTime} onChange={this.onChangeArrTime} />
+                                    </div>
+                                </div>
+                                <br/>
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+                                        <label htmlFor="aligned-Dep" >Departure time</label>
+                                    </div>
+                                    <div className="col-12 col-sm-8">
+                                        <input type="time" className="form-control" id="aligned-Dep" required="true" name="dep" value={this.state.depTime} placeholder={depTime} onChange={this.onChangeDepTime} />
+                                    </div>
+                                </div>
+                                <br/>
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+                                        <label htmlFor="aligned-Date" >Flight Date</label>
+                                    </div>
+                                    <div className="col-12 col-sm-8">
+                                        <input className="form-control" type="date" id="aligned-Date" required="true" name="dateFlight" value={this.state.DateFlight} placeholder={dateFlight} onChange={this.onChangeDateFlight} />
+                                    </div>
+                                </div>
+                                <br/>
+                                <div className="form-group row" >
+                                    <div className="offset-sm-4 col-12 col-sm-6 ">
+                                        <button type="submit" className="btn btn-dark form-control" >Edit</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+
+
+
+
+                    </div>
+                </div>
+
             </div>
         )
 
