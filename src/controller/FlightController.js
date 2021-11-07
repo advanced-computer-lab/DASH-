@@ -1,5 +1,5 @@
 
-const Flight = require('../models/Flight');
+const Flight = require('../models/Flight'); 
 exports.addFlight = (req, res) =>
  {
   
@@ -15,7 +15,7 @@ exports.addFlight = (req, res) =>
          noFirstSeats : req.body.noFirstSeats,
          depTime : req.body.depTime,
          arrTime :req.body.arrTime,
-         dateFlight :req.body.dateFlight,
+    
         
      });
      flight.save().then((result)=>{
@@ -77,22 +77,22 @@ exports.getFlightbyNumb = (req, res) => {
 
 
 
-  var attrib = { FlightNumber: req.body.FlightNumber, toAir: req.body.toAir, fromAir: req.body.fromAir, dateFlight: req.body.dateFlight, depTime: req.body.depTime, arrTime: req.body.arrTime };
+  var attrib = { FlightNumber: req.body.FlightNumber, toAir: req.body.toAir, fromAir: req.body.fromAir, depTime: req.body.depTime, arrTime: req.body.arrTime };
   //var attrib2 =  [FlightNumber = req.body.FlightNumber, toAir = req.body.toAir, fromAir = req.body.fromAir,dateFlight =req.body.dateFlight, depTime =req.body.depTime,arrTime = req.body.arrTime];
 
   var fil = "";
   
   if (attrib.FlightNumber.length != 0)
-    fil += '"FlightNumber" : ' + attrib.FlightNumber + ((attrib.toAir.length != 0)  || (attrib.fromAir.length != 0)|| (attrib.dateFlight.length != 0) ||   (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) ? "," : "");
+    fil += '"FlightNumber" : ' + attrib.FlightNumber + ((attrib.toAir.length != 0)  || (attrib.fromAir.length != 0)||     (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) ? "," : "");
 
   if (attrib.toAir.length != 0)
-    fil += '"toAir" : ' +  '"' +attrib.toAir + '"' + ((attrib.fromAir.length != 0)|| (attrib.dateFlight.length != 0) ||   (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) ? "," : "");
+    fil += '"toAir" : ' +  '"' +attrib.toAir + '"' + ((attrib.fromAir.length != 0) ||   (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) ? "," : "");
 
   if (attrib.fromAir.length != 0)
-    fil += '"fromAir" : ' + '"' + attrib.fromAir + '"' + ((attrib.dateFlight.length != 0) || (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) ? "," : "");
+    fil += '"fromAir" : ' + '"' + attrib.fromAir + '"' + ( (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) ? "," : "");
 
-  if (attrib.dateFlight.length != 0)
-    fil += '"dateFlight" : ' + '"' + attrib.dateFlight + '"' + ((attrib.depTime.length != 0) || (attrib.arrTime.length != 0)  ? "," : "");
+ /* if (attrib.dateFlight.length != 0)
+    fil += '"dateFlight" : ' + '"' + attrib.dateFlight + '"' + ((attrib.depTime.length != 0) || (attrib.arrTime.length != 0)  ? "," : "");*/
 
   if (attrib.depTime.length != 0)
     fil += '"depTime" : ' + '"' + attrib.depTime + '"'  + ((attrib.arrTime.length != 0) ? "," : "");
@@ -143,7 +143,6 @@ exports.editFlight =(req,res)=> {Flight.findOneAndUpdate({FlightNumber:req.body.
   noFirstSeats:req.body.noFirstSeats,
   arrTime:req.body.arrTime,
   depTime:req.body.depTime,
-  DateFlight:req.body.DateFlight,
   
   }}, {new: true}, (err, doc) => {
     if (err) {

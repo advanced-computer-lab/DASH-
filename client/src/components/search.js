@@ -1,6 +1,6 @@
 import './Flight.css';
 import axios from 'axios';
-import { Component} from 'react';
+import { Component } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -23,7 +23,7 @@ const Flight = (props) => (
         <td>{props.flight.noFirstSeats}</td>
         <td>{props.flight.depTime}</td>
         <td>{props.flight.arrTime}</td>
-        <td>{props.flight.dateFlight}</td>
+        
 
         <td>
             <IconButton onClick={() => { props.deleteFlight(props.flight.FlightNumber) }}><DeleteForeverIcon style={{ color: "white" }}></DeleteForeverIcon></IconButton>
@@ -36,8 +36,8 @@ const Flight = (props) => (
                     props.flight.noBusinessSeats + " " +
                     props.flight.noFirstSeats + " " +
                     props.flight.depTime + " " +
-                    props.flight.arrTime + " " +
-                    props.flight.dateFlight
+                    props.flight.arrTime + " " 
+                   
 
 
             }}  ><EditIcon style={{ color: "white" }}></EditIcon></IconButton>
@@ -63,7 +63,6 @@ class Search extends Component {
             fromAir: '',
             depTime: '',
             arrTime: '',
-            dateFlight: '',
             flights: [],
         }
     }
@@ -120,7 +119,7 @@ class Search extends Component {
 
         }
 
-        
+
         axios.post('http://localhost:8000/Flight/FindFlight', f)
             .then(res => {
                 this.setState({ flights: res.data })
@@ -153,7 +152,7 @@ class Search extends Component {
             return <Flight flight={currentFlight} deleteFlight={this.deleteFlight} />
         }))
 
-        
+
     }
 
     render() {
@@ -171,6 +170,7 @@ class Search extends Component {
                             <Navbar.Brand href="/">Dash</Navbar.Brand>
                             <Nav className="me-auto">
                                 <Nav.Link href="/">Home</Nav.Link>
+                                <Nav.Link href="/add">Add flight </Nav.Link>
                                 <Nav.Link href="">Search</Nav.Link>
                                 <Nav.Link href="/getFlights">Flights List</Nav.Link>
                             </Nav>
@@ -218,7 +218,7 @@ class Search extends Component {
 
                             <div className="form-group row">
                                 <div className="col-6 col-md-3">
-                                    <label htmlFor="aligned-fromAir" >fromAirport</label>
+                                    <label htmlFor="aligned-fromAir" >Departure Airport</label>
                                     &nbsp;&nbsp;
                                 </div>
                                 <div className="col-12 col-md-9">
@@ -236,7 +236,7 @@ class Search extends Component {
 
                                 </div>
                                 <div className="col-12 col-md-9">
-                                    <input className="form-control" type="time" id="aligned-Arr" name="arr" value={this.state.arrTime} onChange={this.onChangeArrival} />
+                                    <input className="form-control" type="datetime-local" id="aligned-Arr" name="arr" value={this.state.arrTime} onChange={this.onChangeArrival} />
                                     &nbsp;&nbsp;
                                 </div>
                             </div>
@@ -249,28 +249,18 @@ class Search extends Component {
                                     &nbsp;&nbsp;
                                 </div>
                                 <div className="col-12 col-md-9">
-                                    <input className="form-control" type="time" id="aligned-Dep" name="dep" value={this.state.depTime} onChange={this.onChangeDep} />
+                                    <input className="form-control" type="datetime-local" id="aligned-Dep" name="dep" value={this.state.depTime} onChange={this.onChangeDep} />
                                     &nbsp;&nbsp;
                                 </div>
                             </div>
 
-                            <div className="form-group row">
-                                <div className="col-6 col-md-3">
-                                    <label htmlFor="aligned-Date" >Flight Date</label>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                </div>
-                                <div className="col-12 col-md-9">
-                                    <input className="form-control" type="date" id="aligned-Date" name="dep" value={this.state.dateFlight} onChange={this.onChangeDate} />
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
 
-                                </div>
-                            </div>
                             <div className="form-group row">
                                 <div className="offset-md-3 col-9 col-md-5" >
                                     <button className=" btn btn-dark form-control" type="submit">Search</button>
                                 </div>
                             </div>
-                            
+
                         </form>
                         <br />
                     </div>
@@ -290,7 +280,6 @@ class Search extends Component {
                                         <th>First Class Seats</th>
                                         <th>Departure Time</th>
                                         <th>Arrival Time</th>
-                                        <th>Date Of Flight</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>

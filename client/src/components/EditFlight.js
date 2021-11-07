@@ -180,6 +180,7 @@ class EditFlight extends Component {
                             <Navbar.Brand href="./">Dash</Navbar.Brand>
                             <Nav className="me-auto">
                                 <Nav.Link href="/">Home</Nav.Link>
+                                <Nav.Link href = "/add">Add flight </Nav.Link>
                                 <Nav.Link href="./search">Search</Nav.Link>
                                 <Nav.Link href="/getFlights">Flights List</Nav.Link>
                             </Nav>

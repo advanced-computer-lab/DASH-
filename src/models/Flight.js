@@ -36,14 +36,11 @@ const userSchema = new Schema({
       arrTime: {
         type: String,
         required: true,
-      },
-      dateFlight: {
-        type: Date,
-        required: true,
-      },
+      }
+      
 
 
-});
+    });
 
 
 const Flight = mongoose.model('Flight', userSchema);

@@ -3,7 +3,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from 'react';
 import { Component} from 'react';
-import {Navbar, Nav, Container} from 'react-bootstrap';
+import {Navbar, Nav, Container, NavLink} from 'react-bootstrap';
 
 
 
@@ -28,6 +28,7 @@ class NavBar extends Component{
                     <Navbar.Brand href="./">Dash</Navbar.Brand>
                     <Nav className="me-auto">
                       <Nav.Link href="/">Home</Nav.Link>
+                      <Nav.Link href = "/add">Add flight </Nav.Link>
                       <Nav.Link href="./search">Search</Nav.Link>
                       <Nav.Link href="/getFlights">Flights List</Nav.Link>
                     </Nav>

@@ -18,7 +18,7 @@ const Flight = (props)=>(
         <td>{props.flight.noFirstSeats}</td>
         <td>{props.flight.depTime}</td>
         <td>{props.flight.arrTime}</td>
-        <td>{props.flight.dateFlight}</td>
+        
         
         <td> 
             
@@ -31,8 +31,7 @@ const Flight = (props)=>(
             props.flight.noBusinessSeats+" "+
             props.flight.noFirstSeats+" "+
             props.flight.depTime+" "+
-            props.flight.arrTime+" "+
-            props.flight.dateFlight
+            props.flight.arrTime+" "
 
         
         }}  ><EditIcon  style={{color:"white"}}></EditIcon></IconButton>
@@ -102,6 +101,7 @@ class GetFlights extends Component{
                 <Navbar.Brand href="./">Dash</Navbar.Brand>
                 <Nav className="me-auto">
                   <Nav.Link href="/">Home</Nav.Link>
+                  <Nav.Link href = "/add">Add flight </Nav.Link>
                   <Nav.Link href="./search">Search</Nav.Link>
                   <Nav.Link href="">Flights List</Nav.Link>
                 </Nav>
@@ -129,7 +129,6 @@ class GetFlights extends Component{
                                     <th>First Class Seats</th>
                                     <th>Departure Time</th>
                                     <th>Arrival Time</th>
-                                    <th>Date Of Flight</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
