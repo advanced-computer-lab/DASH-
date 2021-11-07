@@ -2,8 +2,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors')
+const dotenv = require("dotenv");
 // THIS IS WRONG NEVER DO THAT !! Only for the task we put the DB Link here!! NEVER DO THAAAT AGAIN !!
-const MongoURI = 'mongodb+srv://dash_hamada:Adhom_Shosho_Dodo_Hamada@dashcluster.yrwpn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority' ;
+dotenv.config();
+
+
+const MongoURI = process.env.Mongo_URI;
 
 
 //App variables
@@ -18,12 +22,11 @@ mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .catch(err => console.log(err));
 // #Importing the userController
 /*var all = "" ;
-
-Flight.find({},function(err,docs){
+*/
+/*Flight.find({FlightNumer :'', toAir : 'MJA', fromAir : 'DXB'},function(err,docs){
     if(err){}
     else {
        console.log(docs);
-       all = docs ;
     }
 })*/
 app.get("/",(req,res)=> {
@@ -31,16 +34,7 @@ app.get("/",(req,res)=> {
     res.status(200).send("all good");
 })
 
-/*Flight.findOneAndDelete({id: 205 }, function (err, docs) {
-    if (err){
-        console.log(err)
-    }
-    else{
-        console.log("Deleted User : ", docs);
-    }
-});*/
 
-//Flight.findOneAndUpdate
 
 /*Flight.findOneAndUpdate({id: 112}, {$set:{id:444}}, {new: true}, (err, doc) => {
     if (err) {
