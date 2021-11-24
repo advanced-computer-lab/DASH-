@@ -36,7 +36,29 @@ const userSchema = new Schema({
       arrTime: {
         type: String,
         required: true,
-      }
+      },
+      baggageallowance:{
+        type:Number,
+        required:true,
+      },
+      pricebusiness:{
+        type:Number,
+        required:true,
+      },
+      priceEconomy:{
+        type:Number,
+        required:true,
+      },
+      priceFirst:{
+        type:Number,
+        required:true,
+      },
+      Type:{
+        type: String,
+        required:true,
+      },
+
+
       
 
 

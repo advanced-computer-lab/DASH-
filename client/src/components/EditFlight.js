@@ -49,7 +49,7 @@ class EditFlight extends Component {
             noFirstSeats: '',
             depTime: '',
             arrTime: '',
-            
+
         };
     }
 
@@ -165,18 +165,22 @@ class EditFlight extends Component {
     render() {
         return (
 
-            <div className="container">
+            <div className="container-fluid">
 
                 <div className="row">
-                    <Navbar className="col-12" bg="dark" variant="dark">
-                        <Container>
+                    <Navbar expand="sm" bg="dark" variant="dark">
+                        <Container fluid>
+
                             <Navbar.Brand href="./">Dash</Navbar.Brand>
-                            <Nav className="me-auto">
-                                <Nav.Link href="/">Home</Nav.Link>
-                                <Nav.Link href = "/add">Add flight </Nav.Link>
-                                <Nav.Link href="./search">Search</Nav.Link>
-                                <Nav.Link href="/getFlights">Flights List</Nav.Link>
-                            </Nav>
+                            <Navbar.Toggle aria-controls="navbarScroll" />
+                            <Navbar.Collapse id="navbarScroll">
+                                <Nav navbarScroll className="me-auto">
+                                    <Nav.Link href="/"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
+                                    <Nav.Link href="/add"><i class="fa fa-fighter-jet fa-lg"></i> Add flight </Nav.Link>
+                                    <Nav.Link href="./search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
+                                    <Nav.Link href="/getFlights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+                                </Nav>
+                            </Navbar.Collapse>
                         </Container>
                     </Navbar>
 
@@ -193,7 +197,7 @@ class EditFlight extends Component {
                     <div className="col-12 offset-md-3 col-md-6  ">
                         <form className="search" onSubmit={this.submit}>
                             <fieldset>
-                            <br/>
+                                <br />
                                 <div className="form-group row" >
                                     <div className="col-12 col-sm-4">
                                         <label htmlFor="aligned-ID"  >Flight Number </label>
@@ -202,7 +206,7 @@ class EditFlight extends Component {
                                         <input className="form-control" type="number" id="aligned-ID" name="id" placeholder={FlightNumber} value={this.state.FlightNumber} onChange={this.onChangeFlightNumber} />
                                     </div>
                                 </div>
-                                <br/>
+                                <br />
                                 <div className="form-group row" >
                                     <div className="col-12 col-sm-4">
                                         <label htmlFor="aligned-toAir" >Arrival Terminal</label>
@@ -211,7 +215,7 @@ class EditFlight extends Component {
                                         <input className="form-control" type="text" id="aligned-toAir" name="toAir" placeholder={toAir} value={this.state.toAir} onChange={this.onChangeToAir} />
                                     </div>
                                 </div>
-                                <br/>
+                                <br />
                                 <div className="form-group row" >
                                     <div className="col-12 col-sm-4">
                                         <label htmlFor="aligned-fromAir" >Departure Terminal</label>
@@ -220,7 +224,7 @@ class EditFlight extends Component {
                                         <input className="form-control" type="text" id="aligned-fromAir" name="from" placeholder={fromAir} value={this.state.fromAir} onChange={this.onChangeFromAir} />
                                     </div>
                                 </div>
-                                <br/>
+                                <br />
                                 <div className="form-group row" >
                                     <div className="col-12 col-sm-4">
                                         <label htmlFor="aligned-econ" >Number of Economy class seats</label>
@@ -229,7 +233,7 @@ class EditFlight extends Component {
                                         <input type="number" className="form-control" id="aligned-econ" name="econ" placeholder={ecoSeats} value={this.state.noEconomySeats} onChange={this.onChangeNoEconomySeats} />
                                     </div>
                                 </div>
-                                <br/>
+                                <br />
                                 <div className="form-group row" >
                                     <div className="col-12 col-sm-4">
                                         <label htmlFor="aligned-business" >Number of business class seats</label>
@@ -238,7 +242,7 @@ class EditFlight extends Component {
                                         <input type="number" className="form-control" id="aligned-business" name="business" placeholder={busSeats} value={this.state.noBusinessSeats} onChange={this.onChangeNoBusinessSeats} />
                                     </div>
                                 </div>
-                                <br/>
+                                <br />
                                 <div className="form-group row" >
                                     <div className="col-12 col-sm-4">
                                         <label htmlFor="aligned-first" >Number of first class seats</label>
@@ -247,7 +251,7 @@ class EditFlight extends Component {
                                         <input type="number" className="form-control" id="aligned-first" name="first" placeholder={firstSeats} value={this.state.noFirstSeats} onChange={this.onChangeFirstSeats} />
                                     </div>
                                 </div>
-                                <br/>
+                                <br />
                                 <div className="form-group row" >
                                     <div className="col-12 col-sm-4">
 
@@ -257,7 +261,7 @@ class EditFlight extends Component {
                                         <input type="datetime-local" className="form-control" id="aligned-Arr" name="arr" placeholder={arrTime} value={this.state.arrTime} onChange={this.onChangeArrTime} />
                                     </div>
                                 </div>
-                                <br/>
+                                <br />
                                 <div className="form-group row" >
                                     <div className="col-12 col-sm-4">
                                         <label htmlFor="aligned-Dep" >Departure time</label>
@@ -266,8 +270,8 @@ class EditFlight extends Component {
                                         <input type="datetime-local" className="form-control" id="aligned-Dep" name="dep" value={this.state.depTime} placeholder={depTime} onChange={this.onChangeDepTime} />
                                     </div>
                                 </div>
-                                <br/>
-                                <br/>
+                                <br />
+                                <br />
                                 <div className="form-group row" >
                                     <div className="offset-sm-4 col-12 col-sm-6 ">
                                         <button type="submit" className="btn btn-dark form-control" >Edit</button>

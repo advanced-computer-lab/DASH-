@@ -1,4 +1,7 @@
 const Flight = require('../models/Flight'); 
+
+
+
 exports.addFlight = (req, res) =>
  {
   
@@ -14,8 +17,12 @@ exports.addFlight = (req, res) =>
          noFirstSeats : req.body.noFirstSeats,
          depTime : req.body.depTime,
          arrTime :req.body.arrTime,
+         baggageallowance:req.body.baggageallowance,
+         pricebusiness:req.body.pricebusiness,
+         priceEconomy:req.body.priceEconomy,
+         priceFirst:req.body.priceFirst,
+         Type:req.body.Type,
     
-        
      });
      flight.save().then((result)=>{
      

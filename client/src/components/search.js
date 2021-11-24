@@ -23,7 +23,7 @@ const Flight = (props) => (
         <td>{props.flight.noFirstSeats}</td>
         <td>{props.flight.depTime}</td>
         <td>{props.flight.arrTime}</td>
-        
+
 
         <td>
             <IconButton onClick={() => { props.deleteFlight(props.flight.FlightNumber) }}><DeleteForeverIcon style={{ color: "white" }}></DeleteForeverIcon></IconButton>
@@ -36,8 +36,8 @@ const Flight = (props) => (
                     props.flight.noBusinessSeats + " " +
                     props.flight.noFirstSeats + " " +
                     props.flight.depTime + " " +
-                    props.flight.arrTime + " " 
-                   
+                    props.flight.arrTime + " "
+
 
 
             }}  ><EditIcon style={{ color: "white" }}></EditIcon></IconButton>
@@ -160,20 +160,24 @@ class Search extends Component {
         return (
 
 
-            <div className="container">
+            <div className="container-fluid">
 
 
 
                 <div className="row">
-                    <Navbar className="col-12" bg="dark" variant="dark">
-                        <Container>
-                            <Navbar.Brand href="/">Dash</Navbar.Brand>
-                            <Nav className="me-auto">
-                                <Nav.Link href="/">Home</Nav.Link>
-                                <Nav.Link href="/add">Add flight </Nav.Link>
-                                <Nav.Link href="">Search</Nav.Link>
-                                <Nav.Link href="/getFlights">Flights List</Nav.Link>
-                            </Nav>
+                    <Navbar expand="sm" bg="dark" variant="dark">
+                        <Container fluid>
+
+                            <Navbar.Brand href="./">Dash</Navbar.Brand>
+                            <Navbar.Toggle aria-controls="navbarScroll" />
+                            <Navbar.Collapse id="navbarScroll">
+                                <Nav navbarScroll className="me-auto">
+                                    <Nav.Link href="/"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
+                                    <Nav.Link href="/add"><i class="fa fa-fighter-jet fa-lg"></i> Add flight </Nav.Link>
+                                    <Nav.Link href="./search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
+                                    <Nav.Link href="/getFlights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+                                </Nav>
+                            </Navbar.Collapse>
                         </Container>
                     </Navbar>
 
@@ -185,7 +189,7 @@ class Search extends Component {
 
                 <div className="row row-content">
 
-                    <div className="col-6">
+                    <div className="col-12 col-md-6">
 
 
                         <form className="search" onSubmit={this.submit}>

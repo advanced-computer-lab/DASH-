@@ -2,65 +2,72 @@
 //import './NavBar.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from 'react';
-import { Component} from 'react';
-import {Navbar, Nav, Container, NavLink} from 'react-bootstrap';
+import { Component } from 'react';
+import { Navbar, Nav, Container, NavLink } from 'react-bootstrap';
+import 'font-awesome/css/font-awesome.min.css';
 
 
 
 
 
 
-class NavBar extends Component{
+class NavBar extends Component {
 
 
-    render(){
-        return(
-            
-            
+    render() {
+        return (
 
 
-            <div className="container">
+            <body>
 
 
-            <div className="row">
-            <Navbar className="col-12" bg="dark" variant="dark">
-                    <Container>
-                    <Navbar.Brand href="./">Dash</Navbar.Brand>
-                    <Nav className="me-auto">
-                      <Nav.Link href="/">Home</Nav.Link>
-                      <Nav.Link href = "/add">Add flight </Nav.Link>
-                      <Nav.Link href="./search">Search</Nav.Link>
-                      <Nav.Link href="/getFlights">Flights List</Nav.Link>
-                    </Nav>
-                    </Container>
-                </Navbar>
-  
+                <div className="container-fluid">
 
-            </div>
-                
 
-            
-            
-                
-                <br/>
+                    <div className="row">
+                        <Navbar expand="sm" bg="dark" variant="dark">
+                            <Container fluid>
 
-                <div className="row">
+                                <Navbar.Brand href="./">Dash</Navbar.Brand>
+                                <Navbar.Toggle aria-controls="navbarScroll" />
+                                <Navbar.Collapse id="navbarScroll">
+                                    <Nav navbarScroll className="me-auto">
+                                        <Nav.Link href="/"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
+                                        <Nav.Link href="/add"><i class="fa fa-fighter-jet fa-lg"></i> Add flight </Nav.Link>
+                                        <Nav.Link href="./search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
+                                        <Nav.Link href="/getFlights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+                                    </Nav>
+                                </Navbar.Collapse>
+                            </Container>
+                        </Navbar>
 
-                    <div className="col-12 text-center">
-                        <br/>
-                        <h2 >Admin Home</h2>
+
                     </div>
-                    
 
 
+
+
+
+                    <br />
+
+                    <div className="row">
+
+                        <div className="col-12 text-center">
+                            <br />
+                            <h2 >Admin Home</h2>
+                        </div>
+
+
+
+                    </div>
                 </div>
-            </div>
 
-            
+
+            </body>
 
         )
-    
-    
+
+
     }
 
 

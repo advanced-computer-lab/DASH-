@@ -45,7 +45,9 @@ app.get("/",(req,res)=> {
 });*/
 
 const adminRouter = require("./routes/adminRouter");
+const userRouter=require("./routes/userRouter");
 
+app.use('/user',userRouter);
 app.use('/admins',adminRouter);
 app.use('/Flight' , FlightRouter);
 
