@@ -1,4 +1,3 @@
-import './Flight.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import React from 'react';
@@ -18,21 +17,27 @@ const Flight = (props) => (
         <td>{props.flight.noFirstSeats}</td>
         <td>{props.flight.depTime}</td>
         <td>{props.flight.arrTime}</td>
+        <td>{props.flight.baggageallowance}</td>
+        <td>{props.flight.priceEconomy}</td>
+        <td>{props.flight.pricebusiness}</td>
+        <td>{props.flight.priceFirst}</td>
+        <td>{props.flight.Type}</td>
+        
 
 
         <td>
 
-            <IconButton onClick={() => { props.deleteFlight(props.flight.FlightNumber) }}><DeleteForeverIcon style={{ color: "white" }}></DeleteForeverIcon></IconButton>
+            <IconButton onClick={() => { props.bookFlight(props.flight.FlightNumber) }}><DeleteForeverIcon style={{ color: "white" }}></DeleteForeverIcon></IconButton>
             <IconButton onClick={() => {
-                window.location = "http://localhost:3000/getFlights/editFlight" +
-                    props.flight.FlightNumber + " " +
-                    props.flight.toAir + " " +
-                    props.flight.fromAir + " " +
-                    props.flight.noEconomySeats + " " +
-                    props.flight.noBusinessSeats + " " +
-                    props.flight.noFirstSeats + " " +
-                    props.flight.depTime + " " +
-                    props.flight.arrTime + " "
+                // window.location = "http://localhost:3000/getFlights/editFlight" +
+                //     props.flight.FlightNumber + " " +
+                //     props.flight.toAir + " " +
+                //     props.flight.fromAir + " " +
+                //     props.flight.noEconomySeats + " " +
+                //     props.flight.noBusinessSeats + " " +
+                //     props.flight.noFirstSeats + " " +
+                //     props.flight.depTime + " " +
+                //     props.flight.arrTime + " "
 
 
             }}  ><EditIcon style={{ color: "white" }}></EditIcon></IconButton>
@@ -41,10 +46,10 @@ const Flight = (props) => (
     </tr>
 )
 
-class GetFlights extends Component {
+class AllFlights extends Component {
     constructor(props) {
         super(props);
-        this.deleteFlight = this.deleteFlight.bind(this);
+        this.bookFlight = this.bookFlight.bind(this);
 
         this.state = {
             flights: []
@@ -66,27 +71,32 @@ class GetFlights extends Component {
 
     flightsList() {
         return (this.state.flights.map(currentFlight => {
-            return <Flight flight={currentFlight} deleteFlight={this.deleteFlight} />
+            return <Flight flight={currentFlight} bookFlight={this.bookFlight()} />
         }))
     }
 
-    deleteFlight(FlightNumber) {
-        if (window.confirm('Are you sure you want to delete this Flight from the database')) {
-            // Save it!
-            axios.post("http://localhost:8000/Flight/deleteFlight", { data: FlightNumber }).then(
-                res => (console.log(res.data))
-            ).catch(err => { console.log(err) });
-            this.setState({
-                flights: this.state.flights.filter(element => element.FlightNumber !== FlightNumber)
-            })
-        } else {
-            // Do nothing!
-
-        }
-
-
+    bookFlight(){
 
     }
+
+    // deleteFlight={this.deleteFlight}
+    // deleteFlight(FlightNumber) {
+    //     if (window.confirm('Are you sure you want to delete this Flight from the database')) {
+    //         // Save it!
+    //         axios.post("http://localhost:8000/Flight/deleteFlight", { data: FlightNumber }).then(
+    //             res => (console.log(res.data))
+    //         ).catch(err => { console.log(err) });
+    //         this.setState({
+    //             flights: this.state.flights.filter(element => element.FlightNumber !== FlightNumber)
+    //         })
+    //     } else {
+    //         // Do nothing!
+
+    //     }
+
+
+
+    // }
 
 
 
@@ -106,9 +116,8 @@ class GetFlights extends Component {
                             <Navbar.Collapse id="navbarScroll">
                                 <Nav navbarScroll className="me-auto">
                                     <Nav.Link href="/"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
-                                    <Nav.Link href="/add"><i class="fa fa-fighter-jet fa-lg"></i> Add flight </Nav.Link>
                                     <Nav.Link href="./search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
-                                    <Nav.Link href="/getFlights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+                                    <Nav.Link href="/user/all_flights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>
@@ -124,7 +133,7 @@ class GetFlights extends Component {
 
                     <div className="col-12 ">
 
-                        <Table className="table table-dark d-felx " striped bordered hover size="xs">
+                        <Table className="table table-dark d-felx fluid" striped bordered hover size="xs" >
                             <thead >
                                 <tr >
                                     <th>Flight Number</th>
@@ -135,7 +144,12 @@ class GetFlights extends Component {
                                     <th>First Class Seats</th>
                                     <th>Departure Time</th>
                                     <th>Arrival Time</th>
-                                    <th>Action</th>
+                                    <th>Baggage Allowance</th>
+                                    <th>Economy Seat Price</th>
+                                    <th>Bussines Class Seat Price</th>
+                                    <th>First Class Seat Price</th>
+                                    <th>Type</th>
+                                    <th class="text-center" style={{width:100}}>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -161,4 +175,4 @@ class GetFlights extends Component {
     }
 }
 
-export default GetFlights
+export default AllFlights

@@ -2,8 +2,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors')
+const dotenv = require("dotenv");
 // THIS IS WRONG NEVER DO THAT !! Only for the task we put the DB Link here!! NEVER DO THAAAT AGAIN !!
-const MongoURI = 'mongodb+srv://dash_hamada:Adhom_Shosho_Dodo_Hamada@dashcluster.yrwpn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority' ;
+dotenv.config();
+
+
+const MongoURI = process.env.Mongo_URI;
 
 
 //App variables
@@ -41,7 +45,9 @@ app.get("/",(req,res)=> {
 });*/
 
 const adminRouter = require("./routes/adminRouter");
+const userRouter=require("./routes/userRouter");
 
+app.use('/user',userRouter);
 app.use('/admins',adminRouter);
 app.use('/Flight' , FlightRouter);
 
