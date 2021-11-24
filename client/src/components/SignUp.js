@@ -73,7 +73,7 @@ class SignUp extends Component {
         this.setState({
             DateOB: e.target.value
         });
-
+ 
     }
     onChangePassport(e) {
         this.setState({
