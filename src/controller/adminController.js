@@ -22,10 +22,20 @@ const getAllAdmins =(req,res)=>{
     });
 
 }
+const signin = (req,res)=>{
+    Admin.find({$and : [{Email : req.body.Email} , {Password : req.body.Password }]},function(err,docs){
+        if(err){}
+        else {
+          res.send(JSON.stringify(docs.length));
+        }
+    });
+
+}
     
 
 module.exports={
     home,
     getAllAdmins,
-    getAllFlights
+    getAllFlights,
+    signin
 };
