@@ -160,13 +160,11 @@ class SearchUser extends Component {
 
     test2 (){
         return (this.state.showFlight.map(currentFlight => {
-          var t1=  String((currentFlight.arrTime.split("T")));
-          t1=t1[11]+ t1[12]+t1[13] + t1[14] + t1[15];
 
-          var t2=  String((currentFlight.depTime.split("T")));
-          t2=t2[11]+ t2[12]+t2[13] + t2[14] + t2[15]; 
-
-          var duration = parseInt(t1[11]) - parseInt(t2[11]) ;
+          var time1 = Date.parse(currentFlight.arrTime);
+          var time2 = Date.parse(currentFlight.depTime);
+          
+       
           
             return <div>
              <p style={{textAlign:'center'}}>Flight Details Flno: :{currentFlight.FlightNumber} </p>
@@ -183,7 +181,7 @@ class SearchUser extends Component {
                      <p>children Economy:{(currentFlight.priceEconomy)/2 }</p>
                      <p>children First:{(currentFlight.priceFirst)/2 }</p>
                      <p>children Business:{(currentFlight.pricebusiness)/2} </p>
-                     <p>Trip duration:{( t2 + t1 + duration )} </p>
+                     <p>Trip duration:{(Math.abs(( time2-time1 )/(1000*60*60)).toFixed(2)) + "hours"} </p>
                      
 
                 </div>
