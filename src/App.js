@@ -3,7 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors')
 const dotenv = require("dotenv");
-const session = require('express-session');
 // THIS IS WRONG NEVER DO THAT !! Only for the task we put the DB Link here!! NEVER DO THAAAT AGAIN !!
 dotenv.config();
 
@@ -16,7 +15,6 @@ const app = express();
 const port = process.env.PORT || "8000";
 
 app.use(cors());
-app.use(session({secret: 'ssshhhhh'}));
 const Flight = require('./models/Flight');
 const FlightRouter = require('./routes/FlightRoutes') ;
 mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })

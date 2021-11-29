@@ -11,8 +11,7 @@ FlightRouter.get('/getAllFlights',FlightControl.getAllFlights);
 FlightRouter.post('/deleteFlight',FlightControl.deleteFlight);
 FlightRouter.post('/FindFlight',FlightControl.getFlightbyNumb);
 
-FlightRouter.post('/editFlight',FlightControl.editFlight);
-FlightRouter.post('/showFlight',FlightControl.showFlight);
+FlightRouter.post('/editFlight',FlightControl.editFlight)
 
 
 

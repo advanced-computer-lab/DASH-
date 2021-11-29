@@ -29,7 +29,6 @@ exports.addFlight = (req, res) =>
      
   }).catch((err)=>
   {
-    console.log("catch");
     console.log(err);
   });
 
@@ -122,15 +121,6 @@ exports.getFlightbyNumb = (req, res) => {
 
     )
 }
-
-exports.showFlight= (req , res)=>{
-  Flight.find({FlightNumber:req.body.FlightNumber}).then(result=>{
-      res.header("Content-Type",'application/json');
-      res.send(JSON.stringify(result, null, 4));
-  });
-
-};
-
 
 
 
