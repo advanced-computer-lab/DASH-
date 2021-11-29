@@ -37,13 +37,32 @@ const userSchema = new Schema({
         type: String,
         required: true,
       },
-      dateFlight: {
-        type: Date,
-        required: true,
+      baggageallowance:{
+        type:Number,
+        required:true,
+      },
+      pricebusiness:{
+        type:Number,
+        required:true,
+      },
+      priceEconomy:{
+        type:Number,
+        required:true,
+      },
+      priceFirst:{
+        type:Number,
+        required:true,
+      },
+      Type:{
+        type: String,
+        required:true,
       },
 
 
-});
+      
+
+
+    });
 
 
 const Flight = mongoose.model('Flight', userSchema);
