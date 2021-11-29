@@ -1,14 +1,8 @@
-
-//import './NavBar.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from 'react';
 import { Component } from 'react';
-import { Navbar, Nav, Container, NavLink } from 'react-bootstrap';
+import { Navbar, Nav, Container} from 'react-bootstrap';
 import 'font-awesome/css/font-awesome.min.css';
-
-
-
-
 
 
 class NavBar extends Component {

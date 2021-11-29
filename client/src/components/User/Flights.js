@@ -1,12 +1,12 @@
-import './Flight.css';
+import '../Flight.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import React from 'react';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
 import { Component } from 'react';
-import EditIcon from '@mui/icons-material/Edit';
-import { Navbar, Nav, Container, Table } from 'react-bootstrap';
+import { Navbar, Nav, Container, Table, Button, Modal } from 'react-bootstrap';
+
+//import AddBoxIcon from '@mui/icons-material/AddBox';
 
 const Flight = (props) => (
     <tr >
@@ -21,43 +21,42 @@ const Flight = (props) => (
 
 
         <td>
+            <IconButton onClick={() => { props.handleModal(props.flight.FlightNumber) }}>Hamada</IconButton>
 
-            <IconButton onClick={() => { props.deleteFlight(props.flight.FlightNumber) }}><DeleteForeverIcon style={{ color: "white" }}></DeleteForeverIcon></IconButton>
-            <IconButton onClick={() => {
-                window.location = "http://localhost:3000/getFlights/editFlight" +
-                    props.flight.FlightNumber + " " +
-                    props.flight.toAir + " " +
-                    props.flight.fromAir + " " +
-                    props.flight.noEconomySeats + " " +
-                    props.flight.noBusinessSeats + " " +
-                    props.flight.noFirstSeats + " " +
-                    props.flight.depTime + " " +
-                    props.flight.arrTime + " "
-
-
-            }}  ><EditIcon style={{ color: "white" }}></EditIcon></IconButton>
         </td>
 
     </tr>
+
 )
 
-class GetFlights extends Component {
+
+
+class Flights extends Component {
     constructor(props) {
         super(props);
-        this.deleteFlight = this.deleteFlight.bind(this);
+        this.handleModal = this.handleModal.bind(this);
 
         this.state = {
-            flights: []
+            flights: [],
+            show: false,
+            modalFlightNumber: ''
+
         };
     }
 
+    handleModal(id) {
+        this.setState({
+            show: !this.state.show,
+            modalFlightNumber: id,
+        })
+    }
 
     componentDidMount() {
         axios.get('http://localhost:8000/Flight/getAllFlights')
             .then((res) => {
                 this.setState({ flights: res.data });
 
-            }) 
+            })
             .catch((err) => {
                 console.log(err);
 
@@ -66,28 +65,14 @@ class GetFlights extends Component {
 
     flightsList() {
         return (this.state.flights.map(currentFlight => {
-            return <Flight flight={currentFlight} deleteFlight={this.deleteFlight} />
+            return <Flight flight={currentFlight} handleModal={this.handleModal} />
         }))
     }
 
-    deleteFlight(FlightNumber) {
-        if (window.confirm('Are you sure you want to delete this Flight from the database')) {
-            // Save it!
-            axios.post("http://localhost:8000/Flight/deleteFlight", { data: FlightNumber }).then(
-                res => (console.log(res.data))
-            ).catch(err => { console.log(err) });
-            this.setState({
-                flights: this.state.flights.filter(element => element.FlightNumber !== FlightNumber)
-            })
-        } else {
-            // Do nothing!
-
-        }
-
+    pop(id) {
 
 
     }
-
 
 
     render() {
@@ -105,10 +90,16 @@ class GetFlights extends Component {
                             <Navbar.Toggle aria-controls="navbarScroll" />
                             <Navbar.Collapse id="navbarScroll">
                                 <Nav navbarScroll className="me-auto">
-                                    <Nav.Link href="/"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
-                                    <Nav.Link href="/add"><i class="fa fa-fighter-jet fa-lg"></i> Add flight </Nav.Link>
-                                    <Nav.Link href="./search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
-                                    <Nav.Link href="/getFlights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+                                    <Nav.Link href="/user/home"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
+                                    <Nav.Link href="/user/search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
+                                    <Nav.Link href="/user/all_flights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+                                    <Nav.Link href=""><i className="fa fa-clipboard fa-lg"></i> My Flights</Nav.Link>
+                                    <Nav.Link href="/logIn" onClick={() => {
+                                        localStorage.removeItem("token");
+                                        localStorage.removeItem("Email");
+                                        localStorage.removeItem("Type");
+                                    }} className="position-absolute end-0"><i className="fa fa-sign-out fa-lg"></i> Logout</Nav.Link>
+
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>
@@ -146,8 +137,18 @@ class GetFlights extends Component {
                         </Table>
                     </div>
 
-                    <div className="col-12 col-md-6">
-
+                    <div >
+                        <Modal show={this.state.show}>
+                            <Modal.Header>Header</Modal.Header>
+                            <Modal.Body>
+                                Hi , React Modal is Here
+                            </Modal.Body>
+                            <Button onClick={() => {
+                                this.setState({
+                                    show: false,
+                                })
+                            }}>Hamada FronEnd</Button>
+                        </Modal>
                     </div>
 
                 </div>
@@ -161,4 +162,4 @@ class GetFlights extends Component {
     }
 }
 
-export default GetFlights
+export default Flights;

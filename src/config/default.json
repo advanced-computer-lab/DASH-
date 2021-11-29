@@ -1,0 +1,4 @@
+{
+    "MongoURI":"mongodb+srv://dash_hamada:Adhom_Shosho_Dodo_Hamada@dashcluster.yrwpn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority ",
+    "jwtSecret":"sl_myJwtSecret"
+}

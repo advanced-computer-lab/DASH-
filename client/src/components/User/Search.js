@@ -1,4 +1,4 @@
-import './Flight.css';
+import '../Flight.css';
 import axios from 'axios';
 import { Component } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -8,6 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import "bootstrap/dist/css/bootstrap.min.css";
 //import "react/popper";
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import { integerPropType } from '@mui/utils';
 
 
 
@@ -26,44 +27,49 @@ const Flight = (props) => (
 
 
         <td>
-            <IconButton onClick={() => { props.deleteFlight(props.flight.FlightNumber) }}><DeleteForeverIcon style={{ color: "white" }}></DeleteForeverIcon></IconButton>
-            <IconButton onClick={() => {
-                window.location = "http://localhost:3000/getFlights/editFlight" +
-                    props.flight.FlightNumber + " " +
-                    props.flight.toAir + " " +
-                    props.flight.fromAir + " " +
-                    props.flight.noEconomySeats + " " +
-                    props.flight.noBusinessSeats + " " +
-                    props.flight.noFirstSeats + " " +
-                    props.flight.depTime + " " +
-                    props.flight.arrTime + " "
 
+            <button onClick={() => { props.FlightDetails(props.flight.FlightNumber) }}>Show details</button>
 
-
-            }}  ><EditIcon style={{ color: "white" }}></EditIcon></IconButton>
         </td>
 
     </tr>
+
 )
-class Search extends Component {
+const showFlight = (props) => (
+    <tr >
+        <td>{props.showFlight[0].baggageallowance}</td>
+
+
+    </tr>
+)
+
+class SearchUser extends Component {
+
+
     constructor(props) {
         super(props);
 
         this.submit = this.submit.bind(this);
         this.onChangeN = this.onChangeN.bind(this);
-        this.deleteFlight = this.deleteFlight.bind(this);
+        this.FlightDetails = this.FlightDetails.bind(this);
         this.onChangetoAir = this.onChangetoAir.bind(this);
         this.onChangefromAir = this.onChangefromAir.bind(this);
         this.onChangeDate = this.onChangeDate.bind(this);
         this.onChangeArrival = this.onChangeArrival.bind(this);
         this.onChangeDep = this.onChangeDep.bind(this);
+        this.onChangeNumberPass = this.onChangeNumberPass.bind(this);
+        this.onChangeCabinClass = this.onChangeCabinClass.bind(this);
+        this.test2 = this.test2.bind(this);
         this.state = {
             FlightNumber: '',
             toAir: '',
             fromAir: '',
             depTime: '',
             arrTime: '',
+            NumPass: '',
+            CabinClass: '',
             flights: [],
+            showFlight: []
         }
     }
 
@@ -72,11 +78,8 @@ class Search extends Component {
         e.preventDefault();
         this.flightsList();
 
-
-
-
-
     }
+
 
     onChangeN(e) {
         this.setState({ FlightNumber: e.target.value })
@@ -107,6 +110,16 @@ class Search extends Component {
             depTime: e.target.value
         })
     }
+    onChangeNumberPass(e) {
+        this.setState({
+            NumPass: e.target.value
+        })
+    }
+    onChangeCabinClass(e) {
+        this.setState({
+            CabinClass: e.target.value
+        })
+    }
 
     flightsList() {
         const f = {
@@ -116,6 +129,10 @@ class Search extends Component {
             dateFlight: this.state.dateFlight,
             arrTime: this.state.arrTime,
             depTime: this.state.depTime,
+            NumPass: this.state.noEconomySeats,
+            CabinClass: this.state.noFirstSeats,
+
+
 
         }
 
@@ -129,29 +146,59 @@ class Search extends Component {
 
 
     }
-    deleteFlight(FlightNumber) {
-        if (window.confirm('Are you sure you want to delete this Flight from the database')) {
-            // Save it!
-            axios.post("http://localhost:8000/Flight/deleteFlight", { data: FlightNumber }).then(
-                res => (console.log(res.data))
-            ).catch(err => { console.log(err) });
-            this.setState({
-                flights: this.state.flights.filter(element => element.FlightNumber !== FlightNumber)
+    FlightDetails(id) {
+        var temp = { FlightNumber: id };
+        axios.post('http://localhost:8000/Flight/showFlight', temp)
+            .then(res => {
+                this.setState({ showFlight: res.data })
+
+
             })
-        } else {
-            // Do nothing!
-
-        }
-
 
 
     }
 
     test() {
         return (this.state.flights.map(currentFlight => {
-            return <Flight flight={currentFlight} deleteFlight={this.deleteFlight} />
+            return <Flight flight={currentFlight} FlightDetails={this.FlightDetails} />
         }))
 
+    }
+
+    test2() {
+        return (this.state.showFlight.map(currentFlight => {
+
+            var time1 = Date.parse(currentFlight.arrTime);
+            var time2 = Date.parse(currentFlight.depTime);
+
+
+
+            return <div>
+                <p style={{ textAlign: 'center' }}>Flight Details Flno: :{currentFlight.FlightNumber} </p>
+
+                <div className='column' >
+                    <div style={{ textAlign: 'left' }} >
+                        <p>Baggage Allowance:{currentFlight.baggageallowance} </p>
+                        <p>Adults Economy:{currentFlight.priceEconomy}</p>
+                        <p>Adults First:{currentFlight.priceFirst}</p>
+                        <p>Adults Business:{currentFlight.pricebusiness} </p>
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+
+                        <p>children Economy:{(currentFlight.priceEconomy) / 2}</p>
+                        <p>children First:{(currentFlight.priceFirst) / 2}</p>
+                        <p>children Business:{(currentFlight.pricebusiness) / 2} </p>
+                        <p>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </p>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        }))
 
     }
 
@@ -172,10 +219,19 @@ class Search extends Component {
                             <Navbar.Toggle aria-controls="navbarScroll" />
                             <Navbar.Collapse id="navbarScroll">
                                 <Nav navbarScroll className="me-auto">
-                                    <Nav.Link href="/"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
-                                    <Nav.Link href="/add"><i class="fa fa-fighter-jet fa-lg"></i> Add flight </Nav.Link>
-                                    <Nav.Link href="./search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
-                                    <Nav.Link href="/getFlights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+
+
+                                    <Nav.Link href="/user/home"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
+                                    <Nav.Link href="/user/search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
+                                    <Nav.Link href="/user/all_flights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+                                    <Nav.Link href=""><i className="fa fa-clipboard fa-lg"></i> My Flights</Nav.Link>
+                                    <Nav.Link href="/logIn" onClick={() => {
+                                        localStorage.removeItem("token");
+                                        localStorage.removeItem("Email");
+                                        localStorage.removeItem("Type");
+                                    }} className="position-absolute end-0"><i className="fa fa-sign-out fa-lg"></i> Logout</Nav.Link>
+
+
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>
@@ -188,6 +244,7 @@ class Search extends Component {
                 <br />
 
                 <div className="row row-content">
+
 
                     <div className="col-12 col-md-6">
 
@@ -252,8 +309,37 @@ class Search extends Component {
                                     <label htmlFor="aligned-Dep" >Departure time</label>
                                     &nbsp;&nbsp;
                                 </div>
+
                                 <div className="col-12 col-md-9">
                                     <input className="form-control" type="datetime-local" id="aligned-Dep" name="dep" value={this.state.depTime} onChange={this.onChangeDep} />
+                                    &nbsp;&nbsp;
+                                </div>
+                            </div>
+
+                            <div className="form-group row">
+
+                                <div className="col-6 col-md-3">
+                                    <label htmlFor="aligned-Dep" >Number of passengers</label>
+                                    &nbsp;&nbsp;
+                                </div>
+
+                                <div className="col-12 col-md-9">
+                                    <input type="number" id="aligned-ID" placeholder="Number of passsengers" name="id2" className="form-control" value={this.state.NumPass} onChange={this.onChangeNumberPass} />
+                                    &nbsp;&nbsp;
+                                </div>
+                            </div>
+
+
+
+                            <div className="form-group row">
+
+                                <div className="col-6 col-md-3">
+                                    <label htmlFor="aligned-Dep" >Cabin class</label>
+                                    &nbsp;&nbsp;
+                                </div>
+
+                                <div className="col-12 col-md-9">
+                                    <input type="next" id="aligned-ID" placeholder="Cabin class" name="id2" className="form-control" value={this.state.CabinClass} onChange={this.onChangeCabinClass} />
                                     &nbsp;&nbsp;
                                 </div>
                             </div>
@@ -266,7 +352,18 @@ class Search extends Component {
                             </div>
 
                         </form>
+
                         <br />
+                    </div>
+                    <div className="cl-12 col-md-6">
+
+                        <form className="details">
+
+                            {this.test2()}
+
+                        </form>
+
+
                     </div>
 
                     <div className="row row-header ">
@@ -316,4 +413,4 @@ class Search extends Component {
 
 }
 
-export default Search;
+export default SearchUser;

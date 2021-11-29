@@ -1,7 +1,7 @@
-import './Flight.css';
+import '../Flight.css';
 import axios from 'axios';
 import { Component } from 'react';
-import { Navbar, Nav, Container, NavLink } from 'react-bootstrap';
+import { Navbar, Nav, Container} from 'react-bootstrap';
 <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous"></link>
 
 class FlightAdd extends Component {
@@ -103,12 +103,6 @@ class FlightAdd extends Component {
 
     }
 
-    onChangeFirst(e) {
-        this.setState({
-            noFirstSeats: e.target.value
-        })
-
-    }
     onChangeBaggage(e) {
         this.setState({
             baggageallowance: e.target.value

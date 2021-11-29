@@ -4,8 +4,8 @@ const Flight = require('../models/Flight');
 
 exports.addFlight = (req, res) =>
  {
-  
-
+   
+ 
     const flight = new Flight(
      { 
        
@@ -195,3 +195,11 @@ exports.editFlight =(req,res)=> {
 
 
 }
+
+exports.showFlight= (req , res)=>{
+  Flight.find({FlightNumber:req.body.FlightNumber}).then(result=>{
+      res.header("Content-Type",'application/json');
+      res.send(JSON.stringify(result, null, 4));
+  });
+
+};
