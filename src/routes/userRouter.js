@@ -131,6 +131,9 @@ userRouter.post('/type',auth,(req,res)=>{
     })
 })
 
+userRouter.post('/EditUser' ,userController.EditUser ) ;
+userRouter.post('/FindEmail' , userController.findUser);
+
 
 
 //Function to add flight to my flights

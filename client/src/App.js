@@ -12,6 +12,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import User_Home from "./components/User/Home"
 import User_Flights from "./components/User/Flights";
 import User_Search from "./components/User/Search";
+import Edit_User from "./components/User/Edit"; 
 import { ProtectedRoute } from './components/protected_route';
 import { ProtectedRouteUser } from './components/protected_route_user';
 //import { ProtectedRouteGuest } from './components/protected_route_guest';
@@ -84,6 +85,12 @@ class App extends Component {
           <Route exact path='/user/search' element={
             <ProtectedRouteUser>
               <User_Search />
+            </ProtectedRouteUser>
+          } />
+
+          <Route exact path='/user/Edit' element={
+            <ProtectedRouteUser>
+              <Edit_User />
             </ProtectedRouteUser>
           } />
 
