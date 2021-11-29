@@ -29,6 +29,7 @@ exports.addFlight = (req, res) =>
      
   }).catch((err)=>
   {
+    console.log("catch");
     console.log(err);
   });
 

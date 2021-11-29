@@ -40,9 +40,6 @@ const showFlight = (props) => (
         <td>{props.showFlight[0].baggageallowance}</td>
         
 
-
-        
-
     </tr>
 )
 
@@ -60,6 +57,8 @@ class SearchUser extends Component {
         this.onChangeDate = this.onChangeDate.bind(this);
         this.onChangeArrival = this.onChangeArrival.bind(this);
         this.onChangeDep = this.onChangeDep.bind(this);
+        this.onChangeNumberPass=this.onChangeNumberPass.bind(this);
+        this.onChangeCabinClass=this.onChangeCabinClass.bind(this);
         this.test2 = this.test2.bind(this);
         this.state = {
             FlightNumber: '',
@@ -67,6 +66,8 @@ class SearchUser extends Component {
             fromAir: '',
             depTime: '',
             arrTime: '',
+            NumPass:'',
+            CabinClass:'',
             flights: [],
             showFlight:[]
         }
@@ -76,10 +77,6 @@ class SearchUser extends Component {
 
         e.preventDefault();
         this.flightsList();
-
-
-
-
 
     }
     
@@ -113,6 +110,16 @@ class SearchUser extends Component {
             depTime: e.target.value
         })
     }
+    onChangeNumberPass(e){
+        this.setState({
+            NumPass:e.target.value
+        })
+    } 
+    onChangeCabinClass(e){
+        this.setState({
+            CabinClass:e.target.value
+        })
+    }
 
     flightsList() {
         const f = {
@@ -122,6 +129,8 @@ class SearchUser extends Component {
             dateFlight: this.state.dateFlight,
             arrTime: this.state.arrTime,
             depTime: this.state.depTime,
+            NumPass:this.state.noEconomySeats,
+            CabinClass:this.state.noFirstSeats,
 
 
 
@@ -146,8 +155,6 @@ class SearchUser extends Component {
 
         })
        
-
-
 
     }
 
@@ -292,11 +299,40 @@ class SearchUser extends Component {
                                     <label htmlFor="aligned-Dep" >Departure time</label>
                                     &nbsp;&nbsp;
                                 </div>
+
                                 <div className="col-12 col-md-9">
                                     <input className="form-control" type="datetime-local" id="aligned-Dep" name="dep" value={this.state.depTime} onChange={this.onChangeDep} />
                                     &nbsp;&nbsp;
                                 </div>
                             </div>
+
+                            <div className="form-group row">
+
+                                <div className="col-6 col-md-3">
+                                    <label htmlFor="aligned-Dep" >Number of passengers</label>
+                                    &nbsp;&nbsp;
+                                </div>
+
+                                <div className="col-12 col-md-9">
+                                <input type="number" id="aligned-ID" placeholder="Number of passsengers" name="id2" className="form-control" value={this.state.NumPass} onChange={this.onChangeNumberPass} />
+                                &nbsp;&nbsp;
+                                </div>
+                                </div>
+
+
+
+                                <div className="form-group row">
+
+                        <div className="col-6 col-md-3">
+                            <label htmlFor="aligned-Dep" >Cabin class</label>
+                            &nbsp;&nbsp;
+                        </div>
+
+                        <div className="col-12 col-md-9">
+                        <input type="next" id="aligned-ID" placeholder="Cabin class" name="id2" className="form-control" value={this.state.CabinClass} onChange={this.onChangeCabinClass} />
+                        &nbsp;&nbsp;
+                        </div>
+                        </div>
 
 
                             <div className="form-group row">
@@ -312,16 +348,9 @@ class SearchUser extends Component {
                     <div className="cl-12 col-md-6"> 
                     
                     <form className="details">
-                        
-                   
-                                
-                                
+                          
                                     {this.test2()}
-                                
-                                
-
-
-                           
+                               
                     </form>
                     
                     

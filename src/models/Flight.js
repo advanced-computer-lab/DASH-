@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     FlightNumber: {
         type: Number,
-        unique:true,
+        unique:false,
       },
     toAir: {
         type: String,
