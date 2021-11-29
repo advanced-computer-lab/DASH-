@@ -1,8 +1,11 @@
 const Flight = require('../models/Flight'); 
+
+
+
 exports.addFlight = (req, res) =>
  {
-  
-
+   
+ 
     const flight = new Flight(
      { 
        
@@ -14,8 +17,12 @@ exports.addFlight = (req, res) =>
          noFirstSeats : req.body.noFirstSeats,
          depTime : req.body.depTime,
          arrTime :req.body.arrTime,
+         baggageallowance:req.body.baggageallowance,
+         pricebusiness:req.body.pricebusiness,
+         priceEconomy:req.body.priceEconomy,
+         priceFirst:req.body.priceFirst,
+         Type:req.body.Type,
     
-        
      });
      flight.save().then((result)=>{
      
@@ -188,3 +195,11 @@ exports.editFlight =(req,res)=> {
 
 
 }
+
+exports.showFlight= (req , res)=>{
+  Flight.find({FlightNumber:req.body.FlightNumber}).then(result=>{
+      res.header("Content-Type",'application/json');
+      res.send(JSON.stringify(result, null, 4));
+  });
+
+};
