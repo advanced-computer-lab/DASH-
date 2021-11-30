@@ -138,17 +138,7 @@ class Flights extends Component {
                     </div>
 
                     <div >
-                        <Modal show={this.state.show}>
-                            <Modal.Header>Header</Modal.Header>
-                            <Modal.Body>
-                                Hi , React Modal is Here
-                            </Modal.Body>
-                            <Button onClick={() => {
-                                this.setState({
-                                    show: false,
-                                })
-                            }}>Hamada FronEnd</Button>
-                        </Modal>
+                        
                     </div>
 
                 </div>

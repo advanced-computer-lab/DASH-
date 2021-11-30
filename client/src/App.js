@@ -71,7 +71,7 @@ class App extends Component {
 
           <Route exact path='/user/home' element={
             <ProtectedRouteUser>
-              <User_Home />
+              <User_Home /> 
             </ProtectedRouteUser>
           } />
 

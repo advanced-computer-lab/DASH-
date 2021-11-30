@@ -16,13 +16,6 @@ const auth = require("../middleware/auth");
 
 userRouter.post('/register', (req, res) => {
     const { FirstName, LastName, Password, Email, Passportnumber, Type, DateOB } = req.body;
-    // const FirstName=req.body.FirstName;
-    // const LastName= req.body.LastName;
-    // const Password= req.body.Password;
-    // const Email=req.body.Email;
-    // const Passportnumber= req.body.Passportnumber;
-    // const Type=req.body.Type;
-    // const DateOB=req.body.DateOB;
 
     User.findOne({ Email: Email })
         .then(user => {
@@ -124,11 +117,26 @@ userRouter.post('/logIn', (req, res) => {
 //     .then(user =>res.json("blabizo"));
 // })
 
-userRouter.post('/type',auth,(req,res)=>{
-    User.findOne({Email:req.body.Email})
-    .then(user=>{
-        res.send(user.Type);
+userRouter.post('/type',(req,res)=>{
+    User.find({Email:req.body.Email},function(err,docs){
+        if(err){throw err}
+        else{
+            res.send(JSON.stringify(docs[0].Type));            
+        }
     })
+    // .then(user=>{
+    //     if(user.Type){
+    //         res.send({msg:"User"});
+            
+    //     }
+    // }
+    
+    // User.find({ Email: req.body.Email }, function (err, docs) {
+    //     if (err) { }
+    //     else {
+    //         res.send(JSON.stringify(docs.length));
+    //     }
+    // });
 })
 
 
@@ -140,7 +148,8 @@ userRouter.post('/type',auth,(req,res)=>{
 
 
 
-
+userRouter.post('/EditUser' ,userController.EditUser ) ;
+userRouter.post('/FindEmail' , userController.findUser);
 
 
 
