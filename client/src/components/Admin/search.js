@@ -1,4 +1,4 @@
-import './Flight.css';
+import '../Flight.css';
 import axios from 'axios';
 import { Component } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -121,7 +121,7 @@ class Search extends Component {
 
 
         axios.post('http://localhost:8000/Flight/FindFlight', f)
-            .then(res => {
+            .then(res => { 
                 this.setState({ flights: res.data })
 
 

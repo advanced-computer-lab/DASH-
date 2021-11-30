@@ -131,7 +131,7 @@ class EditFlight extends Component {
 
 
 
-        console.log(fl);
+       
         axios.post('http://localhost:8000/Flight/editFlight', fl)
             .then(res => {
                 alert("Flight Edited Successfuly")
