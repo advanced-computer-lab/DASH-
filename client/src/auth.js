@@ -25,17 +25,17 @@ class Auth{
         const Email = localStorage.getItem("Email");
         const Type = localStorage.getItem("Type");
 
-        if(token && (!Type) && Email ) return true;
+        if(Type==="false") return true;
         return false;
         //return this.authenticated;
     }
-
+ 
     isAuthenticatedUser(){
         const token = localStorage.getItem("token");
         const Email = localStorage.getItem("Email");
         const Type = localStorage.getItem("Type");
 
-        if(token && Email && Type ) return true;
+        if( Type==="true" ) return true;
         return false;
         //return this.authenticated;
     }

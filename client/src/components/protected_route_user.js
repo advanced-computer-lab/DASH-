@@ -4,7 +4,7 @@ import auth from "../auth";
 
 export const ProtectedRouteUser = ({children})=>{
     
-    return auth.isAuthenticatedUser()? children :auth.isAuthenticatedAdmin()? <Navigate to="/"/>: <Navigate to="/logIn"/> ;
+    return auth.isAuthenticatedUser()? children :(auth.isAuthenticatedAdmin()? <Navigate to="/"/>: <Navigate to="/logIn"/>) ;
    
         
 }

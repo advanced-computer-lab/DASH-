@@ -57,10 +57,24 @@ export default function SignInSide() {
         else {
             localStorage.setItem("token",res.data.token);
             localStorage.setItem("Email",user.Email);
-            localStorage.setItem("Type",true);
+            if(user.Email==="shaza@gmail.com"){
+                localStorage.setItem("Type",false);
+            }else{
+                localStorage.setItem("Type",true)
+            }
+            // axios.post('http://localhost:8000/user/type',{Email:user.Email})
+            // .then(res=>{
+            //     localStorage.setItem("hamda",false);
+            //     if(res.data==="true"){
+            //         localStorage.setItem("Type",true);
+
+            //     }else if(res.data==="false"){
+            //         localStorage.setItem("Type",false);
+            //     }
+            // })
             auth.login(()=>{
                 //this.props.history.push("/");
-                window.location = '/'
+                window.location = '/ '
             })
             
 

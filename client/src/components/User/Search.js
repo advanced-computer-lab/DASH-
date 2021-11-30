@@ -7,12 +7,69 @@ import EditIcon from '@mui/icons-material/Edit';
 //popper.js/dist/umd/popper.min.js
 import "bootstrap/dist/css/bootstrap.min.css";
 //import "react/popper";
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
 import { integerPropType } from '@mui/utils';
 
 
 
 <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous"></link>
+
+const MM = (props) => (
+    <Modal show={props.show}>
+        <Modal.Header ><b className="text-center">Booking Flight Number : {props.FlightNumber}</b></Modal.Header>
+        <Modal.Body>
+            <form onSubmit={props.submitModal}>
+                <strong>Number of economy seats</strong>
+                <div className="form-group row">
+                    <label className="col-4 col-md-2 col-form-label">Adult:</label>
+                    <div className="col-8 col-md-4">
+                        <input type="number" className="form-control " placeholder="" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
+                    </div>
+                    <label className="col-4 col-md-2 col-form-label">Child:</label>
+                    <div className="col-8 col-md-4">
+                        <input type="number" className="form-control " placeholder="" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
+                    </div>
+                </div>
+                <br />
+                <strong>Number of business class seats</strong>
+                <div className="form-group row">
+                    <label className="col-4 col-md-2 col-form-label">Adult:</label>
+                    <div className="col-8 col-md-4">
+                        <input type="number" className="form-control " placeholder="" value={props.Seats.AdultB} onChange={props.func.onChangeAdultB} />
+                    </div>
+                    <label className="col-4 col-md-2 col-form-label">Child:</label>
+                    <div className="col-8 col-md-4">
+                        <input type="number" className="form-control " placeholder="" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
+                    </div>
+
+                </div>
+                <br />
+                <div className="form-group row">
+                    <strong>Number of first class seats</strong>
+                    <label className="col-4 col-md-2 col-form-label">Adult:</label>
+                    <div className="col-8 col-md-4">
+                        <input type="number" className="form-control " placeholder="" value={props.Seats.AdultF} onChange={props.func.onChangeAdultF} />
+                    </div>
+                    <label className="col-4 col-md-2 col-form-label">Child:</label>
+                    <div className="col-8 col-md-4">
+                        <input type="number" className="form-control " placeholder="" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
+                    </div>
+                </div>
+                <br />
+                <div className="form-group row ">
+
+                    <button className="offset-md-1  col-md-4 btn btn-dark" onClick={() => { props.handleModal(props.FlightNumber) }}>Cancel</button>
+                    <button type="submit" className="offset-md-3   col-md-4 btn btn-dark">Book</button>
+
+                </div>
+
+            </form>
+        </Modal.Body>
+
+    </Modal>
+
+)
+
 
 const Flight = (props) => (
     <tr >
@@ -60,6 +117,16 @@ class SearchUser extends Component {
         this.onChangeNumberPass = this.onChangeNumberPass.bind(this);
         this.onChangeCabinClass = this.onChangeCabinClass.bind(this);
         this.test2 = this.test2.bind(this);
+        this.handleModal = this.handleModal.bind(this);
+
+        this.onChangeAdultE = this.onChangeAdultE.bind(this);
+        this.onChangeAdultB = this.onChangeAdultB.bind(this);
+        this.onChangeAdultF = this.onChangeAdultF.bind(this);
+        this.onChangeChildE = this.onChangeChildE.bind(this);
+        this.onChangeChildF = this.onChangeChildF.bind(this);
+        this.onChangeChildB = this.onChangeChildB.bind(this);
+        this.submitModal = this.submitModal.bind(this);
+
         this.state = {
             FlightNumber: '',
             toAir: '',
@@ -69,9 +136,31 @@ class SearchUser extends Component {
             NumPass: '',
             CabinClass: '',
             flights: [],
-            showFlight: []
+            showFlight: [],
+            show: false,
+
+            modalFlightNumber: '',
+
+            AdultE: '',
+            AdultB: '',
+            AdultF: '',
+
+            ChildE: '',
+            ChildB: '',
+            ChildF: '',
+
+
         }
     }
+
+
+    handleModal(id) {
+        this.setState({
+            show: !this.state.show,
+            modalFlightNumber: id,
+        })
+    }
+
 
     submit(e) {
 
@@ -79,6 +168,43 @@ class SearchUser extends Component {
         this.flightsList();
 
     }
+
+    submitModal(e) {
+        // if(this.state.modalFlightNumber==100) window.location='/user/home'
+        e.preventDefault();
+        const request = {
+            Email:localStorage.getItem("Email"),
+            FlightNumber: this.state.modalFlightNumber,
+            AdultE: this.state.AdultE,
+            AdultB: this.state.AdultB,
+            AdultF: this.state.AdultF,
+
+            ChildE: this.state.ChildE,
+            ChildB: this.state.ChildB,
+            ChildF: this.state.ChildF,
+        }
+        const x = {
+            FlightNumber: this.state.modalFlightNumber,
+        }
+
+        axios.post('http://localhost:8000/Flight/av', x)
+            .then(res => {
+                const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
+                const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
+                const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
+                if (ae > -1 && ab > -1 && af > -1) {
+                    console.log(request)
+                    axios.post('http://localhost:8000/ticket/book', request)
+                        .then(() => alert("Flight Booked Successfuly"))
+                        .catch(() => alert("error happened"));
+                }
+               
+            }).catch(err => {
+                alert(err);
+            });
+
+    }
+
 
 
     onChangeN(e) {
@@ -120,6 +246,38 @@ class SearchUser extends Component {
             CabinClass: e.target.value
         })
     }
+
+    onChangeAdultE(e) {
+        this.setState({
+            AdultE: e.target.value
+        })
+    }
+    onChangeAdultB(e) {
+        this.setState({
+            AdultB: e.target.value
+        })
+    }
+    onChangeAdultF(e) {
+        this.setState({
+            AdultF: e.target.value
+        })
+    }
+    onChangeChildE(e) {
+        this.setState({
+            ChildE: e.target.value
+        })
+    }
+    onChangeChildB(e) {
+        this.setState({
+            ChildB: e.target.value
+        })
+    }
+    onChangeChildF(e) {
+        this.setState({
+            ChildF: e.target.value
+        })
+    }
+
 
     flightsList() {
         const f = {
@@ -192,7 +350,34 @@ class SearchUser extends Component {
 
 
                     </div>
+                    <div><Button onClick={() => {
+                        this.handleModal(currentFlight.FlightNumber)
+
+                    }}>Book</Button> </div>
                 </div>
+
+
+                <MM FlightNumber={currentFlight.FlightNumber} handleModal={this.handleModal} Seats={{
+                    AdultE: this.state.AdultE,
+                    AdultB: this.state.AdultB,
+                    AdultF: this.state.AdultF,
+                    ChildE: this.state.ChildE,
+                    ChildB: this.state.ChildB,
+                    ChildF: this.state.ChildF,
+
+                }} show={this.state.show} func={{
+                    onChangeAdultE: this.onChangeAdultE,
+                    onChangeAdultB: this.onChangeAdultB,
+                    onChangeAdultF: this.onChangeAdultF,
+                    onChangeChildE: this.onChangeChildE,
+                    onChangeChildB: this.onChangeChildB,
+                    onChangeChildF: this.onChangeChildF,
+
+                }}
+                    submitModal={this.submitModal}
+                />
+
+
 
             </div>
 
@@ -401,6 +586,8 @@ class SearchUser extends Component {
 
 
                 </div>
+
+
 
             </div>
         );
