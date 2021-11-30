@@ -28,7 +28,7 @@ class Home extends Component {
                                         <Nav.Link href="/user/home"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
                                         <Nav.Link href="/user/search"><i className="fa fa-search fa-lg"></i> Search</Nav.Link>
                                         <Nav.Link href="/user/all_flights"><i className="fa fa-list fa-lg"></i> Flights List</Nav.Link>
-                                        <Nav.Link href=""><i className="fa fa-clipboard fa-lg"></i> My Flights</Nav.Link>
+                                        <Nav.Link href="/user/myFlights"><i className="fa fa-clipboard fa-lg"></i> My Flights</Nav.Link>
                                         <Nav.Link href="/logIn" onClick={() => {
                                             localStorage.removeItem("token");
                                             localStorage.removeItem("Email");

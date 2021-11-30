@@ -23,6 +23,7 @@ TicketRouter.post('/book' , (req,res)=>{
     .then(()=> console.log("Success")
     ).catch((err)=>console.log(err))
 })
+TicketRouter.post('/myFlights',ticketController.showmyFlights);
 
 
 
