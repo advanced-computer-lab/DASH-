@@ -10,6 +10,7 @@ FlightRouter.use(express.urlencoded({extended:false}));
 FlightRouter.post('/add',FlightControl.addFlight);
 FlightRouter.post('/find',FlightControl.findFlight);
 FlightRouter.get('/getAllFlights',FlightControl.getAllFlights);
+FlightRouter.get('/getAllTickets',FlightControl.getAllTickets);
 FlightRouter.post('/deleteFlight',FlightControl.deleteFlight);
 FlightRouter.post('/FindFlight',FlightControl.getFlightbyNumb);
 

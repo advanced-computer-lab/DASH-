@@ -1,5 +1,6 @@
 const Admin=require('../models/Admin');
 const Flight = require('../models/Flight');
+const Ticket = require('../models/Ticket');
 
 const home=(req,res)=>
 {
@@ -13,6 +14,7 @@ const getAllFlights = (req,res)=>{
         res.send(JSON.stringify(result, null, 4));
     });
 };
+
 
 const getAllAdmins =(req,res)=>{
     Admin.find().then((result)=>{

@@ -1,4 +1,5 @@
 const Flight = require('../models/Flight');
+const Ticket = require('../models/Ticket');
 
 
 
@@ -62,6 +63,14 @@ exports.deleteFlight = (req, res) => {
 
 exports.getAllFlights = (req, res) => {
   Flight.find().then(result => {
+    res.header("Content-Type", 'application/json');
+    res.send(JSON.stringify(result, null, 4));
+  });
+
+};
+
+exports.getAllTickets = (req, res) => {
+  Ticket.find().then(result => {
     res.header("Content-Type", 'application/json');
     res.send(JSON.stringify(result, null, 4));
   });

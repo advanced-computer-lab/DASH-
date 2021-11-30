@@ -8,9 +8,21 @@ import { Navbar, Nav, Container, Table, Button, Modal } from 'react-bootstrap';
 
 //import AddBoxIcon from '@mui/icons-material/AddBox';
 
+var flightNumber = 0;
+
 const Flight = (props) => (
     <tr >
         <td>{props.flight.FlightNumber}</td>
+        <td>{props.flight.FlightNumber}</td>
+        <td>{props.flight.FlightNumber}</td>
+        <td>{props.flight.BusinessSeatAdult}</td>
+        <td>{props.flight.EconomySeatsAdult}</td>
+        <td>{props.flight.FirstSeatAdult}</td>
+        <td>{props.flight.BusinessSeatChild}</td>
+        <td>{props.flight.EconomySeatsChild}</td>
+        <td>{props.flight.FirstSeatChild}</td>
+
+        {/* <td>{props.flight.FlightNumber}</td>
         <td>{props.flight.toAir}</td>
         <td>{props.flight.fromAir}</td>
         <td>{props.flight.noEconomySeats}</td>
@@ -18,10 +30,11 @@ const Flight = (props) => (
         <td>{props.flight.noFirstSeats}</td>
         <td>{props.flight.depTime}</td>
         <td>{props.flight.arrTime}</td>
+        <td>{props.flight.arrTime}</td> */}
 
 
         <td>
-            <IconButton onClick={() => { props.handleModal(props.flight.FlightNumber) }}>Hamada</IconButton>
+            <IconButton color="success" onClick={() => { props.handleModal(props.flight.FlightNumber) ; flightNumber = props.flight.FlightNumber; }}>Cancel Reservation</IconButton>
 
         </td>
 
@@ -52,15 +65,17 @@ class Flights extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8000/Flight/getAllFlights')
+        axios.get('http://localhost:8000/Flight/getAllTickets')
             .then((res) => {
                 this.setState({ flights: res.data });
+                console.log(this.state.flights);
 
             })
             .catch((err) => {
                 console.log(err);
 
             })
+            
     }
 
     flightsList() {
@@ -71,9 +86,22 @@ class Flights extends Component {
 
     pop(id) {
 
-
+        alert(id);
     }
 
+    DeleteFlight()
+    {
+        axios.delete(`http://localhost:8000/delete/`,
+        {
+            data : 
+            {
+                flightNumber : flightNumber,
+                email : localStorage.getItem("Email")
+            }
+        });
+        window.location.reload();
+    }
+    
 
     render() {
         return (
@@ -121,11 +149,12 @@ class Flights extends Component {
                                     <th>Flight Number</th>
                                     <th>Arrival</th>
                                     <th>Departure</th>
-                                    <th>Economy Seats</th>
-                                    <th>Business Seats</th>
-                                    <th>First Class Seats</th>
-                                    <th>Departure Time</th>
-                                    <th>Arrival Time</th>
+                                    <th>Business Seat Adult</th>
+                                    <th>Economy Seat Adult</th>
+                                    <th>First Seat Adult</th>
+                                    <th>Business Seat Child</th>
+                                    <th>Economy Seat Child</th>
+                                    <th>First Seat Child</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -139,15 +168,22 @@ class Flights extends Component {
 
                     <div >
                         <Modal show={this.state.show}>
-                            <Modal.Header>Header</Modal.Header>
+                            <Modal.Header>Confirmation Box</Modal.Header>
+                            
                             <Modal.Body>
-                                Hi , React Modal is Here
+                                Are You Sure You want To Cancel Your Reservation?
                             </Modal.Body>
-                            <Button onClick={() => {
-                                this.setState({
+                            <form className="CancelFlight" onSubmit={this.submit} >
+                            <button type="button" class="btn btn-danger" onClick={() => {
+                                this.DeleteFlight();
+                                alert("Reservation Cancelled Successfully");
+                                 this.setState({
                                     show: false,
                                 })
-                            }}>Hamada FronEnd</Button>
+                            }}>Yes</button>
+                            </form>
+                            <button onClick={() => {this.setState({show: false,}); }} type="button" class="btn btn-secondary">No</button>
+                           
                         </Modal>
                     </div>
 
