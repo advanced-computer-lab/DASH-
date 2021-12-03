@@ -6,23 +6,38 @@ const userSchema = new mongoose.Schema({
     type:String,
     required:true,
     },
-    Flightnumber:{
+    FlightNumber:{
         type:Number,
         required:true,
     },
-    BusinessSeatsnumber:{
+    BusinessSeatAdult:{
         type:Number,
         required:true,
     },
-    FirstSeatsnumber:{
+    FirstSeatAdult:{
         type:Number,
         required:true,
     },
-    EconomySeatsnumber:{
+    EconomySeatsAdult:{
         type:Number,
         required:true,
-    }
-
+    },
+    BusinessSeatChild:{
+        type:Number,
+        required:true,
+    },
+    FirstSeatChild:{
+        type:Number,
+        required:true,
+    },
+    EconomySeatsChild:{
+        type:Number,
+        required:true,
+    },
+    Price:{
+        type:Number,
+        required:true,  
+    },
 
 });
 const Ticket = mongoose.model('Ticket', userSchema);

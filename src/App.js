@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const userController = require('./controller/userController');
 const flightController = require("./controller/FlightController");
+
 const config = require("config");
 //const bodyParser = require("body-parser");
 //const session = require("express-session");
@@ -105,13 +106,14 @@ app.get("/",(req,res)=> {
 
 const adminRouter = require("./routes/adminRouter");
 const userRouter=require("./routes/userRouter");
+const ticketRouter = require("./routes/TicketRouter");
 
 //app.use('/user',verify,userRouter);
 app.use('/admins',adminRouter);
 app.use('/Flight' , FlightRouter);
 
 app.use('/user',userRouter);
-
+app.use('/ticket',ticketRouter);
 // app.post('/logIn',userController.logIn);
 // app.post('/signUp',userController.signUp);
 // app.post('user/find',verify,userController.findUser);

@@ -12,9 +12,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import User_Home from "./components/User/Home"
 import User_Flights from "./components/User/Flights";
 import User_Search from "./components/User/Search";
-import Edit_User from "./components/User/Edit"; 
+import Edit_User from "./components/User/Edit";
+import Reserve from "./components/User/Reserve";
 import { ProtectedRoute } from './components/protected_route';
 import { ProtectedRouteUser } from './components/protected_route_user';
+import HomeGuest from './components/Guest/HomeGuest';
+import SearchGuest from './components/Guest/SearchGuest';
+import FlightsGuest from './components/Guest/FlightsGuest';
 //import { ProtectedRouteGuest } from './components/protected_route_guest';
 
 
@@ -64,7 +68,11 @@ class App extends Component {
 
           <Route exact path='/logIn' element={<LogIn />} />
 
+          <Route exact path='/Guest/HomeGuest' element={<HomeGuest />} />
 
+          <Route exact path='/Guest/SearchGuest' element={<SearchGuest/>}/>
+          
+          <Route exact path='/Guest/FlightsGuest' element={<FlightsGuest/>}/>
 
 
 
@@ -88,9 +96,16 @@ class App extends Component {
             </ProtectedRouteUser>
           } />
 
-          <Route exact path='/user/Edit' element={
+          <Route exact path="/user/Edit" element={
             <ProtectedRouteUser>
               <Edit_User />
+            </ProtectedRouteUser>
+          }
+          />
+
+          <Route exact path='/user/reserve' element={
+            <ProtectedRouteUser>
+              <Reserve />
             </ProtectedRouteUser>
           } />
 

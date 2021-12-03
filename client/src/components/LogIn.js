@@ -2,7 +2,7 @@
 import auth from "../auth";
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -15,13 +15,15 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-
+import LockIcon from '@mui/icons-material/Lock';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Dash-Team
+        DASH-Team
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -57,10 +59,24 @@ export default function SignInSide() {
         else {
             localStorage.setItem("token",res.data.token);
             localStorage.setItem("Email",user.Email);
-            localStorage.setItem("Type",true);
+            if(user.Email==="shaza@gmail.com"){
+                localStorage.setItem("Type",false);
+            }else{
+                localStorage.setItem("Type",true)
+            }
+            // axios.post('http://localhost:8000/user/type',{Email:user.Email})
+            // .then(res=>{
+            //     localStorage.setItem("hamda",false);
+            //     if(res.data==="true"){
+            //         localStorage.setItem("Type",true);
+
+            //     }else if(res.data==="false"){
+            //         localStorage.setItem("Type",false);
+            //     }
+            // })
             auth.login(()=>{
                 //this.props.history.push("/");
-                window.location = '/'
+                window.location = '/ '
             })
             
 
@@ -98,10 +114,10 @@ export default function SignInSide() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
+            
+              <LockIcon />
+            
+            <Typography component="h1" variant="h5" color = 'black'>
               Sign in
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -125,27 +141,27 @@ export default function SignInSide() {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
+              
               <Button
                 type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                style={{width : '100%'}}
+               
+                className = "btn btn-dark"
+                
+                
               >
                 Sign In
               </Button>
               <Grid container>
+                
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
+                  <Link href="/sign" variant="body2" style = {{color:'black'}}>
+                    {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/up" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                  <Link href="/Guest/HomeGuest" variant="body2" style = {{color:'black'}}>
+                    {"Continue as a guest"}
                   </Link>
                 </Grid>
               </Grid>

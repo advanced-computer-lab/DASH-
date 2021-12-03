@@ -8,6 +8,7 @@ import { Navbar, Nav, Container, Table, Button, Modal } from 'react-bootstrap';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import InfoIcon from '@mui/icons-material/Info';
 import EditIcon from '@mui/icons-material/Edit';
+import LoginIcon from '@mui/icons-material/Login';
 
 //import AddBoxIcon from '@mui/icons-material/AddBox';
 
@@ -20,52 +21,10 @@ const MM = (props) => (
 
         </Modal.Header>
         <Modal.Body>
-            <form onSubmit={props.submitModal}>
-                <strong>Number of economy seats</strong>
-                <div className="form-group row">
-                    <label className="col-4 col-md-2 col-form-label">Adult:</label>
-                    <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
-                    </div>
-                    <label className="col-4 col-md-2 col-form-label">Child:</label>
-                    <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
-                    </div>
-                </div>
-                <br />
-                <strong>Number of business class seats</strong>
-                <div className="form-group row">
-                    <label className="col-4 col-md-2 col-form-label">Adult:</label>
-                    <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.AdultB} onChange={props.func.onChangeAdultB} />
-                    </div>
-                    <label className="col-4 col-md-2 col-form-label">Child:</label>
-                    <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
-                    </div>
-
-                </div>
-                <br />
-                <div className="form-group row">
-                    <strong>Number of first class seats</strong>
-                    <label className="col-4 col-md-2 col-form-label">Adult:</label>
-                    <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.AdultF} onChange={props.func.onChangeAdultF} />
-                    </div>
-                    <label className="col-4 col-md-2 col-form-label">Child:</label>
-                    <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
-                    </div>
-                </div>
-                <br />
-                <div className="form-group row ">
-
-
-                    <button type="submit" className="offset-md-4   col-md-4 btn btn-dark">Book</button>
-
-                </div>
-
-            </form>
+            
+        <link rel = 'asdas' href='http://localhost:3000/sign'/>  
+                <a href='http://localhost:3000/sign'>SignUp here to Book this Flight</a>
+                
         </Modal.Body>
 
     </Modal>
@@ -100,7 +59,7 @@ const showFlight = (props) => (
     </tr>
 )
 
-class Flights extends Component {
+class FlightsGuest extends Component {
     constructor(props) {
         super(props);
         this.handleModal = this.handleModal.bind(this);
@@ -280,34 +239,27 @@ class Flights extends Component {
 
             return <div className="container-fluid">
                 <div className="row row-content">
-                    <form className="col-md-6 offset-md-3" style={{ padding: 20, boxShadow: "0px 5px 10px 0px rgba(0, 0, 0, 0.3)", borderRadius: 15 }}>
+                    <form className="col-md-6 offset-md-3" style={{ padding: 30, boxShadow: "0px 5px 20px 0px rgba(0, 0, 0, 0.3)", borderRadius: 20 }}>
 
 
 
-                        <p style={{ textAlign: 'center' }}> <strong>Flight Details Flno:</strong> {currentFlight.FlightNumber} </p>
+                        <p style={{ textAlign: 'center' }}>Flight Details Flno: :{currentFlight.FlightNumber} </p>
                         <br></br>
 
                         <div className="row row-content">
 
                             <div className="col-12 col-md-6  " style={{ textAlign: 'left' }} >
-                                <p><strong> Baggage Allowance: </strong>{currentFlight.baggageallowance} </p>
-                                <p> <strong> Adults Economy Seat Price: </strong>{currentFlight.priceEconomy}</p>
-                                <p> <strong> Adults First Seat Price: </strong>{currentFlight.priceFirst}</p>
-                                <p> <strong>Adults Business Seat Price: </strong>{currentFlight.pricebusiness} </p>
-                                <p> <strong> Availalbe Economy seats: </strong>{currentFlight.AvailE} </p>
-                                <p><strong> Availalbe First seats: </strong>{currentFlight.AvailF} </p>
-                                
-                                
-                                
+                                <p>Baggage Allowance:{currentFlight.baggageallowance} </p>
+                                <p>Adults Economy:{currentFlight.priceEconomy}</p>
+                                <p>Adults First:{currentFlight.priceFirst}</p>
+                                <p>Adults Business:{currentFlight.pricebusiness} </p>
                             </div>
-                            <div className="col-12 col-md-6 " style={{ textAlign: 'left' } }>
+                            <div className="col-12 col-md-6 " style={{ textAlign: 'left' }}>
 
-                                <p> <strong>children Economy: </strong>{(currentFlight.priceEconomy) / 2}</p>
-                                <p> <strong> children First: </strong>{(currentFlight.priceFirst) / 2}</p>
-                                <p> <strong> children Business: </strong>{(currentFlight.pricebusiness) / 2} </p>
-                                <p><strong>Trip duration: </strong>{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </p>
-                                <p> <strong> Availalbe Business seats: </strong>{currentFlight.AvailB} </p>
-                                <p></p>
+                                <p>children Economy:{(currentFlight.priceEconomy) / 2}</p>
+                                <p>children First:{(currentFlight.priceFirst) / 2}</p>
+                                <p>children Business:{(currentFlight.pricebusiness) / 2} </p>
+                                <p>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </p>
 
 
                             </div>
@@ -371,16 +323,11 @@ class Flights extends Component {
                             <Navbar.Toggle aria-controls="navbarScroll" />
                             <Navbar.Collapse id="navbarScroll">
                                 <Nav navbarScroll className="me-auto">
-                                    <Nav.Link href="/user/home"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
-                                    <Nav.Link href="/user/search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
-                                    <Nav.Link href="/user/all_flights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
-                                    <Nav.Link href="/user/reserve"><i className="fa fa-clipboard fa-lg"></i> My Flights</Nav.Link>
-                                    
-                                    <Nav.Link href="/logIn" onClick={() => {
-                                        localStorage.removeItem("token");
-                                        localStorage.removeItem("Email");
-                                        localStorage.removeItem("Type");
-                                    }} className="position-absolute end-0"><i className="fa fa-sign-out fa-lg"></i> Logout</Nav.Link>
+                                <Nav.Link href="/Guest/HomeGuest"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
+                                        <Nav.Link href="/Guest/SearchGuest"><i className="fa fa-search fa-lg"></i> Search</Nav.Link>
+                                        <Nav.Link href="/Guest/FlightsGuest"><i className="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+                                        <Nav.Link href="/logIn"  className="position-absolute end-0"><LoginIcon></LoginIcon> LogIn</Nav.Link>
+                                        
 
                                 </Nav>
                             </Navbar.Collapse>
@@ -436,4 +383,4 @@ class Flights extends Component {
     }
 }
 
-export default Flights;
+export default FlightsGuest;
