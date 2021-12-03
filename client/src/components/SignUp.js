@@ -99,6 +99,7 @@ class SignUp extends Component {
 
         //console.log(this.state.FirstName);
 
+
         const ma = {
             Email: this.state.EMail
 
@@ -112,11 +113,14 @@ class SignUp extends Component {
                window.location = '/login',
 
 
+
+
             ).catch((err1) => {
                 alert("error happened");
                 window.location = "/";
 
             })
+
 
             }
             else {
@@ -131,6 +135,7 @@ class SignUp extends Component {
 
 
         
+
 
 
         //console.log(user);

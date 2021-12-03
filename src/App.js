@@ -8,6 +8,8 @@ const bcrypt = require('bcryptjs');
 const userController = require('./controller/userController');
 const flightController = require("./controller/FlightController");
 
+const Ticket = require("./models/Ticket");
+
 const config = require("config");
 //const bodyParser = require("body-parser");
 //const session = require("express-session");
@@ -136,3 +138,18 @@ app.use('/ticket',ticketRouter);
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
   });
+
+  app.delete('/delete/', async(req,res) =>{
+    const flightNum = req.body.flightNumber;
+    const userEmail = req.body.email;
+    
+    console.log(flightNum);
+    console.log(userEmail);
+
+    Ticket.findOneAndDelete({_id: req.body.ticketId}, function (err, docs) {
+    if (err){
+         console.log(err);
+         console.log("Didn't Find this Flight in Database");
+    }
+
+})});

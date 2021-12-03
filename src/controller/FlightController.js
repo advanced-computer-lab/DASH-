@@ -205,7 +205,7 @@ exports.showFlight = (req, res) => {
 
 
 exports.getAllTickets = (req, res) => {
-  Ticket.find().then(result => {
+  Ticket.find({Email:req.body.Email}).then(result => {
     res.header("Content-Type", 'application/json');
     res.send(JSON.stringify(result, null, 4));
   });

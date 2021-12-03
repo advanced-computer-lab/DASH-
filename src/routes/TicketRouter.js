@@ -18,6 +18,10 @@ TicketRouter.post('/book' , (req,res)=>{
         FirstSeatChild:Number(req.body.ChildF),
         EconomySeatsChild:Number(req.body.ChildE),
         Price:Number(req.body.totalPrice),
+        Departure:req.body.Departure,
+        Arrival:req.body.Arrival,
+        DepartureTime:req.body.DepartureTime,
+        ArrivalTime:req.body.ArrivalTime,
     });
     console.log(req.body);
     console.log(new_ticket)
@@ -41,6 +45,7 @@ TicketRouter.post('/book' , (req,res)=>{
 
     
 })
+TicketRouter.post('/myFlights',ticketController.showmyFlights);
 
 
 

@@ -198,6 +198,10 @@ class Flights extends Component {
             ChildB: this.state.ChildB,
             ChildF: this.state.ChildF,
             totalPrice: 0,
+            Departure:'',
+            Arrival:'',
+            DepartureTime:'',
+            ArrivalTime:''
         }
         const x = {
             FlightNumber: this.state.modalFlightNumber,
@@ -213,6 +217,10 @@ class Flights extends Component {
                 const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
                 const total = pe + pb + pf;
                 request.totalPrice = total;
+                request.Departure=res.data.Departure;
+                request.Arrival=res.data.Arrival;
+                request.DepartureTime=res.data.DepartureTime;
+                request.ArrivalTime=res.data.ArrivalTime;
                 if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
                     if (ae > -1 && ab > -1 && af > -1) {
                         console.log(request)
@@ -280,34 +288,27 @@ class Flights extends Component {
 
             return <div className="container-fluid">
                 <div className="row row-content">
-                    <form className="col-md-6 offset-md-3" style={{ padding: 20, boxShadow: "0px 5px 10px 0px rgba(0, 0, 0, 0.3)", borderRadius: 15 }}>
+                    <form className="col-md-6 offset-md-3" style={{ padding: 30, boxShadow: "0px 5px 20px 0px rgba(0, 0, 0, 0.3)", borderRadius: 20 }}>
 
 
 
-                        <p style={{ textAlign: 'center' }}> <strong>Flight Details Flno:</strong> {currentFlight.FlightNumber} </p>
+                        <p style={{ textAlign: 'center' }}>Flight Details Flno: :{currentFlight.FlightNumber} </p>
                         <br></br>
 
                         <div className="row row-content">
 
                             <div className="col-12 col-md-6  " style={{ textAlign: 'left' }} >
-                                <p><strong> Baggage Allowance: </strong>{currentFlight.baggageallowance} </p>
-                                <p> <strong> Adults Economy Seat Price: </strong>{currentFlight.priceEconomy}</p>
-                                <p> <strong> Adults First Seat Price: </strong>{currentFlight.priceFirst}</p>
-                                <p> <strong>Adults Business Seat Price: </strong>{currentFlight.pricebusiness} </p>
-                                <p> <strong> Availalbe Economy seats: </strong>{currentFlight.AvailE} </p>
-                                <p><strong> Availalbe First seats: </strong>{currentFlight.AvailF} </p>
-                                
-                                
-                                
+                                <p>Baggage Allowance:{currentFlight.baggageallowance} </p>
+                                <p>Adults Economy:{currentFlight.priceEconomy}</p>
+                                <p>Adults First:{currentFlight.priceFirst}</p>
+                                <p>Adults Business:{currentFlight.pricebusiness} </p>
                             </div>
-                            <div className="col-12 col-md-6 " style={{ textAlign: 'left' } }>
+                            <div className="col-12 col-md-6 " style={{ textAlign: 'left' }}>
 
-                                <p> <strong>children Economy: </strong>{(currentFlight.priceEconomy) / 2}</p>
-                                <p> <strong> children First: </strong>{(currentFlight.priceFirst) / 2}</p>
-                                <p> <strong> children Business: </strong>{(currentFlight.pricebusiness) / 2} </p>
-                                <p><strong>Trip duration: </strong>{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </p>
-                                <p> <strong> Availalbe Business seats: </strong>{currentFlight.AvailB} </p>
-                                <p></p>
+                                <p>children Economy:{(currentFlight.priceEconomy) / 2}</p>
+                                <p>children First:{(currentFlight.priceFirst) / 2}</p>
+                                <p>children Business:{(currentFlight.pricebusiness) / 2} </p>
+                                <p>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </p>
 
 
                             </div>

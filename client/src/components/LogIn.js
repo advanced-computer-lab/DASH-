@@ -3,6 +3,8 @@ import auth from "../auth";
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 
+
+
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -15,15 +17,21 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+
 import LockIcon from '@mui/icons-material/Lock';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
+
+
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
+
         DASH-Team
+
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}

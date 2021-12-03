@@ -185,6 +185,10 @@ class SearchUser extends Component {
             ChildB: this.state.ChildB,
             ChildF: this.state.ChildF,
             totalPrice: 0,
+            Departure:'',
+            Arrival:'',
+            DepartureTime:'',
+            ArrivalTime:''
         }
         const x = {
             FlightNumber: this.state.modalFlightNumber,
@@ -200,13 +204,17 @@ class SearchUser extends Component {
                 const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
                 const total = pe + pb + pf;
                 request.totalPrice = total;
+                request.Departure=res.data.Departure;
+                request.Arrival=res.data.Arrival;
+                request.DepartureTime=res.data.DepartureTime;
+                request.ArrivalTime=res.data.ArrivalTime;
                 if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
                     if (ae > -1 && ab > -1 && af > -1) {
                         console.log(request)
                         axios.post('http://localhost:8000/ticket/book', request)
                             .then((response) => {
                                 if (response) alert("Flight Booked Successfuly");
-                                else alert("blabizo");
+                                else alert("Error");
 
                             }, (error) => {
                                 alert("Error Happened ")

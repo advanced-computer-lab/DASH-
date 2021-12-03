@@ -17,7 +17,7 @@ FlightRouter.post('/editFlight',FlightControl.editFlight)
 
 FlightRouter.post('/showFlight',FlightControl.showFlight);
 
-FlightRouter.get('/getAllTickets',FlightControl.getAllTickets);
+FlightRouter.post('/getAllTickets',FlightControl.getAllTickets);
 
 // FlightRouter.post('/availableEconomy',(req,res)=>{
 //     Flight.findOne({FlightNumber:req.body.FlightNumbaer})
@@ -49,7 +49,12 @@ FlightRouter.post('/av',(req,res)=>{
             priceE:result[0].priceEconomy,
             priceB:result[0].pricebusiness,
             priceF:result[0].priceFirst,
+            Departure:result[0].toAir,
+            Arrival:result[0].fromAir,
+            DepartureTime:result[0].depTime,
+            ArrivalTime:result[0].arrTime,
         }
+        console.log(response);
         //console.log(response);
         //console.log(JSON.stringify(response, null, 4))
         res.header("Content-Type", 'application/json');
