@@ -33,6 +33,26 @@ const userSchema = new mongoose.Schema({
     EconomySeatsChild:{
         type:Number,
         required:true,
+    },
+    Price:{
+        type:Number,
+        required:true,  
+    },
+    Departure:{
+        type:String,
+        required:true,
+    },
+    Arrival:{
+        type:String,
+        required:true
+    },
+    DepartureTime:{
+        type:String,
+        required:true,
+    },
+    ArrivalTime:{
+        type:String,
+        required:true,
     }
 
 });

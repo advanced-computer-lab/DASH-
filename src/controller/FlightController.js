@@ -1,5 +1,5 @@
 const Flight = require('../models/Flight');
-
+const Ticket = require('../models/Ticket');
 
 
 exports.addFlight = (req, res) => {
@@ -202,3 +202,12 @@ exports.showFlight = (req, res) => {
   });
 
 };
+
+
+exports.getAllTickets = (req, res) => {
+  Ticket.find({Email:req.body.Email}).then(result => {
+    res.header("Content-Type", 'application/json');
+    res.send(JSON.stringify(result, null, 4));
+  });
+
+}

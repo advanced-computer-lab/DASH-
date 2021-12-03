@@ -1,14 +1,16 @@
 import '../Flight.css';
 import axios from 'axios';
 import { Component } from 'react';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+//import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import InfoIcon from '@mui/icons-material/Info';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 //popper.js/dist/umd/popper.min.js
 import "bootstrap/dist/css/bootstrap.min.css";
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 //import "react/popper";
 import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
-import { integerPropType } from '@mui/utils';
+
 
 
 
@@ -16,18 +18,23 @@ import { integerPropType } from '@mui/utils';
 
 const MM = (props) => (
     <Modal show={props.show}>
-        <Modal.Header ><b className="text-center">Booking Flight Number : {props.FlightNumber}</b></Modal.Header>
+        <Modal.Header >
+
+            <b className="text-center">Booking Flight Number : {props.FlightNumber}</b>
+            <Button onClick={() => { props.handleModal(props.FlightNumber) }} style={{ backgroundColor: "black" }}><CancelPresentationIcon style={{ color: 'white' }}></CancelPresentationIcon></Button>
+
+        </Modal.Header>
         <Modal.Body>
             <form onSubmit={props.submitModal}>
                 <strong>Number of economy seats</strong>
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " placeholder="" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
+                        <input type="number" className="form-control" required="true" placeholder="" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " placeholder="" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
+                        <input type="number" className="form-control " placeholder="" required="true" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
                     </div>
                 </div>
                 <br />
@@ -35,11 +42,11 @@ const MM = (props) => (
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " placeholder="" value={props.Seats.AdultB} onChange={props.func.onChangeAdultB} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.AdultB} onChange={props.func.onChangeAdultB} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " placeholder="" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
                     </div>
 
                 </div>
@@ -48,18 +55,18 @@ const MM = (props) => (
                     <strong>Number of first class seats</strong>
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " placeholder="" value={props.Seats.AdultF} onChange={props.func.onChangeAdultF} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.AdultF} onChange={props.func.onChangeAdultF} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " placeholder="" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
                     </div>
                 </div>
                 <br />
                 <div className="form-group row ">
 
-                    <button className="offset-md-1  col-md-4 btn btn-dark" onClick={() => { props.handleModal(props.FlightNumber) }}>Cancel</button>
-                    <button type="submit" className="offset-md-3   col-md-4 btn btn-dark">Book</button>
+
+                    <button type="submit" className="offset-md-4   col-md-4 btn btn-dark">Book</button>
 
                 </div>
 
@@ -85,20 +92,14 @@ const Flight = (props) => (
 
         <td>
 
-            <button onClick={() => { props.FlightDetails(props.flight.FlightNumber) }}>Show details</button>
+            <IconButton style={{ color: "white", fontSize: 18 }} onClick={() => { props.FlightDetails(props.flight.FlightNumber) }}>Details &nbsp; <InfoIcon style={{ color: "white" }}></InfoIcon></IconButton>
 
         </td>
 
     </tr>
 
 )
-const showFlight = (props) => (
-    <tr >
-        <td>{props.showFlight[0].baggageallowance}</td>
 
-
-    </tr>
-)
 
 class SearchUser extends Component {
 
@@ -172,8 +173,9 @@ class SearchUser extends Component {
     submitModal(e) {
         // if(this.state.modalFlightNumber==100) window.location='/user/home'
         e.preventDefault();
+
         const request = {
-            Email:localStorage.getItem("Email"),
+            Email: localStorage.getItem("Email"),
             FlightNumber: this.state.modalFlightNumber,
             AdultE: this.state.AdultE,
             AdultB: this.state.AdultB,
@@ -182,6 +184,11 @@ class SearchUser extends Component {
             ChildE: this.state.ChildE,
             ChildB: this.state.ChildB,
             ChildF: this.state.ChildF,
+            totalPrice: 0,
+            Departure:'',
+            Arrival:'',
+            DepartureTime:'',
+            ArrivalTime:''
         }
         const x = {
             FlightNumber: this.state.modalFlightNumber,
@@ -192,19 +199,41 @@ class SearchUser extends Component {
                 const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
                 const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
                 const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
-                if (ae > -1 && ab > -1 && af > -1) {
-                    console.log(request)
-                    axios.post('http://localhost:8000/ticket/book', request)
-                        .then(() => alert("Flight Booked Successfuly"))
-                        .catch(() => alert("error happened"));
+                const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
+                const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
+                const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
+                const total = pe + pb + pf;
+                request.totalPrice = total;
+                request.Departure=res.data.Departure;
+                request.Arrival=res.data.Arrival;
+                request.DepartureTime=res.data.DepartureTime;
+                request.ArrivalTime=res.data.ArrivalTime;
+                if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
+                    if (ae > -1 && ab > -1 && af > -1) {
+                        console.log(request)
+                        axios.post('http://localhost:8000/ticket/book', request)
+                            .then((response) => {
+                                if (response) alert("Flight Booked Successfuly");
+                                else alert("Error");
+
+                            }, (error) => {
+                                alert("Error Happened ")
+                            });
+                    } else {
+                        alert('No enough seats for your request');
+                    }
+                } else {
+
                 }
-               
             }).catch(err => {
                 alert(err);
             });
+        this.setState({
+            modalFlightNumber: '',
+            show: false,
+        })
 
     }
-
 
 
     onChangeN(e) {
@@ -331,53 +360,58 @@ class SearchUser extends Component {
 
 
 
-            return <div>
-                <p style={{ textAlign: 'center' }}>Flight Details Flno: :{currentFlight.FlightNumber} </p>
+            return <div className="container-fluid ">
+                <form className="details">
 
-                <div className='column' >
-                    <div style={{ textAlign: 'left' }} >
-                        <p>Baggage Allowance:{currentFlight.baggageallowance} </p>
-                        <p>Adults Economy:{currentFlight.priceEconomy}</p>
-                        <p>Adults First:{currentFlight.priceFirst}</p>
-                        <p>Adults Business:{currentFlight.pricebusiness} </p>
+
+
+                    <strong style={{ textAlign: 'center' }}>Flight Details Flno: :{currentFlight.FlightNumber} </strong>
+
+                    <div className='row row-content' >
+                        <div className="col-6" style={{ textAlign: 'left' }} >
+                            <p>Baggage Allowance:{currentFlight.baggageallowance} </p>
+                            <p>Adults Economy:{currentFlight.priceEconomy}</p>
+                            <p>Adults First:{currentFlight.priceFirst}</p>
+                            <p>Adults Business:{currentFlight.pricebusiness} </p>
+                        </div>
+                        <div className="col-6" style={{ textAlign: 'left' }}>
+
+                            <p>children Economy:{(currentFlight.priceEconomy) / 2}</p>
+                            <p>children First:{(currentFlight.priceFirst) / 2}</p>
+                            <p>children Business:{(currentFlight.pricebusiness) / 2} </p>
+                            <p>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </p>
+
+
+                        </div>
+                        <div className="row row-content"><Button className="btn-dark" style={{ width: "100%" }} onClick={() => {
+                            this.handleModal(currentFlight.FlightNumber)
+
+                        }}>Book</Button> </div>
                     </div>
-                    <div style={{ textAlign: 'left' }}>
-
-                        <p>children Economy:{(currentFlight.priceEconomy) / 2}</p>
-                        <p>children First:{(currentFlight.priceFirst) / 2}</p>
-                        <p>children Business:{(currentFlight.pricebusiness) / 2} </p>
-                        <p>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </p>
 
 
-                    </div>
-                    <div><Button onClick={() => {
-                        this.handleModal(currentFlight.FlightNumber)
+                    <MM FlightNumber={currentFlight.FlightNumber} handleModal={this.handleModal} Seats={{
+                        AdultE: this.state.AdultE,
+                        AdultB: this.state.AdultB,
+                        AdultF: this.state.AdultF,
+                        ChildE: this.state.ChildE,
+                        ChildB: this.state.ChildB,
+                        ChildF: this.state.ChildF,
 
-                    }}>Book</Button> </div>
-                </div>
+                    }} show={this.state.show} func={{
+                        onChangeAdultE: this.onChangeAdultE,
+                        onChangeAdultB: this.onChangeAdultB,
+                        onChangeAdultF: this.onChangeAdultF,
+                        onChangeChildE: this.onChangeChildE,
+                        onChangeChildB: this.onChangeChildB,
+                        onChangeChildF: this.onChangeChildF,
 
-
-                <MM FlightNumber={currentFlight.FlightNumber} handleModal={this.handleModal} Seats={{
-                    AdultE: this.state.AdultE,
-                    AdultB: this.state.AdultB,
-                    AdultF: this.state.AdultF,
-                    ChildE: this.state.ChildE,
-                    ChildB: this.state.ChildB,
-                    ChildF: this.state.ChildF,
-
-                }} show={this.state.show} func={{
-                    onChangeAdultE: this.onChangeAdultE,
-                    onChangeAdultB: this.onChangeAdultB,
-                    onChangeAdultF: this.onChangeAdultF,
-                    onChangeChildE: this.onChangeChildE,
-                    onChangeChildB: this.onChangeChildB,
-                    onChangeChildF: this.onChangeChildF,
-
-                }}
-                    submitModal={this.submitModal}
-                />
+                    }}
+                        submitModal={this.submitModal}
+                    />
 
 
+                </form>
 
             </div>
 
@@ -409,7 +443,8 @@ class SearchUser extends Component {
                                     <Nav.Link href="/user/home"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
                                     <Nav.Link href="/user/search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
                                     <Nav.Link href="/user/all_flights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
-                                    <Nav.Link href=""><i className="fa fa-clipboard fa-lg"></i> My Flights</Nav.Link>
+                                    <Nav.Link href="/user/reserve"><i className="fa fa-clipboard fa-lg"></i> My Flights</Nav.Link>
+                                    <Nav.Link href="/user/Edit"><EditIcon></EditIcon>Edit my info</Nav.Link>
                                     <Nav.Link href="/logIn" onClick={() => {
                                         localStorage.removeItem("token");
                                         localStorage.removeItem("Email");
@@ -542,11 +577,7 @@ class SearchUser extends Component {
                     </div>
                     <div className="cl-12 col-md-6">
 
-                        <form className="details">
-
-                            {this.test2()}
-
-                        </form>
+                        {this.test2()}
 
 
                     </div>

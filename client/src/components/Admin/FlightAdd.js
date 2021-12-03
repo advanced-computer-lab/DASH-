@@ -154,10 +154,10 @@ submit(e) {
     }
 
 
-    console.log(fl);
+    //console.log(fl);
     axios.post('http://localhost:8000/Flight/find', { FlightNumber: this.state.FlightNumber })
         .then(res => {
-            console.log(res.data);
+            //console.log(res.data);
 
             if (res.data === 0) {
                 axios.post('http://localhost:8000/Flight/add', fl)
