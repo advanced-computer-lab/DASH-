@@ -8,7 +8,6 @@ import Search from './components/Admin/search';
 import EditFlight from './components/Admin/EditFlight';
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
-import MyFlights from './components/User/MyFlights';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import User_Home from "./components/User/Home"
 import User_Flights from "./components/User/Flights";
@@ -54,12 +53,6 @@ class App extends Component {
               <Search />
             </ProtectedRoute>
           } />
-          <Route exact path='/user/myFlights' element={
-            <ProtectedRouteUser>
-              <MyFlights />
-            </ProtectedRouteUser>
-          } />
-
 
           <Route exact path='/getFlights/editFlight:id' element={
             <ProtectedRoute>
