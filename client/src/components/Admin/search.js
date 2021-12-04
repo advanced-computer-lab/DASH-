@@ -235,7 +235,7 @@ class Search extends Component {
 
                                 <div className="col-6 col-md-3">
 
-                                    <label htmlFor="aligned-Arr" >Arrival time</label>
+                                    <label htmlFor="aligned-Arr"> Arrival time</label>
                                     &nbsp;&nbsp;
 
                                 </div>
@@ -274,8 +274,8 @@ class Search extends Component {
                         <div className="col-12 ">
 
                             <table className="table table-dark d-felx">
-                                <thead >
-                                    <tr >
+                                <thead>
+                                    <tr>
                                         <th>Flight Number</th>
                                         <th>Arrival</th>
                                         <th>Departure</th>
@@ -291,8 +291,6 @@ class Search extends Component {
                                     {this.test()}
 
                                 </tbody>
-
-
                             </table>
 
                         </div>

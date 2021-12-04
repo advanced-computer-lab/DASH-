@@ -1,7 +1,7 @@
 const express = require("express");
 const userController = require("../controller/userController");
 const flightController = require("../controller/FlightController");
-//const verify = require("../utlis/jwt");
+//const verify = rqueire("../utlis/jwt");
 const userRouter = express.Router();
 userRouter.use(express.json());
 userRouter.use(express.urlencoded({ extended: false }));
@@ -16,6 +16,7 @@ const auth = require("../middleware/auth");
 
 userRouter.post('/register', (req, res) => {
     const { FirstName, LastName, Password, Email, Passportnumber, Type, DateOB } = req.body;
+
     // const FirstName=req.body.FirstName;
     // const LastName= req.body.LastName;
     // const Password= req.body.Password;

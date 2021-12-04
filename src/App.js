@@ -30,6 +30,22 @@ const port = process.env.PORT || "8000";
 
 app.use(cors());
 
+
+app.delete('/delete/:flightNumber', async(req,res) =>{
+    const flightNum = req.params.flightNumber;
+    
+    deletedId=req.body.data;
+    
+    const userEmail = localStorage.getItem("Email");
+    console.log(userEmail);
+    Ticket.findOneAndDelete({FlightNumber:flightNum, Email: userEmail }, function (err, docs) {
+    if (err){
+         console.log(err);
+         console.log("Didn't Find this Flight in Database");
+    }
+
+})});
+
 const Flight = require('./models/Flight');
 const FlightRouter = require('./routes/FlightRoutes') ;
 
