@@ -99,9 +99,20 @@ class SignUp extends Component {
 
         //console.log(this.state.FirstName);
 
-        axios.post('http://localhost:8000/user/register', user)
+
+        const ma = {
+            Email: this.state.EMail
+
+        }
+        axios.post('http://localhost:8000/user/FindEmail', ma)
+        .then(res => {
+            console.log(res.data)
+            if (res.data == 0) {
+                axios.post('http://localhost:8000/user/register', user)
             .then((res) =>alert(res.data),
-                window.location = '/sign',
+               window.location = '/login',
+
+
 
 
             ).catch((err1) => {
@@ -109,6 +120,22 @@ class SignUp extends Component {
                 window.location = "/";
 
             })
+
+
+            }
+            else {
+                alert("email is already exists choose another one")
+                window.location = '/sign';
+            }
+
+
+
+
+        })
+
+
+        
+
 
 
         //console.log(user);
@@ -193,7 +220,7 @@ class SignUp extends Component {
                                 </div>
                             </div>
                             <div className="bg-dark py-4">
-                                <div className="row px-3"> <small className="ml-4 ml-sm-5 mb-2">Copyright &copy; 2019. All rights reserved.</small>
+                                <div className="row px-3"> <small className="ml-4 ml-sm-5 mb-2">DASH-TEAM &copy; 2019. All rights reserved.</small>
                                     <div className="social-contact ml-4 ml-sm-auto"> <span className="fa fa-facebook mr-4 text-sm"></span> <span className="fa fa-google-plus mr-4 text-sm"></span> <span class="fa fa-linkedin mr-4 text-sm"></span> <span class="fa fa-twitter mr-4 mr-sm-5 text-sm"></span> </div>
                                 </div>
                             </div>

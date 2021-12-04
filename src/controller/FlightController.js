@@ -1,4 +1,5 @@
 const Flight = require('../models/Flight');
+const Ticket = require('../models/Ticket');
 
 
 exports.addFlight = (req, res) => {
@@ -19,7 +20,9 @@ exports.addFlight = (req, res) => {
       pricebusiness: req.body.pricebusiness,
       priceEconomy: req.body.priceEconomy,
       priceFirst: req.body.priceFirst,
-      Type: req.body.Type,
+      AvailE: req.body.AvailE,
+      AvailB: req.body.AvailB,
+      AvailF: req.body.AvailF,
 
     });
   flight.save().then((result) => {
@@ -44,10 +47,9 @@ exports.findFlight = (req, res) => {
 
 exports.deleteFlight = (req, res) => {
 
-  deletedId = req.body.data;
-  const Email = localStorage.getItem("Email");
-  Flight.findOneAndDelete({ FlightNumber: deletedId }, function (err, docs) {
 
+  deletedId = req.body.data;
+  Flight.findOneAndDelete({ FlightNumber: deletedId }, function (err, docs) {
     if (err) {
       console.log(err);
     }
@@ -57,14 +59,6 @@ exports.deleteFlight = (req, res) => {
     }
   });
 }
-
-exports.getAllFlights = (req, res) => {
-  Flight.find().then(result => {
-    res.header("Content-Type", 'application/json');
-    res.send(JSON.stringify(result, null, 4));
-  });
-
-};
 
 exports.getAllFlights = (req, res) => {
   Flight.find().then(result => {
@@ -119,6 +113,8 @@ exports.getFlightbyNumb = (req, res) => {
   Flight.find(filterObj)
     .then(result => {
       res.send(JSON.stringify(result, null, 4));
+
+
 
     }
 
@@ -206,3 +202,12 @@ exports.showFlight = (req, res) => {
   });
 
 };
+
+
+exports.getAllTickets = (req, res) => {
+  Ticket.find({Email:req.body.Email}).then(result => {
+    res.header("Content-Type", 'application/json');
+    res.send(JSON.stringify(result, null, 4));
+  });
+
+}

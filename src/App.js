@@ -7,6 +7,9 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const userController = require('./controller/userController');
 const flightController = require("./controller/FlightController");
+
+const Ticket = require("./models/Ticket");
+
 const config = require("config");
 //const bodyParser = require("body-parser");
 //const session = require("express-session");
@@ -121,13 +124,14 @@ app.get("/",(req,res)=> {
 
 const adminRouter = require("./routes/adminRouter");
 const userRouter=require("./routes/userRouter");
+const ticketRouter = require("./routes/TicketRouter");
 
 //app.use('/user',verify,userRouter);
 app.use('/admins',adminRouter);
 app.use('/Flight' , FlightRouter);
 
 app.use('/user',userRouter);
-
+app.use('/ticket',ticketRouter);
 // app.post('/logIn',userController.logIn);
 // app.post('/signUp',userController.signUp);
 // app.post('user/find',verify,userController.findUser);
@@ -150,3 +154,18 @@ app.use('/user',userRouter);
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
   });
+
+  app.delete('/delete/', async(req,res) =>{
+    const flightNum = req.body.flightNumber;
+    const userEmail = req.body.email;
+    
+    console.log(flightNum);
+    console.log(userEmail);
+
+    Ticket.findOneAndDelete({_id: req.body.ticketId}, function (err, docs) {
+    if (err){
+         console.log(err);
+         console.log("Didn't Find this Flight in Database");
+    }
+
+})});

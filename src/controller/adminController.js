@@ -22,6 +22,9 @@ const getAllAdmins =(req,res)=>{
     });
 
 }
+
+
+
     
 
 module.exports={
