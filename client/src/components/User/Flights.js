@@ -25,7 +25,7 @@ const MM = (props) => (
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
+                        <input type="number" className="form-control "  required="true" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
@@ -132,13 +132,12 @@ class Flights extends Component {
             CabinClass: '',
 
 
-            AdultE: '',
-            AdultB: '',
-            AdultF: '',
-
-            ChildE: '',
-            ChildB: '',
-            ChildF: '',
+            AdultE: 0,
+            AdultB: 0,
+            AdultF: 0,
+            ChildE: 0,
+            ChildB: 0,
+            ChildF: 0,
 
 
         };
