@@ -30,11 +30,11 @@ const MM = (props) => (
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control" required="true" placeholder="" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
+                        <input type="number" min='0' className="form-control" required="true" placeholder="" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " placeholder="" required="true" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
+                        <input type="number" min='0' className="form-control " placeholder="" required="true" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
                     </div>
                 </div>
                 <br />
@@ -42,11 +42,11 @@ const MM = (props) => (
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.AdultB} onChange={props.func.onChangeAdultB} />
+                        <input type="number" min='0' className="form-control " required="true" value={props.Seats.AdultB} onChange={props.func.onChangeAdultB} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
+                        <input type="number" min='0' className="form-control " required="true" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
                     </div>
 
                 </div>
@@ -55,11 +55,11 @@ const MM = (props) => (
                     <strong>Number of first class seats</strong>
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.AdultF} onChange={props.func.onChangeAdultF} />
+                        <input type="number" min='0' className="form-control " required="true" value={props.Seats.AdultF} onChange={props.func.onChangeAdultF} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
+                        <input type="number" min='0' className="form-control " required="true" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
                     </div>
                 </div>
                 <br />
@@ -115,8 +115,7 @@ class SearchUser extends Component {
         this.onChangeDate = this.onChangeDate.bind(this);
         this.onChangeArrival = this.onChangeArrival.bind(this);
         this.onChangeDep = this.onChangeDep.bind(this);
-        this.onChangeNumberPass = this.onChangeNumberPass.bind(this);
-        this.onChangeCabinClass = this.onChangeCabinClass.bind(this);
+
         this.test2 = this.test2.bind(this);
         this.handleModal = this.handleModal.bind(this);
 
@@ -127,6 +126,9 @@ class SearchUser extends Component {
         this.onChangeChildF = this.onChangeChildF.bind(this);
         this.onChangeChildB = this.onChangeChildB.bind(this);
         this.submitModal = this.submitModal.bind(this);
+        this.onChangeAvailE = this.onChangeAvailE.bind(this);
+        this.onChangeAvailB = this.onChangeAvailB.bind(this);
+        this.onChangeAvailF = this.onChangeAvailF.bind(this)
 
         this.state = {
             FlightNumber: '',
@@ -137,18 +139,22 @@ class SearchUser extends Component {
             NumPass: '',
             CabinClass: '',
             flights: [],
+            AvailE: '',
+            AvailB: '',
+            AvailF: '',
+
             showFlight: [],
             show: false,
 
+
             modalFlightNumber: '',
 
-            AdultE: '',
-            AdultB: '',
-            AdultF: '',
-
-            ChildE: '',
-            ChildB: '',
-            ChildF: '',
+            AdultE: 0,
+            AdultB: 0,
+            AdultF: 0,
+            ChildE: 0,
+            ChildB: 0,
+            ChildF: 0,
 
 
         }
@@ -185,10 +191,10 @@ class SearchUser extends Component {
             ChildB: this.state.ChildB,
             ChildF: this.state.ChildF,
             totalPrice: 0,
-            Departure:'',
-            Arrival:'',
-            DepartureTime:'',
-            ArrivalTime:''
+            Departure: '',
+            Arrival: '',
+            DepartureTime: '',
+            ArrivalTime: ''
         }
         const x = {
             FlightNumber: this.state.modalFlightNumber,
@@ -204,10 +210,10 @@ class SearchUser extends Component {
                 const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
                 const total = pe + pb + pf;
                 request.totalPrice = total;
-                request.Departure=res.data.Departure;
-                request.Arrival=res.data.Arrival;
-                request.DepartureTime=res.data.DepartureTime;
-                request.ArrivalTime=res.data.ArrivalTime;
+                request.Departure = res.data.Departure;
+                request.Arrival = res.data.Arrival;
+                request.DepartureTime = res.data.DepartureTime;
+                request.ArrivalTime = res.data.ArrivalTime;
                 if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
                     if (ae > -1 && ab > -1 && af > -1) {
                         console.log(request)
@@ -265,9 +271,19 @@ class SearchUser extends Component {
             depTime: e.target.value
         })
     }
-    onChangeNumberPass(e) {
+    onChangeAvailE(e) {
         this.setState({
-            NumPass: e.target.value
+            AvailE: e.target.value
+        })
+    }
+    onChangeAvailB(e) {
+        this.setState({
+            AvailB: e.target.value
+        })
+    }
+    onChangeAvailF(e) {
+        this.setState({
+            AvailF: e.target.value
         })
     }
     onChangeCabinClass(e) {
@@ -316,12 +332,14 @@ class SearchUser extends Component {
             dateFlight: this.state.dateFlight,
             arrTime: this.state.arrTime,
             depTime: this.state.depTime,
-            NumPass: this.state.noEconomySeats,
-            CabinClass: this.state.noFirstSeats,
+            AvailE: this.state.AvailE,
+            AvailB: this.state.AvailB,
+            AvailF: this.state.AvailF,
 
 
 
         }
+
 
 
         axios.post('http://localhost:8000/Flight/FindFlight', f)
@@ -444,7 +462,7 @@ class SearchUser extends Component {
                                     <Nav.Link href="/user/search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
                                     <Nav.Link href="/user/all_flights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
                                     <Nav.Link href="/user/reserve"><i className="fa fa-clipboard fa-lg"></i> My Flights</Nav.Link>
-                                   
+
                                     <Nav.Link href="/logIn" onClick={() => {
                                         localStorage.removeItem("token");
                                         localStorage.removeItem("Email");
@@ -477,7 +495,7 @@ class SearchUser extends Component {
                                     &nbsp;&nbsp;
                                 </div>
                                 <div className="col-12 col-md-9">
-                                    <input type="number" id="aligned-ID" placeholder="Flight Number" name="id" className="form-control" value={this.state.FlightNumber} onChange={this.onChangeN} />
+                                    <input type="number" min='0' id="aligned-ID" placeholder="Flight Number" name="id" className="form-control" value={this.state.FlightNumber} onChange={this.onChangeN} />
                                     &nbsp;&nbsp;
                                 </div>
                             </div>
@@ -539,30 +557,43 @@ class SearchUser extends Component {
                             <div className="form-group row">
 
                                 <div className="col-6 col-md-3">
-                                    <label htmlFor="aligned-Dep" >Number of passengers</label>
+                                    <label htmlFor="aligned-Dep" >Number of available Economy seats </label>
                                     &nbsp;&nbsp;
                                 </div>
 
                                 <div className="col-12 col-md-9">
-                                    <input type="number" id="aligned-ID" placeholder="Number of passsengers" name="id2" className="form-control" value={this.state.NumPass} onChange={this.onChangeNumberPass} />
+                                    <input type="number" min='0' id="aligned-ID" placeholder="Number of passsengers" name="id2" className="form-control" value={this.state.AvailE} onChange={this.onChangeAvailE} />
                                     &nbsp;&nbsp;
                                 </div>
                             </div>
-
-
-
                             <div className="form-group row">
 
                                 <div className="col-6 col-md-3">
-                                    <label htmlFor="aligned-Dep" >Cabin class</label>
+                                    <label htmlFor="aligned-Dep" >Number of available Business seats </label>
                                     &nbsp;&nbsp;
                                 </div>
 
                                 <div className="col-12 col-md-9">
-                                    <input type="next" id="aligned-ID" placeholder="Cabin class" name="id2" className="form-control" value={this.state.CabinClass} onChange={this.onChangeCabinClass} />
+                                    <input type="number" min='0' id="aligned-ID" placeholder="Number of passsengers" name="id2" className="form-control" value={this.state.AvailB} onChange={this.onChangeAvailB} />
                                     &nbsp;&nbsp;
                                 </div>
                             </div>
+                            <div className="form-group row">
+
+                                <div className="col-6 col-md-3">
+                                    <label htmlFor="aligned-Dep" >Number of available First seats </label>
+                                    &nbsp;&nbsp;
+                                </div>
+
+                                <div className="col-12 col-md-9">
+                                    <input type="number" min='0' id="aligned-ID" placeholder="Number of passsengers" name="id2" className="form-control" value={this.state.AvailF} onChange={this.onChangeAvailF} />
+                                    &nbsp;&nbsp;
+                                </div>
+                            </div>
+
+
+
+
 
 
                             <div className="form-group row">

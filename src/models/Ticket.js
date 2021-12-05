@@ -6,6 +6,10 @@ const userSchema = new mongoose.Schema({
     type:String,
     required:true,
     },
+    TicketNumber:{
+        type:Number,
+        required : true
+    },
     FlightNumber:{
         type:Number,
         required:true,

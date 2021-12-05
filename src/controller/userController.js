@@ -95,6 +95,7 @@ exports.SendEmail = (req, res) => {
     const flightID = req.body.flightID;
     const email = req.body.email;
     const price = req.body.Price;
+    const ticketNumber = req.body.TicketNumber;
 
     const nodemailer = require('nodemailer');
 
@@ -110,7 +111,7 @@ exports.SendEmail = (req, res) => {
         from: 'TeamDASHgedan@gmail.com',
         to: email,
         subject: 'Flight Cancellation',
-        text: 'You\'ve cancled flight Number: ' + flightID + "\nAn Amount of  " + price + " will be refunded"
+        text: 'You\'ve cancled flight Number: ' + flightID + "\nTicket Number: " + ticketNumber + "\nAn Amount of  " + price + " will be refunded"
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
