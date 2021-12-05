@@ -142,6 +142,7 @@ const Flight = (props) => (
         <td>{props.flight.noFirstSeats}</td>
         <td>{props.flight.depTime}</td>
         <td>{props.flight.arrTime}</td>
+        
 
 
         <td>
@@ -208,7 +209,7 @@ class SearchUser extends Component {
             showFlight: [],
             show: false,
               
-
+    
 
             modalFlightNumber: '',
         
