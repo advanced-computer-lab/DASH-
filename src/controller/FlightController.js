@@ -53,10 +53,6 @@ exports.deleteFlight = (req, res) => {
     if (err) {
       console.log(err);
     }
-    else {
-
-
-    }
   });
 }
 
@@ -184,14 +180,7 @@ exports.editFlight = (req, res) => {
   Flight.findOneAndUpdate({ FlightNumber: req.body.backFlightNumber }, { $set: filterObj }, { new: true }, (err, doc) => {
 
   })
-  /*Flight.findOneAndUpdate(filterObj)
-    if (err) {
-        console.log("Something wrong when updating data!");
-    }
-  
-    console.log(doc);
-  });*/
-
+ 
 
 }
 

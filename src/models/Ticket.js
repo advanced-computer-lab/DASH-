@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema({
     ArrivalTime:{
         type:String,
         required:true,
-    }
+    },
 
 });
 const Ticket = mongoose.model('Ticket', userSchema);

@@ -220,9 +220,16 @@ class Flights extends Component {
                 request.Arrival=res.data.Arrival;
                 request.DepartureTime=res.data.DepartureTime;
                 request.ArrivalTime=res.data.ArrivalTime;
+                if(total == 0)
+                        {
+                            alert("You have to Book at least 1 Seat!");
+                            return;
+                        }
+                        
                 if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
                     if (ae > -1 && ab > -1 && af > -1) {
                         console.log(request)
+                        
                         axios.post('http://localhost:8000/ticket/book', request)
                             .then((response) => {
                                 if (response) alert("Flight Booked Successfuly");
