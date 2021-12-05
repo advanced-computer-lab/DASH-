@@ -1,52 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from 'react';
 import { Component } from 'react';
-import { Button,Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import EditIcon from "@mui/icons-material/Edit"
 import 'font-awesome/css/font-awesome.min.css';
-import '../Flight.css';
-import axios from 'axios';
-
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import {  CardActionArea, CardActions } from '@mui/material';
-
 
 
 class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            Passport :'',
-            FirstN : '',
-            LastN : '',
-        } 
-        var x = {
-            Email : localStorage.getItem("Email")
-        }
-
-        axios.post('http://localhost:8000/user/FindInfo',x)
-        .then(res => {
-            this.setState({Passport:res.data[0].Passportnumber}) ;
-            this.setState({ FirstN : res.data[0].FirstName}) ;
-            this.setState({ LastN : res.data[0].LastName}) ;
-            console.log(res.data[0].Passportnumber)
-            
-        
-        
-        
-        })
-        
-       
-       
-       
-    
-    
-    }
-
-   
 
 
     render() {
@@ -70,7 +30,7 @@ class Home extends Component {
                                         <Nav.Link href="/user/search"><i className="fa fa-search fa-lg"></i> Search</Nav.Link>
                                         <Nav.Link href="/user/all_flights"><i className="fa fa-list fa-lg"></i> Flights List</Nav.Link>
                                         <Nav.Link href="/user/reserve"><i className="fa fa-clipboard fa-lg"></i> My Flights</Nav.Link>
-                                       
+                                        <Nav.Link href="/user/Edit"><EditIcon></EditIcon>Edit my info</Nav.Link>
                                         <Nav.Link href="/logIn" onClick={() => {
                                             localStorage.removeItem("token");
                                             localStorage.removeItem("Email");
@@ -90,41 +50,16 @@ class Home extends Component {
 
                     <br />
 
-                    <Card  className = "HomeC" sx={{ maxWidth: 450 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="300"
-          image="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-          alt="green iguana"
-        />
-        <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-            First Name : {this.state.FirstN} 
-          </Typography>
-         
-          <Typography gutterBottom variant="h5" component="div">
-          Last Name : {this.state.LastN}
-          </Typography>
-          
-          <Typography gutterBottom variant="h5" component="div">
-            Email : {localStorage.getItem("Email")}
-          </Typography>
-          
-          <Typography gutterBottom variant="h5" component="div">
-            Passport Number : {this.state.Passport}
-          </Typography>
+                    <div className="row">
 
-          
-          
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button href = '/user/Edit' size="small" className = "btn btn-dark" >
-          Edit my Info <EditIcon></EditIcon>
-        </Button>
-      </CardActions>
-    </Card>
+                        <div className="col-12 text-center">
+                            <br />
+                            <h2 >User Home</h2>
+                        </div>
+
+
+
+                    </div>
                 </div>
 
 
