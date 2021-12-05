@@ -159,11 +159,32 @@ app.listen(port, () => {
     const flightNum = req.body.flightNumber;
     const userEmail = req.body.email;
     
+
+    console.log("ASDFASDFASDFASDFASDFASDFAF");
     console.log(flightNum);
     console.log(userEmail);
 
+
+
     Ticket.findOneAndDelete({_id: req.body.ticketId}, function (err, docs) {
-    if (err){
+        console.log(docs);
+        const passengerE =  Number(docs.EconomySeatsAdult) + Number(docs.EconomySeatsChild);
+        const passengerB =  Number(docs.BusinessSeatAdult) +  Number(docs.BusinessSeatChild);
+        const passengerF =  Number(docs.FirstSeatAdult) +  Number(docs.FirstSeatChild);
+
+        Flight.find({FlightNumber : flightNum}, function(err,flight){
+    
+            flight[0]["AvailE"] = Number(flight[0].AvailE) + Number(passengerE);
+            flight[0]["AvailF"] = Number(flight[0].AvailF) + Number(passengerF);
+            flight[0]["AvailB"] = Number(flight[0].AvailB) + Number(passengerB);
+
+        flight[0].save();
+        }
+            
+            )
+        
+        if (err){
+        
          console.log(err);
          console.log("Didn't Find this Flight in Database");
     }

@@ -20,12 +20,9 @@ const Flight = (props) => (
         <td>{props.ticket.Arrival}</td>
         <td>{props.ticket.DepartureTime}</td>
         <td>{props.ticket.ArrivalTime}</td>
-        <td>{props.ticket.BusinessSeatAdult}</td>
-        <td>{props.ticket.EconomySeatsAdult}</td>
-        <td>{props.ticket.FirstSeatAdult}</td>
-        <td>{props.ticket.BusinessSeatChild}</td>
-        <td>{props.ticket.EconomySeatsChild}</td>
-        <td>{props.ticket.FirstSeatChild}</td>
+        <td>{props.ticket.BusinessSeatAdult}  {props.ticket.ReservedSeatsB?(props.ticket.ReservedSeatsB):""}</td>
+        <td>{props.ticket.EconomySeatsAdult} {props.ticket.ReservedSeatsE?(props.ticket.ReservedSeatsE):""}</td>
+        <td>{props.ticket.FirstSeatAdult}  {props.ticket.ReservedSeatsF?(props.ticket.ReservedSeatsF):""}</td>
         <td>{props.ticket.Price}</td>
 
         {/* <td>{props.flight.FlightNumber}</td>
@@ -166,12 +163,9 @@ class Reserve extends Component {
                                     <th>Arrival</th>
                                     <th>DepartureTime</th>
                                     <th>ArrivalTime</th>
-                                    <th>Business Seat Adult</th>
-                                    <th>Economy Seat Adult</th>
-                                    <th>First Seat Adult</th>
-                                    <th>Business Seat Child</th>
-                                    <th>Economy Seat Child</th>
-                                    <th>First Seat Child</th>
+                                    <th>Business Seats</th>
+                                    <th>Economy Seats</th>
+                                    <th>First Seats</th>
                                     <th>Price</th>
                                     <th>Action</th>
                                 </tr>
