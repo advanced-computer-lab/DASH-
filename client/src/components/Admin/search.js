@@ -200,7 +200,7 @@ class Search extends Component {
                                     &nbsp;&nbsp;
                                 </div>
                                 <div className="col-12 col-md-9">
-                                    <input type="number" id="aligned-ID" placeholder="Flight Number" name="id" className="form-control" value={this.state.FlightNumber} onChange={this.onChangeN} />
+                                    <input type="number" min = '0' id="aligned-ID" placeholder="Flight Number" name="id" className="form-control" value={this.state.FlightNumber} onChange={this.onChangeN} />
                                     &nbsp;&nbsp;
                                 </div>
                             </div>

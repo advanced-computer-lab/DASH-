@@ -150,7 +150,7 @@ exports.EditUser = (req, res) => {
     }
     if (attrib.Email.length != 0) {
         ad += '"Email" : ' + '"' + attrib.Email + '"';
-        Ticket.findOneAndUpdate({Email:req.body.UserMail} , {$set:{Email:attrib.Email}} , {new:true} ,(err,doc) =>{
+        Ticket.updateMany({Email:req.body.UserMail} , {$set:{Email:attrib.Email}} , {new:true} ,(err,doc) =>{
             console.log(doc)
         } )
 

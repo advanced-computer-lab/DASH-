@@ -30,7 +30,7 @@ const userSchema = new Schema({
     required: true,
   },
   depTime: {
-    type: String,
+    type: String ,
     required: true,
   },
   arrTime: {

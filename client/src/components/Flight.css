@@ -43,9 +43,10 @@ h1{
     border-radius: 20px;
 
 }
-.card {
+.HomeC {
     padding: 10px;
     box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.3) ;
     border-radius: 20px;
+    margin-left: 550px;
 
 }

@@ -220,7 +220,7 @@ render() {
                                     <label htmlFor="aligned-ID"  >Flight Number </label>
                                 </div>
                                 <div className="col-12 col-sm-8">
-                                    <input className="form-control" type="number" id="aligned-ID" required="true" name="id" placeholder="Flight Number" value={this.state.FlightNumber} onChange={this.onChangeID} />
+                                    <input className="form-control" type="number" min = '0' id="aligned-ID" required="true" name="id" placeholder="Flight Number" value={this.state.FlightNumber} onChange={this.onChangeID} />
                                 </div>
                             </div>
                             <br />
@@ -247,7 +247,7 @@ render() {
                                     <label htmlFor="aligned-econ" >Number of Economy class seats</label>
                                 </div>
                                 <div className="col-12 col-sm-8">
-                                    <input type="number" className="form-control" id="aligned-econ" required="true" name="econ" placeholder="Economy Class Seats" value={this.state.noEconomySeats} onChange={this.onChangeEcon} />
+                                    <input type="number" min = '0' className="form-control" id="aligned-econ" required="true" name="econ" placeholder="Economy Class Seats" value={this.state.noEconomySeats} onChange={this.onChangeEcon} />
                                 </div>
                             </div>
                             <br />
@@ -256,7 +256,7 @@ render() {
                                     <label htmlFor="aligned-business" >Number of business class seats</label>
                                 </div>
                                 <div className="col-12 col-sm-8">
-                                    <input type="number" className="form-control" id="aligned-business" required="true" name="business" placeholder="Business Class Seats" value={this.state.noBusinessSeats} onChange={this.onChangeBusniess} />
+                                    <input type="number" min = '0' className="form-control" id="aligned-business" required="true" name="business" placeholder="Business Class Seats" value={this.state.noBusinessSeats} onChange={this.onChangeBusniess} />
                                 </div>
                             </div>
                             <br />
@@ -265,7 +265,7 @@ render() {
                                     <label htmlFor="aligned-first" >Number of first class seats</label>
                                 </div>
                                 <div className="col-12 col-sm-8">
-                                    <input type="number" className="form-control" id="aligned-first" required="true" name="first" placeholder="First Class Seats" value={this.state.noFirstSeats} onChange={this.onChangeFirst} />
+                                    <input type="number" min = '0' className="form-control" id="aligned-first" required="true" name="first" placeholder="First Class Seats" value={this.state.noFirstSeats} onChange={this.onChangeFirst} />
                                 </div>
                             </div>
                             <br />
@@ -293,7 +293,7 @@ render() {
                                     <label htmlFor="aligned-Dep" >Baggage Allowance</label>
                                 </div>
                                 <div className="col-12 col-sm-8">
-                                    <input type="number" className="form-control" id="aligned-Dep" required="true" name="dep" value={this.state.baggageallowance} placeholder="Baggage Allowance" onChange={this.onChangeBaggage} />
+                                    <input type="number" min = '0' className="form-control" id="aligned-Dep" required="true" name="dep" value={this.state.baggageallowance} placeholder="Baggage Allowance" onChange={this.onChangeBaggage} />
                                 </div>
                             </div>
                             <br />
@@ -302,7 +302,7 @@ render() {
                                     <label htmlFor="aligned-Dep" >Economy seat price</label>
                                 </div>
                                 <div className="col-12 col-sm-8">
-                                    <input type="number" className="form-control" id="aligned-Dep" required="true" name="dep" value={this.state.priceEconomy} placeholder="Price" onChange={this.onChangePe} />
+                                    <input type="number" min = '0' className="form-control" id="aligned-Dep" required="true" name="dep" value={this.state.priceEconomy} placeholder="Price" onChange={this.onChangePe} />
                                 </div>
                             </div>
 
@@ -312,7 +312,7 @@ render() {
                                     <label htmlFor="aligned-Dep" >First class seat price</label>
                                 </div>
                                 <div className="col-12 col-sm-8">
-                                    <input type="number" className="form-control" id="aligned-Dep" required="true" name="dep" value={this.state.priceFirst} placeholder="Price" onChange={this.onChangePf} />
+                                    <input type="number" min = '0' className="form-control" id="aligned-Dep" required="true" name="dep" value={this.state.priceFirst} placeholder="Price" onChange={this.onChangePf} />
                                 </div>
                             </div>
                             <br />
@@ -321,7 +321,7 @@ render() {
                                     <label htmlFor="aligned-Dep" >Business class seat price</label>
                                 </div>
                                 <div className="col-12 col-sm-8">
-                                    <input type="number" className="form-control" id="aligned-Dep" required="true" name="dep" value={this.state.pricebusiness} placeholder="Price" onChange={this.onChangePb} />
+                                    <input type="number" min = '0' className="form-control" id="aligned-Dep" required="true" name="dep" value={this.state.pricebusiness} placeholder="Price" onChange={this.onChangePb} />
                                 </div>
                             </div>
                             <br />

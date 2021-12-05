@@ -1,6 +1,7 @@
 import '../Flight.css';
 import axios from 'axios';
 import { Component } from 'react';
+
 //import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import InfoIcon from '@mui/icons-material/Info';
 import { IconButton } from '@mui/material';
@@ -10,7 +11,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 //import "react/popper";
 import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
-
+import InputRange from 'react-input-range';
+import Slider from '@mui/material/Slider';
 
 
 
@@ -115,7 +117,6 @@ class SearchUser extends Component {
         this.onChangeDate = this.onChangeDate.bind(this);
         this.onChangeArrival = this.onChangeArrival.bind(this);
         this.onChangeDep = this.onChangeDep.bind(this);
-
         this.test2 = this.test2.bind(this);
         this.handleModal = this.handleModal.bind(this);
 
@@ -128,7 +129,9 @@ class SearchUser extends Component {
         this.submitModal = this.submitModal.bind(this);
         this.onChangeAvailE = this.onChangeAvailE.bind(this);
         this.onChangeAvailB = this.onChangeAvailB.bind(this);
-        this.onChangeAvailF = this.onChangeAvailF.bind(this)
+        this.onChangeAvailF = this.onChangeAvailF.bind(this);
+        this.onChangePriceFrom = this.onChangePriceFrom.bind(this);
+        this.onChangePriceTo = this.onChangePriceTo.bind(this);
 
         this.state = {
             FlightNumber: '',
@@ -142,9 +145,13 @@ class SearchUser extends Component {
             AvailE: '',
             AvailB: '',
             AvailF: '',
+            PriceFrom : 0 ,
+            PriceTo : 10000,
+            
 
             showFlight: [],
             show: false,
+            
 
 
             modalFlightNumber: '',
@@ -214,12 +221,18 @@ class SearchUser extends Component {
                 request.Arrival = res.data.Arrival;
                 request.DepartureTime = res.data.DepartureTime;
                 request.ArrivalTime = res.data.ArrivalTime;
+                if(total == 0)
+                        {
+                            alert("You have to Book at least 1 Seat!");
+                            return;
+                        }
                 if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
                     if (ae > -1 && ab > -1 && af > -1) {
                         console.log(request)
                         axios.post('http://localhost:8000/ticket/book', request)
                             .then((response) => {
-                                if (response) alert("Flight Booked Successfuly");
+                                if (response){ alert("Flight Booked Successfuly");
+                                window.location = '/user/search' ; }
                                 else alert("Error");
 
                             }, (error) => {
@@ -322,6 +335,20 @@ class SearchUser extends Component {
             ChildF: e.target.value
         })
     }
+    onChangePriceFrom(e){
+        this.setState({
+            PriceFrom : e.target.value
+
+        })
+    }
+    onChangePriceTo(e){
+        this.setState({
+            PriceTo : e.target.value
+
+        })
+    }
+     
+      
 
 
     flightsList() {
@@ -335,10 +362,14 @@ class SearchUser extends Component {
             AvailE: this.state.AvailE,
             AvailB: this.state.AvailB,
             AvailF: this.state.AvailF,
+            PriceFrom : this.state.PriceFrom,
+            PriceTo : this.state.PriceTo,
 
 
 
         }
+
+        
 
 
 
@@ -383,24 +414,35 @@ class SearchUser extends Component {
 
 
 
-                    <strong style={{ textAlign: 'center' }}>Flight Details Flno: :{currentFlight.FlightNumber} </strong>
+                <strong style={{ marginLeft: '185px' }}>Flight Details Flno: :{currentFlight.FlightNumber} </strong>
+                    <br></br>
+                    <br></br>
+                    
 
                     <div className='row row-content' >
                         <div className="col-6" style={{ textAlign: 'left' }} >
                             <p>Baggage Allowance:{currentFlight.baggageallowance} </p>
-                            <p>Adults Economy:{currentFlight.priceEconomy}</p>
-                            <p>Adults First:{currentFlight.priceFirst}</p>
-                            <p>Adults Business:{currentFlight.pricebusiness} </p>
+                            <strong>Prices for Adults :</strong>
+                            <p>Economy: {currentFlight.priceEconomy}$    </p>
+                            <p>Business: {currentFlight.pricebusiness}$ </p>
+                            <p> First: {currentFlight.priceFirst}$ </p>
+                            <strong >Available Seats:</strong>
+                            <p> Economy: {currentFlight.AvailE} seats </p>
+
+                            
                         </div>
                         <div className="col-6" style={{ textAlign: 'left' }}>
-
-                            <p>children Economy:{(currentFlight.priceEconomy) / 2}</p>
-                            <p>children First:{(currentFlight.priceFirst) / 2}</p>
-                            <p>children Business:{(currentFlight.pricebusiness) / 2} </p>
-                            <p>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </p>
-
-
+                        <p style={{ marginLeft: '90px' }}>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "  hours"} </p>
+                        <strong style={{ marginLeft: '90px' }}>Prices for Children:</strong>
+                             <p style={{ marginLeft: '90px' }}>Economy: {(currentFlight.priceEconomy) / 2}$</p>
+                            <p style={{ marginLeft: '90px' }}>First: {(currentFlight.priceFirst) / 2}$</p>
+                            <p style={{ marginLeft: '90px' }}>Business: {(currentFlight.pricebusiness) / 2}$ </p>
+                            <br></br>
+                            <p style={{ marginLeft: '90px' }}> Business: {currentFlight.AvailB} seats </p>
+                            
+                            
                         </div>
+                       <p> First: {currentFlight.AvailF} seats</p>
                         <div className="row row-content"><Button className="btn-dark" style={{ width: "100%" }} onClick={() => {
                             this.handleModal(currentFlight.FlightNumber)
 
@@ -438,8 +480,10 @@ class SearchUser extends Component {
         }))
 
     }
+    
 
     render() {
+       
 
         return (
 
@@ -557,40 +601,44 @@ class SearchUser extends Component {
                             <div className="form-group row">
 
                                 <div className="col-6 col-md-3">
-                                    <label htmlFor="aligned-Dep" >Number of available Economy seats </label>
+                                    <label htmlFor="aligned-Dep" >Number of available seats </label>
                                     &nbsp;&nbsp;
                                 </div>
 
-                                <div className="col-12 col-md-9">
-                                    <input type="number" min='0' id="aligned-ID" placeholder="Number of passsengers" name="id2" className="form-control" value={this.state.AvailE} onChange={this.onChangeAvailE} />
+                                <div className="col-12 col-md-3">
+                                    <input type="number" min='0' id="aligned-ID" placeholder="Economy" name="id2" className="form-control" value={this.state.AvailE} onChange={this.onChangeAvailE} />
+                                    &nbsp;&nbsp;
+                                </div>
+                                <div className="col-12 col-md-3">
+                                    <input type="number" min='0' id="aligned-ID" placeholder="Business" name="id2" className="form-control" value={this.state.AvailB} onChange={this.onChangeAvailB} />
+                                    &nbsp;&nbsp;
+                                </div>
+                                <div className="col-12 col-md-3">
+                                    <input type="number" min='0' id="aligned-ID" placeholder="First" name="id2" className="form-control" value={this.state.AvailF} onChange={this.onChangeAvailF} />
                                     &nbsp;&nbsp;
                                 </div>
                             </div>
+                           
+                            
+                            
                             <div className="form-group row">
 
                                 <div className="col-6 col-md-3">
-                                    <label htmlFor="aligned-Dep" >Number of available Business seats </label>
+                                    <label htmlFor="aligned-Dep" >Price: </label>
                                     &nbsp;&nbsp;
                                 </div>
 
-                                <div className="col-12 col-md-9">
-                                    <input type="number" min='0' id="aligned-ID" placeholder="Number of passsengers" name="id2" className="form-control" value={this.state.AvailB} onChange={this.onChangeAvailB} />
+                                <div className="col-12 col-md-3">
+                                <input type="number" min='0' id="aligned-ID" placeholder="From" name="id2" className="form-control" value={this.state.PriceFrom} onChange={this.onChangePriceFrom} />
+                                    
                                     &nbsp;&nbsp;
                                 </div>
-                            </div>
-                            <div className="form-group row">
-
-                                <div className="col-6 col-md-3">
-                                    <label htmlFor="aligned-Dep" >Number of available First seats </label>
-                                    &nbsp;&nbsp;
-                                </div>
-
-                                <div className="col-12 col-md-9">
-                                    <input type="number" min='0' id="aligned-ID" placeholder="Number of passsengers" name="id2" className="form-control" value={this.state.AvailF} onChange={this.onChangeAvailF} />
+                                <div className="col-12 col-md-3">
+                                <input type="number" min='0' id="aligned-ID" placeholder="To" name="id2" className="form-control" value={this.state.PriceTo} onChange={this.onChangePriceTo} />
+                                    
                                     &nbsp;&nbsp;
                                 </div>
                             </div>
-
 
 
 

@@ -44,11 +44,11 @@ const MM = (props) => (
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control "  required="true" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
+                        <input type="number" min = '0' className="form-control "  required="true" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
+                        <input type="number" min ='0' className="form-control " required="true" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
                     </div>
                     <br/>
                     <div>
@@ -60,11 +60,11 @@ const MM = (props) => (
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.AdultB} onChange={props.func.onChangeAdultB} />
+                        <input type="number" min = '0' className="form-control " required="true" value={props.Seats.AdultB} onChange={props.func.onChangeAdultB} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
+                        <input type="number" min = '0' className="form-control " required="true" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
                     </div>
 
                 </div>
@@ -73,11 +73,11 @@ const MM = (props) => (
                     <strong>Number of first class seats</strong>
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.AdultF} onChange={props.func.onChangeAdultF} />
+                        <input type="number" min = '0' className="form-control " required="true" value={props.Seats.AdultF} onChange={props.func.onChangeAdultF} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" className="form-control " required="true" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
+                        <input type="number" min = '0' className="form-control " required="true" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
                     </div>
                 </div>
                 <br />
@@ -272,7 +272,9 @@ class Flights extends Component {
                         
                         axios.post('http://localhost:8000/ticket/book', request)
                             .then((response) => {
-                                if (response) alert("Flight Booked Successfuly");
+                                if (response) {alert("Flight Booked Successfuly");
+                                window.location = '/user/all_flights'
+                            }
                                 else alert("blabizo");
 
                             }, (error) => {
@@ -338,26 +340,35 @@ class Flights extends Component {
 
 
 
-                        <p style={{ textAlign: 'center' }}>Flight Details Flno: :{currentFlight.FlightNumber} </p>
-                        <br></br>
+                    <strong style={{ marginLeft: '185px' }}>Flight Details Flno: :{currentFlight.FlightNumber} </strong>
+                    <br></br>
+                    <br></br>
+                    
 
-                        <div className="row row-content">
+                    <div className='row row-content' >
+                        <div className="col-6" style={{ textAlign: 'left' }} >
+                            <p>Baggage Allowance:{currentFlight.baggageallowance} </p>
+                            <strong>Prices for Adults :</strong>
+                            <p>Economy: {currentFlight.priceEconomy}$    </p>
+                            <p>Business: {currentFlight.pricebusiness}$ </p>
+                            <p> First: {currentFlight.priceFirst}$ </p>
+                            <strong >Available Seats:</strong>
+                            <p> Economy: {currentFlight.AvailE} seats </p>
 
-                            <div className="col-12 col-md-6  " style={{ textAlign: 'left' }} >
-                                <p>Baggage Allowance:{currentFlight.baggageallowance} </p>
-                                <p>Adults Economy:{currentFlight.priceEconomy}</p>
-                                <p>Adults First:{currentFlight.priceFirst}</p>
-                                <p>Adults Business:{currentFlight.pricebusiness} </p>
-                            </div>
-                            <div className="col-12 col-md-6 " style={{ textAlign: 'left' }}>
-
-                                <p>children Economy:{(currentFlight.priceEconomy) / 2}</p>
-                                <p>children First:{(currentFlight.priceFirst) / 2}</p>
-                                <p>children Business:{(currentFlight.pricebusiness) / 2} </p>
-                                <p>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </p>
-
-
-                            </div>
+                            
+                        </div>
+                        <div className="col-6" style={{ textAlign: 'left' }}>
+                        <p style={{ marginLeft: '90px' }}>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "  hours"} </p>
+                        <strong style={{ marginLeft: '90px' }}>Prices for Children:</strong>
+                             <p style={{ marginLeft: '90px' }}>Economy: {(currentFlight.priceEconomy) / 2}$</p>
+                            <p style={{ marginLeft: '90px' }}>First: {(currentFlight.priceFirst) / 2}$</p>
+                            <p style={{ marginLeft: '90px' }}>Business: {(currentFlight.pricebusiness) / 2}$ </p>
+                            <br></br>
+                            <p style={{ marginLeft: '90px' }}> Business: {currentFlight.AvailB} seats </p>
+                            
+                            
+                        </div>
+                       <p> First: {currentFlight.AvailF} seats</p>
                             <div className="row row-content"><Button className="btn-dark " style={{ width: "100%", marginLeft: 13 }} onClick={() => {
                                 this.handleModal(currentFlight.FlightNumber)
 

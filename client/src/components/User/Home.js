@@ -90,11 +90,11 @@ class Home extends Component {
 
                     <br />
 
-                    <Card className = "card" sx={{ maxWidth: 400 }}>
+                    <Card  className = "HomeC" sx={{ maxWidth: 450 }}>
       <CardActionArea>
         <CardMedia
           component="img"
-          height="250"
+          height="300"
           image="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
           alt="green iguana"
         />
