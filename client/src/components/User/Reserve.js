@@ -14,6 +14,7 @@ var flightNumber = 0;
 
 const Flight = (props) => (
     <tr >
+        <td>{props.ticket.TicketNumber}</td>
         <td>{props.ticket.FlightNumber}</td>
         <td>{props.ticket.Departure}</td>
         <td>{props.ticket.Arrival}</td>
@@ -25,6 +26,7 @@ const Flight = (props) => (
         <td>{props.ticket.BusinessSeatChild}</td>
         <td>{props.ticket.EconomySeatsChild}</td>
         <td>{props.ticket.FirstSeatChild}</td>
+        <td>{props.ticket.Price}</td>
 
         {/* <td>{props.flight.FlightNumber}</td>
         <td>{props.flight.toAir}</td>
@@ -38,7 +40,7 @@ const Flight = (props) => (
 
 
         <td>
-            <IconButton style={{fontSize:20 , color:"white"}} onClick={() => { props.handleModal(props.ticket.FlightNumber,props.ticket._id) ; flightNumber = props.ticket.FlightNumber; }}>Cancel Reservation</IconButton>
+            <IconButton style={{fontSize:20 , color:"white"}} onClick={() => { props.handleModal(props.ticket.FlightNumber,props.ticket._id,props.ticket.Price, props.ticket.TicketNumber) ; flightNumber = props.ticket.FlightNumber; }}>Cancel Reservation</IconButton>
 
         </td>
 
@@ -58,16 +60,19 @@ class Reserve extends Component {
             show: false,
             modalFlightNumber: '',
             ticketId:"",
-            
+            totalPrice:0,
+            TicketNumber:0
 
         };
     }
 
-    handleModal(id,ticketIdd) {
+    handleModal(id,ticketIdd, price, ticketNumber) {
         this.setState({
             show: !this.state.show,
             modalFlightNumber: id,
             ticketId:ticketIdd,
+            totalPrice : price,
+            ticketNum : ticketNumber
         })
     }
 
@@ -104,6 +109,12 @@ class Reserve extends Component {
         window.location.reload();
     }
 
+    SendEmail(id, price, ticketNumber)
+    {
+        console.log(price);
+        console.log(id);
+        axios.post("http://localhost:8000/user/SendEmail",{TicketNumber : ticketNumber, Price: price, flightID : id, email : localStorage.getItem("Email")});
+    }
 
     render() {
         return (
@@ -149,6 +160,7 @@ class Reserve extends Component {
                         <Table className="table table-dark d-felx " striped bordered hover size="xs">
                             <thead >
                                 <tr >
+                                    <th>Ticket Number</th>
                                     <th>Flight Number</th>
                                     <th>Departure</th>
                                     <th>Arrival</th>
@@ -160,6 +172,7 @@ class Reserve extends Component {
                                     <th>Business Seat Child</th>
                                     <th>Economy Seat Child</th>
                                     <th>First Seat Child</th>
+                                    <th>Price</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -175,7 +188,7 @@ class Reserve extends Component {
                         <Modal show={this.state.show}>
                             <Modal.Header>
                             <b className="text-center">Confirm</b>
-                                <Button onClick={() => { this.handleModal(this.state.modalFlightNumber) }} style={{ backgroundColor: "black",borderColor:"black" }}><CancelPresentationIcon style={{ color: 'white' }}></CancelPresentationIcon></Button>
+                                <Button onClick={() => {  this.handleModal(this.state.modalFlightNumber) }} style={{ backgroundColor: "black",borderColor:"black" }}><CancelPresentationIcon style={{ color: 'white' }}></CancelPresentationIcon></Button>
                             
                             </Modal.Header>
 
@@ -183,8 +196,10 @@ class Reserve extends Component {
                                 Are You Sure You want To Cancel Your Reservation?
                             </Modal.Body>
                             <form className="CancelFlight" >
-                            <button type="button" className="offset-md-4   col-md-4 btn btn-dark" onClick={() => {
+                            <button type="button" className="offset-md-4   col-md-4 btn btn-dark" onClick={(props) => {
                                 this.DeleteTicket();
+                                this.SendEmail(this.state.modalFlightNumber,this.state.totalPrice, this.state.ticketNum);
+
                                 alert("Reservation Cancelled Successfully");
                                  this.setState({
                                     show: false,

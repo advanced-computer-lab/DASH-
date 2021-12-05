@@ -7,7 +7,7 @@ exports.addFlight = (req, res) => {
 
   const flight = new Flight(
     {
-
+      
       FlightNumber: req.body.FlightNumber,
       toAir: req.body.toAir,
       fromAir: req.body.fromAir,
@@ -52,10 +52,6 @@ exports.deleteFlight = (req, res) => {
   Flight.findOneAndDelete({ FlightNumber: deletedId }, function (err, docs) {
     if (err) {
       console.log(err);
-    }
-    else {
-
-
     }
   });
 }
@@ -181,25 +177,12 @@ exports.editFlight = (req, res) => {
 
   var filterObj = JSON.parse('{' + fil + '}');
 
-
-
-
   console.log(filterObj)
-
-
-
 
   Flight.findOneAndUpdate({ FlightNumber: req.body.backFlightNumber }, { $set: filterObj }, { new: true }, (err, doc) => {
 
   })
-  /*Flight.findOneAndUpdate(filterObj)
-    if (err) {
-        console.log("Something wrong when updating data!");
-    }
-  
-    console.log(doc);
-  });*/
-
+ 
 
 }
 

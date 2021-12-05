@@ -2,18 +2,37 @@ import '../Flight.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import React from 'react';
-import { IconButton } from '@mui/material';
-import { Component } from 'react';
+import { IconButton, Collapse, Grid, Paper, styled  } from '@mui/material';
+import { Component,MyComponent } from 'react';
 import { Navbar, Nav, Container, Table, Button, Modal } from 'react-bootstrap';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import InfoIcon from '@mui/icons-material/Info';
 import EditIcon from '@mui/icons-material/Edit';
 
+const parse = require('html-react-parser');
+
 //import AddBoxIcon from '@mui/icons-material/AddBox';
 
+const Item = styled(Paper)(({ theme }) => ({
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
+
+  function ShowAvailableSeats(flightDetails)
+  {
+      var x;
+      
+    return x;
+  }
+
+  
+
 const MM = (props) => (
+    
     <Modal show={props.show}>
-        <Modal.Header >
+        <Modal.Header>
 
             <b className="text-center">Booking Flight Number : {props.FlightNumber}</b>
             <Button onClick={() => { props.handleModal(props.FlightNumber) }} style={{ backgroundColor: "black" }}><CancelPresentationIcon style={{ color: 'white' }}></CancelPresentationIcon></Button>
@@ -30,6 +49,10 @@ const MM = (props) => (
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
                         <input type="number" className="form-control " required="true" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
+                    </div>
+                    <br/>
+                    <div>
+
                     </div>
                 </div>
                 <br />
@@ -75,6 +98,9 @@ const MM = (props) => (
 
 
 const Flight = (props) => (
+
+
+    
     <tr >
         <td>{props.flight.FlightNumber}</td>
         <td>{props.flight.toAir}</td>
@@ -101,8 +127,12 @@ const showFlight = (props) => (
 )
 
 class Flights extends Component {
+
+    
+    
     constructor(props) {
         super(props);
+        //const [open, setOpen] = React.useState(false);
         this.handleModal = this.handleModal.bind(this);
         this.test2 = this.test2.bind(this);
         this.FlightDetails = this.FlightDetails.bind(this);
@@ -138,6 +168,10 @@ class Flights extends Component {
             ChildE: 0,
             ChildB: 0,
             ChildF: 0,
+
+            noEconomySeats:  0,
+            noBusinessSeats: 0,
+            noFirstSeats:    0,
 
 
         };
@@ -196,6 +230,11 @@ class Flights extends Component {
             ChildE: this.state.ChildE,
             ChildB: this.state.ChildB,
             ChildF: this.state.ChildF,
+
+            noEconomySeats: this.state.noEconomySeats,
+            noBusinessSeats: this.state.noBusinessSeats,
+            noFirstSeats: this.state.noFirstSeats,
+
             totalPrice: 0,
             Departure:'',
             Arrival:'',
@@ -214,15 +253,23 @@ class Flights extends Component {
                 const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
                 const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
                 const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
+                
                 const total = pe + pb + pf;
                 request.totalPrice = total;
                 request.Departure=res.data.Departure;
                 request.Arrival=res.data.Arrival;
                 request.DepartureTime=res.data.DepartureTime;
                 request.ArrivalTime=res.data.ArrivalTime;
+                if(total == 0)
+                        {
+                            alert("You have to Book at least 1 Seat!");
+                            return;
+                        }
+                        
                 if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
                     if (ae > -1 && ab > -1 && af > -1) {
                         console.log(request)
+                        
                         axios.post('http://localhost:8000/ticket/book', request)
                             .then((response) => {
                                 if (response) alert("Flight Booked Successfuly");
@@ -329,6 +376,10 @@ class Flights extends Component {
                     ChildB: this.state.ChildB,
                     ChildF: this.state.ChildF,
 
+                    noEconomySeats:  currentFlight.noEconomySeats,
+                    noBusinessSeats: currentFlight.noBusinessSeats,
+                    noFirstSeats:    currentFlight.noFirstSeats,
+
                 }} show={this.state.show} func={{
                     onChangeAdultE: this.onChangeAdultE,
                     onChangeAdultB: this.onChangeAdultB,
@@ -357,6 +408,7 @@ class Flights extends Component {
 
 
     render() {
+
         return (
 
 

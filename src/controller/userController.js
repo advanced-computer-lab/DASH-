@@ -88,7 +88,44 @@ exports.findUser = (req, res) => {
         }
     });
 
+
 }
+
+exports.SendEmail = (req, res) => {
+
+    const flightID = req.body.flightID;
+    const email = req.body.email;
+    const price = req.body.Price;
+    const ticketNumber = req.body.TicketNumber;
+
+    const nodemailer = require('nodemailer');
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'TeamDASHgedan@gmail.com',
+            pass: 'Dash1234'
+        }
+    });
+
+    const mailOptions = {
+        from: 'TeamDASHgedan@gmail.com',
+        to: email,
+        subject: 'Flight Cancellation',
+        text: 'You\'ve cancled flight Number: ' + flightID + "\nTicket Number: " + ticketNumber + "\nAn Amount of  " + price + " will be refunded"
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+
+};
+
+
 exports.findUserInfo = (req, res) => {
 
     User.find({ Email: req.body.Email }, function (err, docs) {
@@ -102,16 +139,16 @@ exports.findUserInfo = (req, res) => {
 
 
 
-exports.EditUser = (req,res) => {
-    var attrib = { FirstName: req.body.FirstName, LastName: req.body.LastName, Email: req.body.Email,Passportnumber : req.body.Passportnumber};
+exports.EditUser = (req, res) => {
+    var attrib = { FirstName: req.body.FirstName, LastName: req.body.LastName, Email: req.body.Email, Passportnumber: req.body.Passportnumber };
     var ad = "";
-    if (attrib.FirstName.length != 0){
-        ad += '"FirstName":' + '"' + attrib.FirstName +'"' + ((attrib.LastName.length != 0)  || (attrib.Email.length != 0)||(attrib.Passportnumber.length != 0)? "," : "");
+    if (attrib.FirstName.length != 0) {
+        ad += '"FirstName":' + '"' + attrib.FirstName + '"' + ((attrib.LastName.length != 0) || (attrib.Email.length != 0) || (attrib.Passportnumber.length != 0) ? "," : "");
     }
-    if (attrib.LastName.length != 0){
-        ad += '"LastName":' + '"' + attrib.LastName + '"' + ((attrib.Email.length != 0)  || (attrib.Passportnumber.length != 0)? "," : "");
+    if (attrib.LastName.length != 0) {
+        ad += '"LastName":' + '"' + attrib.LastName + '"' + ((attrib.Email.length != 0) || (attrib.Passportnumber.length != 0) ? "," : "");
     }
-    if (attrib.Email.length != 0){
+    if (attrib.Email.length != 0) {
         ad += '"Email" : ' + '"' + attrib.Email + '"';
         Ticket.findOneAndUpdate({Email:req.body.UserMail} , {$set:{Email:attrib.Email}} , {new:true} ,(err,doc) =>{
             console.log(doc)
@@ -120,13 +157,13 @@ exports.EditUser = (req,res) => {
     }
     console.log(ad);
 
-    var filterObj = JSON.parse('{'+ ad  +'}');
+    var filterObj = JSON.parse('{' + ad + '}');
     console.log(filterObj);
     console.log(req.body.UserMail);
 
-    User.findOneAndUpdate({Email:req.body.UserMail}, {$set:filterObj}, {new: true}, (err, doc) => {
+    User.findOneAndUpdate({ Email: req.body.UserMail }, { $set: filterObj }, { new: true }, (err, doc) => {
         console.log(doc);
-      
+
     })
 
 }

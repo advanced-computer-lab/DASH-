@@ -151,7 +151,7 @@ userRouter.post('/type',(req,res)=>{
 userRouter.post('/EditUser' ,userController.EditUser ) ;
 userRouter.post('/FindEmail' , userController.findUser);
 userRouter.post('/FindInfo' , userController.findUserInfo);
-
+userRouter.post('/SendEmail',userController.SendEmail)
 
 
 

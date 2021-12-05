@@ -2,6 +2,7 @@ const express = require("express");
 const ticketController = require("../controller/ticketController");
 const Ticket = require("../models/Ticket");
 const Flight = require("../models/Flight");
+const { setRandomFallback } = require("bcryptjs");
 const TicketRouter = express.Router();
 TicketRouter.use(express.json());
 TicketRouter.use(express.urlencoded({extended:false}));
@@ -10,6 +11,7 @@ TicketRouter.use(express.urlencoded({extended:false}));
 TicketRouter.post('/book' , (req,res)=>{
     const new_ticket = new Ticket({
         Email:req.body.Email,
+        TicketNumber:Math.floor(Math.random() * 10000),
         FlightNumber:Number(req.body.FlightNumber),
         BusinessSeatAdult:Number(req.body.AdultB),
         FirstSeatAdult:Number(req.body.AdultF),
