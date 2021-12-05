@@ -64,7 +64,9 @@ const userSchema = new Schema({
   AvailF: {
     type: Number,
     required: true,
-  }
+  },
+  
+
 
 
 

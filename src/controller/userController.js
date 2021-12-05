@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Ticket = require('../models/Ticket')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
@@ -112,6 +113,9 @@ exports.EditUser = (req,res) => {
     }
     if (attrib.Email.length != 0){
         ad += '"Email" : ' + '"' + attrib.Email + '"';
+        Ticket.findOneAndUpdate({Email:req.body.UserMail} , {$set:{Email:attrib.Email}} , {new:true} ,(err,doc) =>{
+            console.log(doc)
+        } )
 
     }
     console.log(ad);
