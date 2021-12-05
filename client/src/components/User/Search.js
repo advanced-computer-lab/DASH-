@@ -4,7 +4,7 @@ import { Component } from 'react';
 
 //import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import InfoIcon from '@mui/icons-material/Info';
-import { IconButton } from '@mui/material';
+import { IconButton, Grid, styled, Paper } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 //popper.js/dist/umd/popper.min.js
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,11 +16,39 @@ import Slider from '@mui/material/Slider';
 
 
 
+
+
 <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous"></link>
+const Item = styled(Paper)(({ theme }) => ({
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+}));
+
+
+function SetColor(index, AvailE, size, Class) {
+    if (index >= (size - AvailE))
+        return <Item style={{ backgroundColor: "green", color: "white" }}>{Class}{index + 1}</Item>;
+    else
+        return <Item style={{ backgroundColor: "grey", color: "white" }}>{Class}{index + 1}</Item>;
+}
+
+var GridArray = (props) => (
+    props.Seats.map(function (element, index, array) {
+        return <Grid item xs={1.5}>
+            {SetColor(index, element, props.Seats.length, props.Class)}
+        </Grid>
+    })
+)
+
 
 const MM = (props) => (
+
+
+
     <Modal show={props.show}>
-        <Modal.Header >
+        <Modal.Header>
 
             <b className="text-center">Booking Flight Number : {props.FlightNumber}</b>
             <Button onClick={() => { props.handleModal(props.FlightNumber) }} style={{ backgroundColor: "black" }}><CancelPresentationIcon style={{ color: 'white' }}></CancelPresentationIcon></Button>
@@ -32,24 +60,42 @@ const MM = (props) => (
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min='0' className="form-control" required="true" placeholder="" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min='0' className="form-control " placeholder="" required="true" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
                     </div>
+
+                    <br />
+                    <div>
+                        <Grid container spacing={2}>
+                            <GridArray Class="E" SeatName="Test" Seats={new Array(props.Seats.noEconomySeats).fill(props.Seats.AvailE)}>
+                            </GridArray>
+                        </Grid>
+                    </div>
+
                 </div>
                 <br />
                 <strong>Number of business class seats</strong>
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min='0' className="form-control " required="true" value={props.Seats.AdultB} onChange={props.func.onChangeAdultB} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.AdultB} onChange={props.func.onChangeAdultB} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min='0' className="form-control " required="true" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
                     </div>
+
+                    <br />
+                    <div>
+                        <Grid container spacing={2}>
+                            <GridArray Class="B" SeatName="Test" Seats={new Array(props.Seats.noBusinessSeats).fill(props.Seats.AvailB)}>
+                            </GridArray>
+                        </Grid>
+                    </div>
+
 
                 </div>
                 <br />
@@ -57,12 +103,17 @@ const MM = (props) => (
                     <strong>Number of first class seats</strong>
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min='0' className="form-control " required="true" value={props.Seats.AdultF} onChange={props.func.onChangeAdultF} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.AdultF} onChange={props.func.onChangeAdultF} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min='0' className="form-control " required="true" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
                     </div>
+
+                    <Grid container spacing={2}>
+                        <GridArray Class="F" SeatName="Test" Seats={new Array(props.Seats.noFirstSeats).fill(props.Seats.AvailF)}>
+                        </GridArray>
+                    </Grid>
                 </div>
                 <br />
                 <div className="form-group row ">
@@ -78,6 +129,7 @@ const MM = (props) => (
     </Modal>
 
 )
+
 
 
 const Flight = (props) => (
@@ -134,6 +186,10 @@ class SearchUser extends Component {
         this.onChangePriceTo = this.onChangePriceTo.bind(this);
 
         this.state = {
+            flights: [],
+            show: false,
+            modalFlightNumber: '',
+            showFlight: [],
             FlightNumber: '',
             toAir: '',
             fromAir: '',
@@ -155,6 +211,10 @@ class SearchUser extends Component {
 
 
             modalFlightNumber: '',
+        
+            AvailE: 0,
+            AvailB: 0,
+            AvailF: 0,
 
             AdultE: 0,
             AdultB: 0,
@@ -163,8 +223,12 @@ class SearchUser extends Component {
             ChildB: 0,
             ChildF: 0,
 
+            noEconomySeats: 0,
+            noBusinessSeats: 0,
+            noFirstSeats: 0,
 
-        }
+
+        };
     }
 
 
@@ -197,11 +261,26 @@ class SearchUser extends Component {
             ChildE: this.state.ChildE,
             ChildB: this.state.ChildB,
             ChildF: this.state.ChildF,
+
+            noEconomySeats: this.state.noEconomySeats,
+            noBusinessSeats: this.state.noBusinessSeats,
+            noFirstSeats: this.state.noFirstSeats,
+
+            AvailE: this.state.AvailE,
+            AvailF: this.state.AvailF,
+            AvailB: this.state.AvailB,
+
             totalPrice: 0,
             Departure: '',
             Arrival: '',
             DepartureTime: '',
-            ArrivalTime: ''
+            ArrivalTime: '',
+
+            SeatsE: '',
+            SeatsB: '',
+            SeatsF: '',
+
+            ReservedSeats: '',
         }
         const x = {
             FlightNumber: this.state.modalFlightNumber,
@@ -215,25 +294,84 @@ class SearchUser extends Component {
                 const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
                 const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
                 const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
+
                 const total = pe + pb + pf;
                 request.totalPrice = total;
                 request.Departure = res.data.Departure;
                 request.Arrival = res.data.Arrival;
                 request.DepartureTime = res.data.DepartureTime;
                 request.ArrivalTime = res.data.ArrivalTime;
-                if(total == 0)
-                        {
-                            alert("You have to Book at least 1 Seat!");
-                            return;
-                        }
-                if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
+
+                request.AvailE = res.data.AE;
+                request.AvailB = res.data.AB;
+                request.AvailF = res.data.AF;
+
+                request.noEconomySeats = res.data.noEconomySeats;
+                request.noBusinessSeats = res.data.noBusinessSeats;
+                request.noFirstSeats = res.data.noFirstSeats;
+
+                console.log("ASDFASDFASDFASDF");
+                console.log(res.data.noFirstSeats)
+                if (total == 0) {
+                    alert("You have to Book at least 1 Seat!");
+                    return;
+                }
+
+
+                if (window.confirm("The total price is :" + total + "$\n" + 'Are you sure you want to book this flight? ')) {
                     if (ae > -1 && ab > -1 && af > -1) {
-                        console.log(request)
+
+                        var passengersE = (Number(request.AdultE) + Number(request.ChildE));
+                        var passengersB = (Number(request.AdultB) + Number(request.ChildB));
+                        var passengersF = (Number(request.AdultF) + Number(request.ChildF));
+
+                        var beginE = Number(request.noEconomySeats) - Number(request.AvailE);
+                        var beginB = Number(request.noBusinessSeats) - Number(request.AvailB);
+                        var beginF = Number(request.noFirstSeats) - Number(request.AvailF);
+
+                        var arrE = [];
+                        var arrF = [];
+                        var arrB = [];
+
+
+                        console.log(beginF);
+
+                        console.log(request.AvailE);
+                        console.log(request.AvailB);
+                        console.log(request.AvailF);
+
+                        for (let i = beginE+1; i <= beginE + passengersE; i++)
+                            arrE.push("E" + i);
+
+                        for (let i = beginB+1; i <= beginB + passengersB; i++)
+                            arrB.push("B" + i);
+
+                        for (let i = beginF+1; i <= beginF + passengersF; i++)
+                            arrF.push("F" + i);
+
+                        request.SeatsE = arrE;
+                        request.SeatsB = arrB;
+                        request.SeatsF = arrF;
+
+
+                        console.log(arrE);
+                        console.log(arrF);
+                        console.log(arrB);
+
+                        var SeatsArrayE = arrE;
+                        var SeatsArrayB = arrB;
+                        var SeatsArrayF = arrF;
+
+                        request.ReservedSeatsE = SeatsArrayE.toString(); 
+                        request.ReservedSeatsB = SeatsArrayB.toString(); 
+                        request.ReservedSeatsF = SeatsArrayF.toString(); 
+
                         axios.post('http://localhost:8000/ticket/book', request)
                             .then((response) => {
-                                if (response){ alert("Flight Booked Successfuly");
-                                window.location = '/user/search' ; }
-                                else alert("Error");
+                                if (response) {alert("Flight Booked Successfuly" + " Seats Economy : " + arrE + " Seats Business : " + arrB+ " Seats First : " + arrF)
+                                window.location = '/user/search' ;
+                            }
+                                else alert("blabizo");
 
                             }, (error) => {
                                 alert("Error Happened ")
@@ -457,6 +595,15 @@ class SearchUser extends Component {
                         ChildE: this.state.ChildE,
                         ChildB: this.state.ChildB,
                         ChildF: this.state.ChildF,
+    
+                        AvailE: currentFlight.AvailE,
+                        AvailB: currentFlight.AvailB,
+                        AvailF: currentFlight.AvailF,
+    
+                        noEconomySeats: currentFlight.noEconomySeats,
+                        noBusinessSeats: currentFlight.noBusinessSeats,
+                        noFirstSeats: currentFlight.noFirstSeats,
+    
 
                     }} show={this.state.show} func={{
                         onChangeAdultE: this.onChangeAdultE,

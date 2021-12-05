@@ -58,6 +58,15 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    ReservedSeatsE:{
+        type:String,
+    },
+    ReservedSeatsB:{
+        type:String,
+    },
+    ReservedSeatsF:{
+        type:String,
+    }
 
 });
 const Ticket = mongoose.model('Ticket', userSchema);

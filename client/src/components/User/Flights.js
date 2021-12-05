@@ -2,8 +2,8 @@ import '../Flight.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import React from 'react';
-import { IconButton, Collapse, Grid, Paper, styled  } from '@mui/material';
-import { Component,MyComponent } from 'react';
+import { IconButton, Collapse, Grid, Paper, styled } from '@mui/material';
+import { Component, MyComponent } from 'react';
 import { Navbar, Nav, Container, Table, Button, Modal } from 'react-bootstrap';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import InfoIcon from '@mui/icons-material/Info';
@@ -18,19 +18,29 @@ const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
-  }));
+}));
 
-  function ShowAvailableSeats(flightDetails)
-  {
-      var x;
-      
-    return x;
-  }
 
-  
+function SetColor(index, AvailE, size, Class) {
+    if (index >= (size - AvailE))
+        return <Item style={{ backgroundColor: "green", color: "white" }}>{Class}{index + 1}</Item>;
+    else
+        return <Item style={{ backgroundColor: "grey", color: "white" }}>{Class}{index + 1}</Item>;
+}
+
+var GridArray = (props) => (
+    props.Seats.map(function (element, index, array) {
+        return <Grid item xs={1.5}>
+            {SetColor(index, element, props.Seats.length, props.Class)}
+        </Grid>
+    })
+)
+
 
 const MM = (props) => (
-    
+
+
+
     <Modal show={props.show}>
         <Modal.Header>
 
@@ -44,16 +54,21 @@ const MM = (props) => (
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min = '0' className="form-control "  required="true" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
+                        <input type="number" min = '0'className="form-control " required="true" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
                         <input type="number" min ='0' className="form-control " required="true" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
                     </div>
-                    <br/>
-                    <div>
 
+                    <br />
+                    <div>
+                        <Grid container spacing={2}>
+                            <GridArray Class="E" SeatName="Test" Seats={new Array(props.Seats.noEconomySeats).fill(props.Seats.AvailE)}>
+                            </GridArray>
+                        </Grid>
                     </div>
+
                 </div>
                 <br />
                 <strong>Number of business class seats</strong>
@@ -67,6 +82,15 @@ const MM = (props) => (
                         <input type="number" min = '0' className="form-control " required="true" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
                     </div>
 
+                    <br />
+                    <div>
+                        <Grid container spacing={2}>
+                            <GridArray Class="B" SeatName="Test" Seats={new Array(props.Seats.noBusinessSeats).fill(props.Seats.AvailB)}>
+                            </GridArray>
+                        </Grid>
+                    </div>
+
+
                 </div>
                 <br />
                 <div className="form-group row">
@@ -79,6 +103,11 @@ const MM = (props) => (
                     <div className="col-8 col-md-4">
                         <input type="number" min = '0' className="form-control " required="true" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
                     </div>
+
+                    <Grid container spacing={2}>
+                        <GridArray Class="F" SeatName="Test" Seats={new Array(props.Seats.noFirstSeats).fill(props.Seats.AvailF)}>
+                        </GridArray>
+                    </Grid>
                 </div>
                 <br />
                 <div className="form-group row ">
@@ -100,7 +129,7 @@ const MM = (props) => (
 const Flight = (props) => (
 
 
-    
+
     <tr >
         <td>{props.flight.FlightNumber}</td>
         <td>{props.flight.toAir}</td>
@@ -110,7 +139,7 @@ const Flight = (props) => (
 
 
         <td>
-        <IconButton style={{ color: "white", fontSize: 18 }} onClick={() => { props.FlightDetails(props.flight.FlightNumber) }}>Details &nbsp; <InfoIcon style={{ color: "white" }}></InfoIcon></IconButton>
+            <IconButton style={{ color: "white", fontSize: 18 }} onClick={() => { props.FlightDetails(props.flight.FlightNumber) }}>Details &nbsp; <InfoIcon style={{ color: "white" }}></InfoIcon></IconButton>
 
         </td>
 
@@ -128,8 +157,8 @@ const showFlight = (props) => (
 
 class Flights extends Component {
 
-    
-    
+
+
     constructor(props) {
         super(props);
         //const [open, setOpen] = React.useState(false);
@@ -144,6 +173,7 @@ class Flights extends Component {
         this.onChangeChildE = this.onChangeChildE.bind(this);
         this.onChangeChildF = this.onChangeChildF.bind(this);
         this.onChangeChildB = this.onChangeChildB.bind(this);
+        this.onCounter = this.onCounter.bind(this);
         this.submitModal = this.submitModal.bind(this);
 
 
@@ -160,7 +190,10 @@ class Flights extends Component {
             arrTime: '',
             NumPass: '',
             CabinClass: '',
-
+        
+            AvailE: 0,
+            AvailB: 0,
+            AvailF: 0,
 
             AdultE: 0,
             AdultB: 0,
@@ -169,9 +202,9 @@ class Flights extends Component {
             ChildB: 0,
             ChildF: 0,
 
-            noEconomySeats:  0,
+            noEconomySeats: 0,
             noBusinessSeats: 0,
-            noFirstSeats:    0,
+            noFirstSeats: 0,
 
 
         };
@@ -181,6 +214,12 @@ class Flights extends Component {
         this.setState({
             show: !this.state.show,
             modalFlightNumber: id,
+        })
+    }
+
+    onCounter() {
+        this.setState({
+            counter: 0
         })
     }
 
@@ -235,11 +274,21 @@ class Flights extends Component {
             noBusinessSeats: this.state.noBusinessSeats,
             noFirstSeats: this.state.noFirstSeats,
 
+            AvailE: this.state.AvailE,
+            AvailF: this.state.AvailF,
+            AvailB: this.state.AvailB,
+
             totalPrice: 0,
-            Departure:'',
-            Arrival:'',
-            DepartureTime:'',
-            ArrivalTime:''
+            Departure: '',
+            Arrival: '',
+            DepartureTime: '',
+            ArrivalTime: '',
+
+            SeatsE: '',
+            SeatsB: '',
+            SeatsF: '',
+
+            ReservedSeats: '',
         }
         const x = {
             FlightNumber: this.state.modalFlightNumber,
@@ -253,28 +302,88 @@ class Flights extends Component {
                 const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
                 const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
                 const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
-                
+
                 const total = pe + pb + pf;
                 request.totalPrice = total;
-                request.Departure=res.data.Departure;
-                request.Arrival=res.data.Arrival;
-                request.DepartureTime=res.data.DepartureTime;
-                request.ArrivalTime=res.data.ArrivalTime;
-                if(total == 0)
-                        {
-                            alert("You have to Book at least 1 Seat!");
-                            return;
-                        }
-                        
-                if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
+                request.Departure = res.data.Departure;
+                request.Arrival = res.data.Arrival;
+                request.DepartureTime = res.data.DepartureTime;
+                request.ArrivalTime = res.data.ArrivalTime;
+
+                request.AvailE = res.data.AE;
+                request.AvailB = res.data.AB;
+                request.AvailF = res.data.AF;
+
+                request.noEconomySeats = res.data.noEconomySeats;
+                request.noBusinessSeats = res.data.noBusinessSeats;
+                request.noFirstSeats = res.data.noFirstSeats;
+
+                console.log("ASDFASDFASDFASDF");
+                console.log(res.data.noFirstSeats)
+                if (total == 0) {
+                    alert("You have to Book at least 1 Seat!");
+                    return;
+                }
+
+
+                if (window.confirm("The total price is :" + total + "$\n" + 'Are you sure you want to book this flight? ')) {
                     if (ae > -1 && ab > -1 && af > -1) {
-                        console.log(request)
-                        
+
+                        var passengersE = (Number(request.AdultE) + Number(request.ChildE));
+                        var passengersB = (Number(request.AdultB) + Number(request.ChildB));
+                        var passengersF = (Number(request.AdultF) + Number(request.ChildF));
+
+                        var beginE = Number(request.noEconomySeats) - Number(request.AvailE);
+                        var beginB = Number(request.noBusinessSeats) - Number(request.AvailB);
+                        var beginF = Number(request.noFirstSeats) - Number(request.AvailF);
+
+                        var arrE = [];
+                        var arrF = [];
+                        var arrB = [];
+
+
+                        console.log(beginF);
+
+                        console.log(request.AvailE);
+                        console.log(request.AvailB);
+                        console.log(request.AvailF);
+
+                        for (let i = beginE+1; i <= beginE + passengersE; i++)
+                            arrE.push("E" + i);
+
+                        for (let i = beginB+1; i <= beginB + passengersB; i++)
+                            arrB.push("B" + i);
+
+                        for (let i = beginF+1; i <= beginF + passengersF; i++)
+                            arrF.push("F" + i);
+
+                        request.SeatsE = arrE;
+                        request.SeatsB = arrB;
+                        request.SeatsF = arrF;
+
+
+                        console.log(arrE);
+                        console.log(arrF);
+                        console.log(arrB);
+
+                        var SeatsArrayE = arrE;
+                        var SeatsArrayB = arrB;
+                        var SeatsArrayF = arrF;
+
+                        request.ReservedSeatsE = SeatsArrayE.toString(); 
+                        request.ReservedSeatsB = SeatsArrayB.toString(); 
+                        request.ReservedSeatsF = SeatsArrayF.toString(); 
+
                         axios.post('http://localhost:8000/ticket/book', request)
                             .then((response) => {
-                                if (response) {alert("Flight Booked Successfuly");
+
+                                
+
+                                if (response) {alert("Flight Booked Successfuly" + " Seats Economy : " + arrE + " Seats Business : " + arrB+ " Seats First : " + arrF);
                                 window.location = '/user/all_flights'
-                            }
+                        }
+
+
                                 else alert("blabizo");
 
                             }, (error) => {
@@ -379,7 +488,7 @@ class Flights extends Component {
                     </form>
                 </div>
                 <br />
-                <MM FlightNumber={currentFlight.FlightNumber} handleModal={this.handleModal} Seats={{
+                <MM counter={this.state.counter} onCounter={this.onCounter} FlightNumber={currentFlight.FlightNumber} handleModal={this.handleModal} Seats={{
                     AdultE: this.state.AdultE,
                     AdultB: this.state.AdultB,
                     AdultF: this.state.AdultF,
@@ -387,9 +496,13 @@ class Flights extends Component {
                     ChildB: this.state.ChildB,
                     ChildF: this.state.ChildF,
 
-                    noEconomySeats:  currentFlight.noEconomySeats,
+                    AvailE: currentFlight.AvailE,
+                    AvailB: currentFlight.AvailB,
+                    AvailF: currentFlight.AvailF,
+
+                    noEconomySeats: currentFlight.noEconomySeats,
                     noBusinessSeats: currentFlight.noBusinessSeats,
-                    noFirstSeats:    currentFlight.noFirstSeats,
+                    noFirstSeats: currentFlight.noFirstSeats,
 
                 }} show={this.state.show} func={{
                     onChangeAdultE: this.onChangeAdultE,
@@ -438,7 +551,7 @@ class Flights extends Component {
                                     <Nav.Link href="/user/search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
                                     <Nav.Link href="/user/all_flights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
                                     <Nav.Link href="/user/reserve"><i className="fa fa-clipboard fa-lg"></i> My Flights</Nav.Link>
-                                    
+
                                     <Nav.Link href="/logIn" onClick={() => {
                                         localStorage.removeItem("token");
                                         localStorage.removeItem("Email");

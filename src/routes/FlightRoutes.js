@@ -55,6 +55,10 @@ FlightRouter.post('/av',(req,res)=>{
             Arrival:result[0].fromAir,
             DepartureTime:result[0].depTime,
             ArrivalTime:result[0].arrTime,
+
+            noEconomySeats:result[0].noEconomySeats,
+            noBusinessSeats:result[0].noBusinessSeats,
+            noFirstSeats:result[0].noFirstSeats,
         }
         console.log(response);
         //console.log(response);

@@ -24,7 +24,12 @@ TicketRouter.post('/book' , (req,res)=>{
         Arrival:req.body.Arrival,
         DepartureTime:req.body.DepartureTime,
         ArrivalTime:req.body.ArrivalTime,
+
+        ReservedSeatsE: req.body.ReservedSeatsE,
+        ReservedSeatsB: req.body.ReservedSeatsB,
+        ReservedSeatsF: req.body.ReservedSeatsF,
     });
+    console.log(req.body.ReservedSeats);
     console.log(req.body);
     console.log(new_ticket)
     new_ticket.save()
