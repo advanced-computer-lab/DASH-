@@ -145,6 +145,9 @@ const Flight = (props) => (
         
 
 
+
+
+
         <td>
 
             <IconButton style={{ color: "white", fontSize: 18 }} onClick={() => { props.FlightDetails(props.flight.FlightNumber) }}>Details &nbsp; <InfoIcon style={{ color: "white" }}></InfoIcon></IconButton>
