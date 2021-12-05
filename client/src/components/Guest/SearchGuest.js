@@ -112,8 +112,8 @@ class SearchGuest extends Component {
             AvailE: '',
             AvailB: '',
             AvailF: '',
-            PriceFrom : 0 ,
-            PriceTo : 10000,
+            PriceFrom : '' ,
+            PriceTo : '',
 
             AdultE: '',
             AdultB: '',

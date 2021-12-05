@@ -106,12 +106,18 @@ exports.getFlightbyNumb = (req, res) => {
   if (attrib.AvailB.length != 0)
     fil += '"AvailB" : ' + '{' + ' "$gte" :'+ attrib.AvailB  + '}' +( (attrib.AvailF.length!=0) ||(attrib.PriceFrom.length != 0) ||(attrib.PriceTo.length != 0) ? "," : "");
   if (attrib.AvailF.length != 0)
-    fil += '"AvailF" : ' + '{' + '"$gte" :' +attrib.AvailF + '}' + ((attrib.PriceFrom.length != 0) ||(attrib.PriceTo.length != 0)) ? "," :""  ;  
-  if((attrib.PriceFrom.length != 0 ) || (attrib.PriceTo.length != 0) )
+    fil += '"AvailF" : ' + '{' + '"$gte" :' +attrib.AvailF + '}' + ((attrib.PriceFrom.length != 0) ||(attrib.PriceTo.length != 0)) ? "," : ""  ;  
+  if((attrib.PriceFrom.length != 0 ) && (attrib.PriceTo.length != 0) )
     fil += '"priceEconomy" :' + '{' + '"$gte" :' + attrib.PriceFrom +"," +'"$lte":'+attrib.PriceTo +  '}'
+  if((attrib.PriceFrom.length != 0 ) && (attrib.PriceTo.length == 0) )
+    fil += '"priceEconomy" :' + '{' + '"$gte" :' + attrib.PriceFrom + '}'
+  if((attrib.PriceFrom.length == 0 ) && (attrib.PriceTo.length != 0) )
+    fil += '"priceEconomy" :' + '{' + '"$lte" :' + attrib.PriceTo + '}'
   
   
+ console.log(fil)
   var filterObj = JSON.parse('{' + fil + '}');
+  console.log(filterObj)
   
 
 

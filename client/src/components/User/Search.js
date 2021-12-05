@@ -201,8 +201,8 @@ class SearchUser extends Component {
             AvailE: '',
             AvailB: '',
             AvailF: '',
-            PriceFrom : 0 ,
-            PriceTo : 10000,
+            PriceFrom : '' ,
+            PriceTo : '',
             
 
             showFlight: [],
@@ -212,9 +212,9 @@ class SearchUser extends Component {
 
             modalFlightNumber: '',
         
-            AvailE: 0,
-            AvailB: 0,
-            AvailF: 0,
+            AvailE: '',
+            AvailB: '',
+            AvailF: '',
 
             AdultE: 0,
             AdultB: 0,
