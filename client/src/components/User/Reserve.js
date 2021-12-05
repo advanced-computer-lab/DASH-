@@ -20,9 +20,9 @@ const Flight = (props) => (
         <td>{props.ticket.Arrival}</td>
         <td>{props.ticket.DepartureTime}</td>
         <td>{props.ticket.ArrivalTime}</td>
-        <td>{props.ticket.BusinessSeatAdult}  {props.ticket.ReservedSeatsB?(props.ticket.ReservedSeatsB):""}</td>
-        <td>{props.ticket.EconomySeatsAdult} {props.ticket.ReservedSeatsE?(props.ticket.ReservedSeatsE):""}</td>
-        <td>{props.ticket.FirstSeatAdult}  {props.ticket.ReservedSeatsF?(props.ticket.ReservedSeatsF):""}</td>
+        <td>{props.ticket.BusinessSeatAdult + props.ticket.BusinessSeatChild}  {props.ticket.ReservedSeatsB?(props.ticket.ReservedSeatsB):""}</td>
+        <td>{props.ticket.EconomySeatsAdult + props.ticket.EconomySeatsChild} {props.ticket.ReservedSeatsE?(props.ticket.ReservedSeatsE):""}</td>
+        <td>{props.ticket.FirstSeatAdult + props.ticket.FirstSeatChild}  {props.ticket.ReservedSeatsF?(props.ticket.ReservedSeatsF):""}</td>
         <td>{props.ticket.Price}</td>
 
         {/* <td>{props.flight.FlightNumber}</td>
