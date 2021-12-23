@@ -13,13 +13,23 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, CardActions } from '@mui/material';
 import CLOUDS from 'vanta/dist/vanta.clouds.min'
+
 import * as THREE from 'three'
 
 
 
 
 
+const styles = {
+  media: {
+    objectFit: 'cover',
+     
+  }
+};
+
 class Home extends Component {
+  
+
   constructor(props) {
     super(props);
     this.vantaRef = React.createRef()
@@ -113,32 +123,34 @@ class Home extends Component {
 
 
           <br />
+        
+          <div style = {{ display: 'flex', justifyContent: 'center', alignItems: 'center',height : "90vh"}} >
 
-          <div style = {{height : "90vh"}} >
-
-          <Card className="card" sx={{ maxWidth: 400 }}>
+          <Card  style = {{borderRadius: "10px",backgroundColor: 'rgba(255,255,255,0.5)'}} sx={{ maxWidth: 300 }}>
             <CardActionArea >
               <CardMedia
                 component="img"
-                height="150"
-                image="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+                style = {{ marginLeft:"50px",height:"200px" , width:"200px" }}
+                image="https://devshift.biz/wp-content/uploads/2017/04/profile-icon-png-898-450x450.png"
+                
+                
                 
                 
               />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+              <CardContent >
+                <Typography gutterBottom variant="h6" component="div">
                   First Name : {this.state.FirstN}
                 </Typography>
 
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography gutterBottom variant="h6" component="div">
                   Last Name : {this.state.LastN}
                 </Typography>
 
-                <Typography gutterBottom variant="h5" component="div">
-                  Email : {localStorage.getItem("Email")}
+                <Typography gutterBottom variant="h6" component="div">
+                 {localStorage.getItem("Email")}
                 </Typography>
 
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography gutterBottom variant="h6" component="div">
                   Passport Number : {this.state.Passport}
                 </Typography>
 
@@ -146,12 +158,12 @@ class Home extends Component {
 
               </CardContent>
             </CardActionArea>
-            <CardActions>
-              <Button href='/user/Edit' size="small" className="btn btn-dark" >
+            <CardActions >
+              <Button href='/user/Edit' size="sm" className="btn btn-dark" >
                 Edit my Info <EditIcon></EditIcon>
               </Button>
               <br />
-              <Button href='/user/ChangePassword' size="small" className="btn btn-dark" >Change Pass<EditIcon></EditIcon>
+              <Button href='/user/ChangePassword' size="sm" className="btn btn-dark" >Change Pass<EditIcon></EditIcon>
               </Button>
             </CardActions>
           </Card>
@@ -161,6 +173,9 @@ class Home extends Component {
         
 
       </div>
+      
+
+      
       </body>
 
     )
