@@ -57,7 +57,7 @@ class GetFlights extends Component {
             .then((res) => {
                 this.setState({ flights: res.data });
 
-            }) 
+            })
             .catch((err) => {
                 console.log(err);
 
@@ -109,6 +109,13 @@ class GetFlights extends Component {
                                     <Nav.Link href="/add"><i class="fa fa-fighter-jet fa-lg"></i> Add flight </Nav.Link>
                                     <Nav.Link href="./search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
                                     <Nav.Link href="/getFlights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+
+                                    <Nav.Link href="/logIn" onClick={() => {
+                                        localStorage.removeItem("token");
+                                        localStorage.removeItem("Email");
+                                        localStorage.removeItem("Type");
+                                    }} className="position-absolute end-0"><i className="fa fa-sign-out fa-lg"></i> Logout</Nav.Link>
+
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>

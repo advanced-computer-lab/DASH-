@@ -21,17 +21,26 @@ class SignUp extends Component {
         this.onChangePassport = this.onChangePassport.bind(this);
         this.onChangeDateOB = this.onChangeDateOB.bind(this);
         this.submit = this.submit.bind(this);
-
+        
+        
+        this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangeAddress = this.onChangeAddress.bind(this);
+        this.onChangeCountryCode = this.onChangeCountryCode.bind(this);
+        this.onChangeTelephone = this.onChangeTelephone.bind(this);
 
         this.state = {
 
             FirstName: '',
             LastName: '',
             EMail: '',
+            Username: '',
             Password: '',
             Passport: '',
             DateOB: '',
 
+            Telephone: '',
+            Address: '',
+            CountryCode: '',
 
             repeatPass: ""
 
@@ -58,18 +67,47 @@ class SignUp extends Component {
         });
 
     }
+    onChangeUsername(e) {
+        this.setState({
+            Username: e.target.value
+        });
+
+    }
     onChangePassword(e) {
         this.setState({
             Password: e.target.value
         });
 
     }
+
     onChangeRpassword(e) {
         this.setState({
             repeatPass: e.target.value
         });
 
     }
+
+    onChangeTelephone(e) {
+        this.setState({
+            Telephone: e.target.value
+        });
+
+    }
+
+    onChangeCountryCode(e) {
+        this.setState({
+            CountryCode: e.target.value
+        });
+
+    }
+
+    onChangeAddress(e) {
+        this.setState({
+            Address: e.target.value
+        });
+
+    }
+
     onChangeDateOB(e) {
         this.setState({
             DateOB: e.target.value
@@ -83,15 +121,21 @@ class SignUp extends Component {
 
     }
 
-    submit(e) { 
+    submit(e) {
         e.preventDefault();
         const user = {
             FirstName: this.state.FirstName,
             LastName: this.state.LastName,
             Password: this.state.Password,
             Email: this.state.EMail,
+            Username: this.state.Username,
+
+            Telephone: this.state.Telephone,
+            Address: this.state.Address,
+            CountryCode: this.state.CountryCode,
+
             Passportnumber: this.state.Passport,
-            Type: true ,
+            Type: true,
             DateOB: this.state.DateOB,
         };
         // console.log(this.state.Password, "::::", this.state.repeatPass);
@@ -104,37 +148,53 @@ class SignUp extends Component {
             Email: this.state.EMail
 
         }
-        axios.post('http://localhost:8000/user/FindEmail', ma)
+
+
+        const us = {
+            Username: this.state.Username
+
+        }
+
+        axios.post('http://localhost:8000/user/FindUsername', us)
         .then(res => {
             console.log(res.data)
-            if (res.data == 0) {
-                axios.post('http://localhost:8000/user/register', user)
-            .then((res) =>alert(res.data),
-               window.location = '/login',
+            if (res.data != 0) {
+                alert("User Name already exists choose another one")
+                window.location = '/sign';
+                return
+            }
+        })
+
+        axios.post('http://localhost:8000/user/FindEmail', ma)
+            .then(res => {
+                if (res.data == 0) {
+                    axios.post('http://localhost:8000/user/register', user)
+                        .then((res) => alert(res.data),
+                            window.location = '/login',
 
 
 
 
-            ).catch((err1) => {
-                alert("error happened");
-                window.location = "/";
+                        ).catch((err1) => {
+                            alert("error happened");
+                            window.location = "/";
+
+                        })
+
+
+                }
+                else {
+                    alert("email already exists choose another one")
+                    window.location = '/sign';
+                }
+
+
+
 
             })
 
 
-            }
-            else {
-                alert("email is already exists choose another one")
-                window.location = '/sign';
-            }
 
-
-
-
-        })
-
-
-        
 
 
 
@@ -150,7 +210,7 @@ class SignUp extends Component {
 
 
             <div className="container-fluid bodySign ">
-               
+
                 <div className="row">
                     <div className="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
                         <div className="card card0 border-0">
@@ -189,23 +249,43 @@ class SignUp extends Component {
 
 
                                             <div className="row px-3"> <label className="mb-1">
-                                                <h6 className="mb-0 text-sm">Email Address *</h6>
-                                            </label> <input className="mb-4" required="true" type="text" name="email" placeholder="Enter a valid email address" value={this.state.EMail} onChange={this.onChangeMail} /> </div>
+                                                <h6 className="mb-0 text-sm">User Name *</h6>
+                                            </label> <input className="mb-4" required="true" type="text" name="username" placeholder="Enter a valid username" value={this.state.Username} onChange={this.onChangeUsername} /> </div>
+                                            
+                                            
+                                            <h6 className="mb-0 text-sm">Email Address *</h6>
+                                            <input className="mb-4" required="true" type="text" name="email" placeholder="Enter a valid email address" value={this.state.EMail} onChange={this.onChangeMail} />
+
+
                                             <div className="row px-3"> <label className="mb-1">
                                                 <h6 className="mb-0 text-sm">Password *</h6>
                                             </label> <input className="mb-4" required="true" type="password" name="password" placeholder="Enter password" value={this.state.Password} onChange={this.onChangePassword} /> </div>
 
                                             <div className="row px-3"> <label className="mb-1">
                                                 <h6 className="mb-0 text-sm">Repeat Password *</h6>
-                                            </label> <input className="mb-4" type="password" required="true" name="password" placeholder="Enter password" value={this.state.repeatPass} onChange={this.onChangeRpassword} /> </div>
+                                            </label> <input className="mb-4" type="password" required="true" name="password" placeholder="Enter the same password again" value={this.state.repeatPass} onChange={this.onChangeRpassword} /> </div>
 
                                             <div className="row px-3"> <label className="mb-1">
                                                 <h6 className="mb-0 text-sm">Passport Number *</h6>
                                             </label> <input className="mb-4" type="number" required="true" name="email" placeholder="Enter a valid email address" value={this.state.Passport} onChange={this.onChangePassport} />  </div>
 
                                             <div className="row px-3"> <label className="mb-1">
+                                                <h6 className="mb-0 text-sm">Country Code</h6>
+                                            </label> 
+                                            <input className="mb-4"ype="number" name="Country Code"  value={this.state.CountryCode} onChange={this.onChangeCountryCode} /> </div>
+
+                                            <div className="row px-3"> <label className="mb-1">
+                                                <h6 className="mb-0 text-sm">Telephone</h6>
+                                            </label> <input className="mb-4" ype="number" name="Telephone"  value={this.state.Telephone} onChange={this.onChangeTelephone} /> </div>
+
+                                            <div className="row px-3"> <label className="mb-1">
+                                                <h6 className="mb-0 text-sm">Home Address</h6>
+                                            </label> <textarea className="mb-4" type="text" name="Home Address"value={this.state.Address} onChange={this.onChangeAddress} /> </div>
+
+
+                                            <div className="row px-3"> <label className="mb-1">
                                                 <h6 className="mb-0 text-sm">Date Of Birth *</h6>
-                                            </label> <input className="mb-4" type="date" name="email" required="true" placeholder="Enter a valid email address" value={this.state.DateOB} onChange={this.onChangeDateOB} /> </div>
+                                            </label> <input className="mb-4" type="date" name="email" required="true"  value={this.state.DateOB} onChange={this.onChangeDateOB} /> </div>
 
                                             <div className="row px-3">
                                                 <h7 className="col-3">* Required</h7>

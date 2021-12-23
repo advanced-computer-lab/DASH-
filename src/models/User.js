@@ -21,6 +21,27 @@ const userSchema = new Schema({
         required:true,
         unique:true,
     },
+    
+    Username:{
+        type:String,
+        required:true,
+        unique:true,
+    },
+
+    Address:{
+        type:String,
+        
+    },
+
+    CountryCode:{
+        type:String,
+        
+    },
+
+    Telephone:{
+        type:String,
+    },
+
     Passportnumber:{
         type:String,
         required:true,

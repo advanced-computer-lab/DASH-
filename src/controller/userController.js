@@ -89,6 +89,124 @@ exports.findUser = (req, res) => {
 
 
 }
+exports.findUserName = (req, res) => {
+    User.find({ Username: req.body.Username }, function (err, docs) {
+        if (err) { }
+        else {
+            res.send(JSON.stringify(docs.length));
+        }
+    });
+
+
+}
+
+
+exports.SendEmailDetails = (req, res) => {
+
+    var email = req.body.email
+    var flightNumber = req.body.flightNumber
+    var TicketNumber = req.body.TicketNumber
+    var amount = req.body.Price;
+    var SeatsE = JSON.parse(req.body.SeatsE);
+    var SeatsB = JSON.parse(req.body.SeatsB);
+    var SeatsF = JSON.parse(req.body.SeatsF);
+
+    const nodemailer = require('nodemailer');
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'TeamDASHgedan@gmail.com',
+            pass: 'Dash1234'
+        }
+    });
+
+    console.log(SeatsE)
+    console.log(SeatsF)
+    console.log(SeatsB)
+
+    const mailOptions = {
+        from: 'TeamDASHgedan@gmail.com',
+        to: email,
+        subject: `Flight ${flightNumber} Details`,
+        text: 'You\'ve Reserved flight Number: ' + flightNumber + " \nTicket Number: " + TicketNumber + "\nTotal Ticket's Price of " + amount + "$" +
+            "\n\nThe Following Seats: are Reserved:" + "\n\n" +
+            SeatsE.map(seat => {
+                return `Seat: ${seat} in Economy Class\n`
+            })
+
+            + SeatsB.map(seat => {
+                return `Seat: ${seat} in Business Class\n`
+            })
+
+            + SeatsF.map(seat => {
+                return `Seat: ${seat} in First Class\n`
+            })
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+
+        }
+    });
+
+};
+
+exports.SendEmailPay = (req, res) => {
+
+    var email = req.body.token.email
+    var last4 = req.body.token.card.last4
+    var flightNumber = req.body.flightNumber
+    var amount = req.body.amount
+    var SeatsE = req.body.SeatsE
+    var SeatsB = req.body.SeatsB
+    var SeatsF = req.body.SeatsF
+
+    const nodemailer = require('nodemailer');
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'TeamDASHgedan@gmail.com',
+            pass: 'Dash1234'
+        }
+    });
+
+    console.log(SeatsE)
+    console.log(SeatsF)
+    console.log(SeatsB)
+
+    const mailOptions = {
+        from: 'TeamDASHgedan@gmail.com',
+        to: email,
+        subject: 'Flight Reservation',
+        text: 'You\'ve paid for flight Number: ' + flightNumber + " an Amount of " + amount + "$ with card ending with XXX XXX XXX " + last4 +
+            "The Following Seats:" + "\n\n" +
+            SeatsE.map(seat => {
+                return `Seat: ${seat} in Economy Class\n`
+            })
+            + SeatsB.map(seat => {
+                return `Seat: ${seat} in Business Class\n`
+            })
+            + SeatsF.map(seat => {
+                return `Seat: ${seat} in First Class\n`
+            })
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+
+        }
+    });
+
+};
+
 
 exports.SendEmail = (req, res) => {
 
@@ -111,7 +229,7 @@ exports.SendEmail = (req, res) => {
         from: 'TeamDASHgedan@gmail.com',
         to: email,
         subject: 'Flight Cancellation',
-        text: 'You\'ve cancled flight Number: ' + flightID + "\nTicket Number: " + ticketNumber + "\nAn Amount of  " + price + " will be refunded"
+        text: 'You\'ve canceled flight Number: ' + flightID + "\nTicket Number: " + ticketNumber + "\nAn Amount of  " + price + "$ will be refunded"
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -139,26 +257,24 @@ exports.findUserInfo = (req, res) => {
 
 
 exports.EditUser = (req, res) => {
-    var attrib = { FirstName: req.body.FirstName, LastName: req.body.LastName, Email: req.body.Email, Passportnumber: req.body.Passportnumber };
-    var ad = "";
-    if (attrib.FirstName.length != 0) {
-        ad += '"FirstName":' + '"' + attrib.FirstName + '"' + ((attrib.LastName.length != 0) || (attrib.Email.length != 0) || (attrib.Passportnumber.length != 0) ? "," : "");
-    }
-    if (attrib.LastName.length != 0) {
-        ad += '"LastName":' + '"' + attrib.LastName + '"' + ((attrib.Email.length != 0) || (attrib.Passportnumber.length != 0) ? "," : "");
-    }
-    if (attrib.Email.length != 0) {
-        ad += '"Email" : ' + '"' + attrib.Email + '"';
+    var attrib = { FirstName: req.body.FirstName, Username: req.body.Username, Address: req.body.Address, Telephone: req.body.Telephone, CountryCode: req.body.CountryCode, LastName: req.body.LastName, Email: req.body.Email, Passportnumber: req.body.Passportnumber };
 
-    }
-    console.log(ad);
 
-    var filterObj = JSON.parse('{' + ad + '}');
-    console.log(filterObj);
-    console.log(req.body.UserMail);
 
-    User.findOneAndUpdate({ Email: req.body.UserMail }, { $set: filterObj }, { new: true }, (err, doc) => {
-        console.log(doc);
+    User.findOne({ Email: req.body.UserMail }, (err, docs) => {
+
+        docs["FirstName"] = attrib.FirstName
+        docs["LastName"] = attrib.LastName
+
+        docs["Email"] = attrib.Email
+        docs["Username"] = attrib.Username
+        docs["Address"] = attrib.Address
+        docs["Telephone"] = attrib.Telephone
+        docs["CountryCode"] = attrib.CountryCode
+
+        docs["Passportnumber"] = attrib.Passportnumber
+
+        docs.save();
 
     })
 

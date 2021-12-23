@@ -132,7 +132,7 @@ app.use('/Flight' , FlightRouter);
 
 app.use('/user',userRouter);
 app.use('/ticket',ticketRouter);
-// app.post('/logIn',userController.logIn);
+//app.post('/logIn',userController.logIn);
 // app.post('/signUp',userController.signUp);
 // app.post('user/find',verify,userController.findUser);
 // app.get('user/getFlights' ,verify,  flightController.getAllFlights);

@@ -5,6 +5,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import EditIcon from "@mui/icons-material/Edit"
 import 'font-awesome/css/font-awesome.min.css';
 import LoginIcon from '@mui/icons-material/Login';
+import { CardMedia } from '@mui/material';
 
 
 class HomeGuest extends Component {
@@ -56,7 +57,12 @@ class HomeGuest extends Component {
 
 
 
+
+
+
                     </div>
+
+                    
                 </div>
 
 
