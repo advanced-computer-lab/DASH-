@@ -14,18 +14,66 @@ const auth = require("../middleware/auth");
 
 //register function
 
+
+userRouter.post('/ChangePassword', (req, res) => {
+
+    const { Password, Email } = req.body;
+    console.log(`OldPassword: ${Password}`)
+
+    User.findOne({ Email: Email })
+        .then(user => {
+
+            //create salt and hash 
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(Password, salt, (err, hash) => {
+                    if (err) throw err;
+                    user["Password"] = hash;
+                    user.save()
+                        .then(user => {
+
+                            console.log(`New Password: ${hash}`)
+                            jwt.sign(
+                                { Email: user.Email },
+                                config.get("jwtSecret"),
+                                { expiresIn: 3600 },
+                                (err, token) => {
+                                    if (err) throw err;
+                                    res.json({
+
+                                        token: token,
+                                        user: {
+                                            id: user.id,
+                                            Email: user.Email
+                                        }
+                                    }
+                                    )
+                                }
+                            )
+
+                        })
+                })
+            })
+        })
+}
+
+)
+
 userRouter.post('/register', (req, res) => {
-    const { FirstName, LastName, Password, Email, Passportnumber, Type, DateOB } = req.body;
+    const { FirstName, LastName, Password, Email, Username, CountryCode, Address, Telephone, Passportnumber, Type, DateOB } = req.body;
 
     User.findOne({ Email: Email })
         .then(user => {
             if (user) return res.status(400).json({ msg: "Email already exists" });
-
+            console.log(Username)
             const new_user = new User({
                 FirstName,
                 LastName,
                 Password,
                 Email,
+                Username,
+                Address,
+                CountryCode,
+                Telephone,
                 Passportnumber,
                 Type,
                 DateOB
@@ -65,6 +113,8 @@ userRouter.post('/register', (req, res) => {
 
 
 
+
+
 //login
 
 userRouter.post('/logIn', (req, res) => {
@@ -77,34 +127,34 @@ userRouter.post('/logIn', (req, res) => {
     // const Type=req.body.Type;
     // const DateOB=req.body.DateOB;
 
+
     User.findOne({ Email: Email })
         .then(user => {
             if (!user) return res.json({ msg: "Email does not exists" });
 
-            bcrypt.compare(Password , user.Password)
-            .then(isMatch=>{
-                if(!isMatch) return res.json({msg:"Invalid Password"});
+            bcrypt.compare(Password, user.Password)
+                .then(isMatch => {
+                    if (!isMatch) return res.json({ msg: "Invalid Password" });
+                    jwt.sign(
+                        { Email: user.Email },
+                        config.get("jwtSecret"),
+                        { expiresIn: '10s' },
+                        (err, token) => {
+                            if (err) throw err;
+                            res.json({
 
-                jwt.sign(
-                    { Email: user.Email },  
-                    config.get("jwtSecret"),
-                    { expiresIn: 3600 },
-                    (err, token) => {
-                        if (err) throw err;
-                        res.json({
-
-                            token: token,
-                            user: {
-                                id: user.id,
-                                Email: user.Email
+                                token: token,
+                                user: {
+                                    id: user.id,
+                                    Email: user.Email
+                                }
                             }
+                            )
                         }
-                        )
-                    }
-                )
+                    )
 
 
-            })
+                })
 
         })
 
@@ -117,20 +167,20 @@ userRouter.post('/logIn', (req, res) => {
 //     .then(user =>res.json("blabizo"));
 // })
 
-userRouter.post('/type',(req,res)=>{
-    User.find({Email:req.body.Email},function(err,docs){
-        if(err){throw err}
-        else{
-            res.send(JSON.stringify(docs[0].Type));            
+userRouter.post('/type', (req, res) => {
+    User.find({ Email: req.body.Email }, function (err, docs) {
+        if (err) { throw err }
+        else {
+            res.send(JSON.stringify(docs[0].Type));
         }
     })
     // .then(user=>{
     //     if(user.Type){
     //         res.send({msg:"User"});
-            
+
     //     }
     // }
-    
+
     // User.find({ Email: req.body.Email }, function (err, docs) {
     //     if (err) { }
     //     else {
@@ -148,10 +198,12 @@ userRouter.post('/type',(req,res)=>{
 
 
 
-userRouter.post('/EditUser' ,userController.EditUser ) ;
-userRouter.post('/FindEmail' , userController.findUser);
-userRouter.post('/FindInfo' , userController.findUserInfo);
-userRouter.post('/SendEmail',userController.SendEmail)
+userRouter.post('/EditUser', userController.EditUser);
+userRouter.post('/FindEmail', userController.findUser);
+userRouter.post('/FindUsername', userController.findUserName);
+userRouter.post('/FindInfo', userController.findUserInfo);
+userRouter.post('/SendEmail', userController.SendEmail)
+userRouter.post('/SendEmailDetails', userController.SendEmailDetails)
 
 
 
