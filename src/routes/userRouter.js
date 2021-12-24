@@ -204,6 +204,7 @@ userRouter.post('/FindUsername', userController.findUserName);
 userRouter.post('/FindInfo', userController.findUserInfo);
 userRouter.post('/SendEmail', userController.SendEmail)
 userRouter.post('/SendEmailDetails', userController.SendEmailDetails)
+userRouter.post('/SendEmailPay', userController.SendEmailPay)
 
 
 

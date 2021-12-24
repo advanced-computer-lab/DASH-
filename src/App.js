@@ -163,10 +163,13 @@ app.listen(port, () => {
     console.log("ASDFASDFASDFASDFASDFASDFAF");
     console.log(flightNum);
     console.log(userEmail);
-
-
-
+    
+    
+    
+    console.log("IDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
+    console.log(req.body.ticketId)
     Ticket.findOneAndDelete({_id: req.body.ticketId}, function (err, docs) {
+        console.log("")
         console.log(docs);
         const passengerE =  Number(docs.EconomySeatsAdult) + Number(docs.EconomySeatsChild);
         const passengerB =  Number(docs.BusinessSeatAdult) +  Number(docs.BusinessSeatChild);

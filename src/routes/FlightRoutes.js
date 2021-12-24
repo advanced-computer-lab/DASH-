@@ -41,8 +41,9 @@ FlightRouter.post('/av',(req,res)=>{
     Flight.find({FlightNumber:req.body.FlightNumber})
     .then(result=>{
         
-        //console.log(req.body);
-       //console.log(result);
+        console.log(req.body);
+        console.log("abdoooo")
+       console.log(result);
         // const x = JSON.stringify(result, null, 4)
         const response = {
             AE:result[0].AvailE,

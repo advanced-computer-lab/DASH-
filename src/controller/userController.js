@@ -195,7 +195,7 @@ exports.SendEmailPay = (req, res) => {
                 return `Seat: ${seat} in First Class\n`
             })
     };
-
+    console.log(email)
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);
