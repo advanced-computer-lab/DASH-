@@ -128,7 +128,7 @@ userRouter.post('/logIn', (req, res) => {
                             Username : user.Username
                         },
                         process.env.ACCESS_TOKEN_SECRET,
-                        { expiresIn: '1000s' },
+                        { expiresIn: '4000s' },
                         (err, token) => {
                             if (err) throw err;
                             res.json({
@@ -197,6 +197,7 @@ userRouter.post('/FindUsername', userController.findUserName);
 userRouter.post('/FindInfo',auth, userController.findUserInfo);
 userRouter.post('/SendEmail', auth ,userController.SendEmail)
 userRouter.post('/SendEmailDetails', auth , userController.SendEmailDetails)
+userRouter.post('/SendEmailPay', auth , userController.SendEmailPay)
 
 
 

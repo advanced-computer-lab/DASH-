@@ -99,15 +99,19 @@ class GetFlights extends Component {
                 }
             }).then(
                 res => {
+                    console.log(res);
                     if(res.data =="Token is not valid"){
                         alert("Token expired log in again please");
                         window.location="/logIn";
+
                     }
+                   
                 }
             ).catch(err => { console.log(err) });
-            this.setState({
-                flights: this.state.flights.filter(element => element.FlightNumber !== FlightNumber)
-            })
+
+                this.setState({
+                    flights: this.state.flights.filter(element => element.FlightNumber !== FlightNumber)
+                })
         } else {
             // Do nothing!
 

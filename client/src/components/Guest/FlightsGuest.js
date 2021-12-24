@@ -101,16 +101,7 @@ class FlightsGuest extends Component {
 
 
         };
-        axios.get("http://localhost:8000/user/isAuth", {
-            headers: {
-                "x-auth-token": localStorage.getItem("token"),
-            }
-        }).then(res => {
-            if (res.data == "Token is not valid") {
-                alert("Token Expired LogIn Again");
-                window.location = "/logIn";
-            }
-        })
+
     }
 
     handleModal(id) {
@@ -174,14 +165,12 @@ class FlightsGuest extends Component {
 
         axios.post('http://localhost:8000/Flight/av', x, {
             headers: {
-                "x-auth-token": localStorage.getItem("token")
+                "guest" : "guest"
             }
         })
             .then(res => {
-                if (res.data == "Token is not valid") {
-                    alert("Token expired log in again please")
-                    window.location = "/logIn";
-                } else {
+                // if(res.data =="isGuest")
+                 {
 
                     const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
                     const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
@@ -196,14 +185,12 @@ class FlightsGuest extends Component {
                             console.log(request)
                             axios.post('http://localhost:8000/ticket/book', request, {
                                 headers: {
-                                    "x-auth-token": localStorage.getItem("token")
+                                    "guest":"guest"
                                 }
                             })
                                 .then((response) => {
-                                    if(res.data =="Token is not valid"){
-                                        alert("Token expired log in again please");
-                                        window.location="/logIn";
-                                    }else{
+                                    // if(response.data == "isGuest")
+                                    {
                                         if (response) alert("Flight Booked Successfuly");
                                         else alert("error happened");
                                     }
@@ -232,14 +219,12 @@ class FlightsGuest extends Component {
     componentDidMount() {
         axios.get('http://localhost:8000/Flight/getAllFlights', {
             headers: {
-                "x-auth-token": localStorage.getItem("token")
+                "guest":"guest"
             }
         })
             .then((res) => {
-                if (res.data == "Token is not valid") {
-                    alert("Token expired log in again please");
-                    window.location = "/logIn";
-                } else {
+                // if(res.data =="isGuest")
+                {
 
                     this.setState({ flights: res.data });
                 }
@@ -260,14 +245,12 @@ class FlightsGuest extends Component {
         var temp = { FlightNumber: id };
         axios.post('http://localhost:8000/Flight/showFlight', temp, {
             headers: {
-                "x-auth-token": localStorage.getItem("token")
+                "guest":"guest"
             }
         })
             .then(res => {
-                if (res.data == "Token is not valid") {
-                    alert("Token expired log in again please");
-                    window.location = "/logIn";
-                } else {
+                // if(res.data == "isGuest")
+                {
 
                     this.setState({ showFlight: res.data })
                 }

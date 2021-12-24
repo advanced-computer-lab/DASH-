@@ -182,13 +182,16 @@ class FlightAdd extends Component {
                             headers: {
                                 "x-auth-token": localStorage.getItem("token")
                             }
-                        }).then(res => alert("Flight Number added"),
+                        }).then(res => 
+                            console.log("blabizo"),
+                            alert("Flight Number added"),
                             window.location = '/',
 
                         )
 
                     }
                     else {
+                        
                         window.location = '/add';
                         alert("Flight Number already exist");
                     }

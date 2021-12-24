@@ -125,16 +125,7 @@ class SearchGuest extends Component {
 
 
         }
-        axios.get("http://localhost:8000/user/isAuth", {
-            headers: {
-                "x-auth-token": localStorage.getItem("token"),
-            }
-        }).then(res => {
-            if (res.data == "Token is not valid") {
-                alert("Token Expired LogIn Again");
-                window.location = "/logIn";
-            }
-        })
+
     }
 
 
@@ -175,14 +166,12 @@ class SearchGuest extends Component {
 
         axios.post('http://localhost:8000/Flight/av', x, {
             headers: {
-                "x-auth-token": localStorage.getItem("token")
+                "guest":"guest"
             }
         })
             .then(res => {
-                if (res.data == "Token is not valid") {
-                    alert("Token expired log in again please");
-                    window.location = "/logIn";
-                } else {
+                //if(res.data =="guest")
+                {
 
                     const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
                     const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
@@ -197,14 +186,12 @@ class SearchGuest extends Component {
                             console.log(request)
                             axios.post('http://localhost:8000/ticket/book', request,{
                                 headers: {
-                                    "x-auth-token": localStorage.getItem("token")
+                                    "guest":"guest"
                                 }
                             })
                                 .then((response) => {
-                                    if(res.data =="Token is not valid"){
-                                        alert("Token expired log in again please");
-                                        window.location="/logIn";
-                                    }else{
+                                    if(response.data == "guest")
+                                    {
 
                                         if (response) alert("Flight Booked Successfuly");
                                         else alert("Error Happeed");
@@ -351,9 +338,17 @@ class SearchGuest extends Component {
         }
 
 
-        axios.post('http://localhost:8000/Flight/FindFlight', f)
+        axios.post('http://localhost:8000/Flight/FindFlight', f,{
+            headers:{
+                "guest":"guest"
+            }
+        })
             .then(res => {
-                this.setState({ flights: res.data })
+                //if(res.data == "guest")
+                {
+
+                    this.setState({ flights: res.data })
+                } 
 
 
             })
@@ -362,9 +357,17 @@ class SearchGuest extends Component {
     }
     FlightDetails(id) {
         var temp = { FlightNumber: id };
-        axios.post('http://localhost:8000/Flight/showFlight', temp)
+        axios.post('http://localhost:8000/Flight/showFlight', temp ,{
+            headers:{
+                "guest":"guest"
+            }
+        } )
             .then(res => {
-                this.setState({ showFlight: res.data })
+                // if(res.data == "guest")
+                {
+
+                    this.setState({ showFlight: res.data })
+                }
 
 
             })

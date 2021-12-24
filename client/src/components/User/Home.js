@@ -178,45 +178,57 @@ class Home extends Component {
 
           </div>
 
-          <Card className="card" sx={{ maxWidth: 400 }}>
-            <CardActionArea >
-              <CardMedia
-                component="img"
-                height="150"
-                image="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-
-
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  First Name : {this.state.FirstN}
-                </Typography>
-
-                <Typography gutterBottom variant="h5" component="div">
-                  Last Name : {this.state.LastN}
-                </Typography>
-
-                <Typography gutterBottom variant="h5" component="div">
-                  Email : {localStorage.getItem("Email")}
-                </Typography>
-
-                <Typography gutterBottom variant="h5" component="div">
-                  Passport Number : {this.state.Passport}
-                </Typography>
+        
 
 
 
-              </CardContent >
-            </CardActionArea >
-            <CardActions>
-              <Button href='/user/Edit' size="small" className="btn btn-dark" >
-                Edit my Info <EditIcon></EditIcon>
-              </Button>
-              <br />
-              <Button href='/user/ChangePassword' size="small" className="btn btn-dark" >Change Pass<EditIcon></EditIcon>
-              </Button>
-            </CardActions>
-          </Card >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
 
         </div >
 

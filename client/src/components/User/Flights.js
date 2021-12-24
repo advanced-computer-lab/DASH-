@@ -540,7 +540,6 @@ class Flights extends Component {
                     alert("Token Expired LogIn Again");
                     window.location = "/logIn";
                 } else {
-                    alert("token still valid")
                     this.setState({ flights: res.data });
                 }
                 console.log(res);

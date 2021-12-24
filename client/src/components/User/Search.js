@@ -11,8 +11,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 //import "react/popper";
 import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
-import InputRange from 'react-input-range';
-import Slider from '@mui/material/Slider';
+//import InputRange from 'react-input-range';
+
 
 
 

@@ -126,6 +126,11 @@ class Search extends Component {
             dateFlight: this.state.dateFlight,
             arrTime: this.state.arrTime,
             depTime: this.state.depTime,
+            AvailE: "",
+            AvailB: "",
+            AvailF: "",
+            PriceFrom: "",
+            PriceTo: "",
 
         }
 
