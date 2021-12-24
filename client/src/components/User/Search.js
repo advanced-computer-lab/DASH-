@@ -11,8 +11,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 //import "react/popper";
 import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
-import InputRange from 'react-input-range';
-import Slider from '@mui/material/Slider';
+//import InputRange from 'react-input-range';
+
 
 
 
@@ -233,6 +233,17 @@ class SearchUser extends Component {
 
 
         };
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } 
+        })
+
     }
 
 
@@ -290,7 +301,11 @@ class SearchUser extends Component {
             FlightNumber: this.state.modalFlightNumber,
         }
 
-        axios.post('http://localhost:8000/Flight/av', x)
+        axios.post('http://localhost:8000/Flight/av', x, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
                 const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
                 const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
@@ -370,7 +385,11 @@ class SearchUser extends Component {
                         request.ReservedSeatsB = SeatsArrayB.toString();
                         request.ReservedSeatsF = SeatsArrayF.toString();
 
-                        axios.post('http://localhost:8000/ticket/book', request)
+                        axios.post('http://localhost:8000/ticket/book', request, {
+                            headers: {
+                                "x-auth-token": localStorage.getItem("token")
+                            }
+                        })
                             .then((response) => {
                                 if (response) {
                                     alert("Flight Booked Successfuly" + " Seats Economy : " + arrE + " Seats Business : " + arrB + " Seats First : " + arrF)
@@ -514,11 +533,19 @@ class SearchUser extends Component {
 
 
 
-
-
-        axios.post('http://localhost:8000/Flight/FindFlight', f)
+        axios.post('http://localhost:8000/Flight/FindFlight', f, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                this.setState({ flights: res.data })
+                if(res.data =="Token is not valid"){
+                    alert("Token expired log in again please");
+                    window.location="/logIn";
+                }else{
+
+                    this.setState({ flights: res.data })
+                }
 
 
             })
@@ -527,7 +554,11 @@ class SearchUser extends Component {
     }
     FlightDetails(id) {
         var temp = { FlightNumber: id };
-        axios.post('http://localhost:8000/Flight/showFlight', temp)
+        axios.post('http://localhost:8000/Flight/showFlight', temp, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
                 this.setState({ showFlight: res.data })
 
@@ -633,6 +664,21 @@ class SearchUser extends Component {
 
     }
 
+    // componentDidMount() {
+    //     axios.get("http://localhost:8000/user/isAuth", {}, {
+    //         headers: {
+    //             "x-auth-token": localStorage.getItem("token"),
+    //         }
+    //     }).then(res => {
+    //         if (res.data == "Token is not valid") {
+    //             alert("Token expired log in again please");
+    //             window.location = "/logIn"
+    //         } else {
+    //             //alert("token still valid")
+    //         }
+    //         console.log(res);
+    //     })
+    // }
 
     render() {
 

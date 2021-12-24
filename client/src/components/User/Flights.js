@@ -134,18 +134,35 @@ var SeatsArrayF = [];
 var request;
 
 const onFinish = (token, flightNumber, amount) => {
-    console.log(token)
-    axios.post("http://localhost:8000/user/SendEmailPay", { token: token, amount: amount, flightNumber: flightNumber, SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF });
+    axios.post("http://localhost:8000/user/SendEmailPay", { token: token, amount: amount, flightNumber: flightNumber, SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF },
+        {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        }
+    );
     Book();
 }
 
 
 const Book = () => (
-    axios.post('http://localhost:8000/ticket/book', request)
-        .then((response) => {
-            alert("Flight Booked Successfuly" + " Seats Economy : " + SeatsArrayE + " Seats Business : " + SeatsArrayB + " Seats First : " + SeatsArrayF);
-            // else alert("blabizo");
+    axios.post('http://localhost:8000/ticket/book', request,
+        {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        }
+    )
+        .then((res) => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } else {
 
+                alert("Flight Booked Successfuly" + " Seats Economy : " + SeatsArrayE + " Seats Business : " + SeatsArrayB + " Seats First : " + SeatsArrayF);
+                // else alert("blabizo");
+
+            }
         }, (error) => {
             alert("Error Happened ")
         })
@@ -294,7 +311,18 @@ class Flights extends Component {
             noFirstSeats: 0,
 
 
-        };
+        }
+
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } 
+        })
     }
 
     handleModal(id) {
@@ -392,93 +420,103 @@ class Flights extends Component {
             FlightNumber: this.state.modalFlightNumber,
         }
 
-        axios.post('http://localhost:8000/Flight/av', x)
+        axios.post('http://localhost:8000/Flight/av', x, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
-                const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
-                const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
-                const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
-                const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
-                const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
-
-                const total = pe + pb + pf;
-                request.totalPrice = total;
-                this.setState({ amount: total });
-                request.Departure = res.data.Departure;
-                request.Arrival = res.data.Arrival;
-                request.DepartureTime = res.data.DepartureTime;
-                request.ArrivalTime = res.data.ArrivalTime;
-
-                request.AvailE = res.data.AE;
-                request.AvailB = res.data.AB;
-                request.AvailF = res.data.AF;
-
-                request.noEconomySeats = res.data.noEconomySeats;
-                request.noBusinessSeats = res.data.noBusinessSeats;
-                request.noFirstSeats = res.data.noFirstSeats;
-
-                console.log("ASDFASDFASDFASDF");
-                console.log(res.data.noFirstSeats)
-                if (total == 0) {
-                    this.setState({ showPay: false })
-                    alert("You have to Book at least 1 Seat!");
-                    return;
-                }
-
-
-
-                if (ae > -1 && ab > -1 && af > -1) {
-
-                    var passengersE = (Number(request.AdultE) + Number(request.ChildE));
-                    var passengersB = (Number(request.AdultB) + Number(request.ChildB));
-                    var passengersF = (Number(request.AdultF) + Number(request.ChildF));
-
-                    var beginE = Number(request.noEconomySeats) - Number(request.AvailE);
-                    var beginB = Number(request.noBusinessSeats) - Number(request.AvailB);
-                    var beginF = Number(request.noFirstSeats) - Number(request.AvailF);
-
-                    var arrE = [];
-                    var arrF = [];
-                    var arrB = [];
-
-
-                    console.log(beginF);
-
-                    console.log(request.AvailE);
-                    console.log(request.AvailB);
-                    console.log(request.AvailF);
-
-                    for (let i = beginE + 1; i <= beginE + passengersE; i++)
-                        arrE.push("E" + i);
-
-                    for (let i = beginB + 1; i <= beginB + passengersB; i++)
-                        arrB.push("B" + i);
-
-                    for (let i = beginF + 1; i <= beginF + passengersF; i++)
-                        arrF.push("F" + i);
-
-                    request.SeatsE = arrE;
-                    request.SeatsB = arrB;
-                    request.SeatsF = arrF;
-
-
-                    console.log(arrE);
-                    console.log(arrF);
-                    console.log(arrB);
-
-                    SeatsArrayE = arrE;
-                    SeatsArrayB = arrB;
-                    SeatsArrayF = arrF;
-
-                    request.ReservedSeatsE = JSON.stringify(SeatsArrayE);
-                    request.ReservedSeatsB = JSON.stringify(SeatsArrayB);
-                    request.ReservedSeatsF = JSON.stringify(SeatsArrayF);
-
-                    this.setState({ showPay: true })
-
+                if (res.data == "Token is not valid") {
+                    alert("Token Expired LogIn Again");
+                    window.location = "/logIn";
                 } else {
-                    this.setState({ showPay: false })
-                    alert('No enough seats for your request');
+
+                    const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
+                    const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
+                    const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
+                    const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
+                    const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
+                    const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
+
+                    const total = pe + pb + pf;
+                    request.totalPrice = total;
+                    this.setState({ amount: total });
+                    request.Departure = res.data.Departure;
+                    request.Arrival = res.data.Arrival;
+                    request.DepartureTime = res.data.DepartureTime;
+                    request.ArrivalTime = res.data.ArrivalTime;
+
+                    request.AvailE = res.data.AE;
+                    request.AvailB = res.data.AB;
+                    request.AvailF = res.data.AF;
+
+                    request.noEconomySeats = res.data.noEconomySeats;
+                    request.noBusinessSeats = res.data.noBusinessSeats;
+                    request.noFirstSeats = res.data.noFirstSeats;
+
+                    console.log("ASDFASDFASDFASDF");
+                    console.log(res.data.noFirstSeats)
+                    if (total == 0) {
+                        this.setState({ showPay: false })
+                        alert("You have to Book at least 1 Seat!");
+                        return;
+                    }
+
+
+
+                    if (ae > -1 && ab > -1 && af > -1) {
+
+                        var passengersE = (Number(request.AdultE) + Number(request.ChildE));
+                        var passengersB = (Number(request.AdultB) + Number(request.ChildB));
+                        var passengersF = (Number(request.AdultF) + Number(request.ChildF));
+
+                        var beginE = Number(request.noEconomySeats) - Number(request.AvailE);
+                        var beginB = Number(request.noBusinessSeats) - Number(request.AvailB);
+                        var beginF = Number(request.noFirstSeats) - Number(request.AvailF);
+
+                        var arrE = [];
+                        var arrF = [];
+                        var arrB = [];
+
+
+                        console.log(beginF);
+
+                        console.log(request.AvailE);
+                        console.log(request.AvailB);
+                        console.log(request.AvailF);
+
+                        for (let i = beginE + 1; i <= beginE + passengersE; i++)
+                            arrE.push("E" + i);
+
+                        for (let i = beginB + 1; i <= beginB + passengersB; i++)
+                            arrB.push("B" + i);
+
+                        for (let i = beginF + 1; i <= beginF + passengersF; i++)
+                            arrF.push("F" + i);
+
+                        request.SeatsE = arrE;
+                        request.SeatsB = arrB;
+                        request.SeatsF = arrF;
+
+
+                        console.log(arrE);
+                        console.log(arrF);
+                        console.log(arrB);
+
+                        SeatsArrayE = arrE;
+                        SeatsArrayB = arrB;
+                        SeatsArrayF = arrF;
+
+                        request.ReservedSeatsE = JSON.stringify(SeatsArrayE);
+                        request.ReservedSeatsB = JSON.stringify(SeatsArrayB);
+                        request.ReservedSeatsF = JSON.stringify(SeatsArrayF);
+
+                        this.setState({ showPay: true })
+
+                    } else {
+                        this.setState({ showPay: false })
+                        alert('No enough seats for your request');
+                    }
                 }
             }).catch(err => {
                 alert(err);
@@ -492,9 +530,19 @@ class Flights extends Component {
 
 
     componentDidMount() {
-        axios.get('http://localhost:8000/Flight/getAllFlights')
+        axios.get('http://localhost:8000/Flight/getAllFlights', {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then((res) => {
-                this.setState({ flights: res.data });
+                if (res.data == "Token is not valid") {
+                    alert("Token Expired LogIn Again");
+                    window.location = "/logIn";
+                } else {
+                    this.setState({ flights: res.data });
+                }
+                console.log(res);
 
             })
             .catch((err) => {
@@ -511,9 +559,18 @@ class Flights extends Component {
 
     FlightDetails(id) {
         var temp = { FlightNumber: id };
-        axios.post('http://localhost:8000/Flight/showFlight', temp)
+        axios.post('http://localhost:8000/Flight/showFlight', temp, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                this.setState({ showFlight: res.data })
+                if(res.data =="Token is not valid"){
+                    alert("Token expired log in again please");
+                }else{
+                    
+                    this.setState({ showFlight: res.data });
+                }
 
 
             })

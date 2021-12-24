@@ -51,6 +51,16 @@ class EditFlight extends Component {
             arrTime: '',
 
         };
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } 
+        })
     }
 
 
@@ -132,10 +142,20 @@ class EditFlight extends Component {
 
 
 
-        axios.post('http://localhost:8000/Flight/editFlight', fl)
+        axios.post('http://localhost:8000/Flight/editFlight', fl,{
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                alert("Flight Edited Successfuly")
-                window.location = 'http://localhost:3000/getFlights';
+                if(res.data =="Token is not valid"){
+                    alert("Token expired log in again please");
+                    window.location="/logIn";
+                }else{
+
+                    alert("Flight Edited Successfuly")
+                    window.location = '/getFlights';
+                }
 
             }).catch((err) => {
 

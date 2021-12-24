@@ -90,7 +90,11 @@ var GridArray = (props) => (
 
 
 const SendEmailDetails = (id, price, ticketNumber, SeatsArrayE, SeatsArrayB, SeatsArrayF) => (
-    axios.post("http://localhost:8000/user/SendEmailDetails", { TicketNumber: ticketNumber, Price: price, flightNumber: id, email: localStorage.getItem("Email"), SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF })
+    axios.post("http://localhost:8000/user/SendEmailDetails", { TicketNumber: ticketNumber, Price: price, flightNumber: id, email: localStorage.getItem("Email"), SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF }, {
+        headers: {
+            "x-auth-token": localStorage.getItem("token")
+        }
+    })
 )
 
 // const Edit = (props) => (
@@ -365,6 +369,20 @@ class Reserve extends Component {
             showPay: false,
         };
 
+            
+
+
+        
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } 
+        })
     }
 
 
@@ -587,7 +605,12 @@ class Reserve extends Component {
     }
 
     componentDidMount() {
-        axios.post('http://localhost:8000/Flight/getAllTickets', { Email: localStorage.getItem('Email') })
+        
+        axios.post('http://localhost:8000/Flight/getAllTickets', { Email: localStorage.getItem('Email') }, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then((res) => {
                 this.setState({ tickets: res.data });
             })
@@ -634,12 +657,20 @@ class Reserve extends Component {
                     email: localStorage.getItem("Email"),
                     ticketId: this.state.ticketID,
                 }
-            });
+            }, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        });
         window.location.reload();
     }
 
     SendEmail(id, price, ticketNumber) {
-        axios.post("http://localhost:8000/user/SendEmail", { TicketNumber: ticketNumber, Price: price, flightID: id, email: localStorage.getItem("Email") });
+        axios.post("http://localhost:8000/user/SendEmail", { TicketNumber: ticketNumber, Price: price, flightID: id, email: localStorage.getItem("Email") }, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        });
     }
     onChangeAvailE(e) {
         this.setState({

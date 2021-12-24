@@ -65,6 +65,16 @@ class Search extends Component {
             arrTime: '',
             flights: [],
         }
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } 
+        })
     }
 
     submit(e) {
@@ -116,13 +126,28 @@ class Search extends Component {
             dateFlight: this.state.dateFlight,
             arrTime: this.state.arrTime,
             depTime: this.state.depTime,
+            AvailE: "",
+            AvailB: "",
+            AvailF: "",
+            PriceFrom: "",
+            PriceTo: "",
 
         }
 
 
-        axios.post('http://localhost:8000/Flight/FindFlight', f)
+        axios.post('http://localhost:8000/Flight/FindFlight', f,{
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                this.setState({ flights: res.data })
+                if(res.data =="Token is not valid"){
+                    alert("Token expired log in again please");
+                    window.location="/logIn";
+                }else{
+
+                    this.setState({ flights: res.data })
+                }
 
 
             })
@@ -132,8 +157,17 @@ class Search extends Component {
     deleteFlight(FlightNumber) {
         if (window.confirm('Are you sure you want to delete this Flight from the database')) {
             // Save it!
-            axios.post("http://localhost:8000/Flight/deleteFlight", { data: FlightNumber }).then(
-                res => (console.log(res.data))
+            axios.post("http://localhost:8000/Flight/deleteFlight", { data: FlightNumber },{
+                headers: {
+                    "x-auth-token": localStorage.getItem("token")
+                }
+            }).then(
+                res => {
+                    if(res.data =="Token is not valid"){
+                        alert("Token expired log in again please");
+                        window.location="/logIn";
+                    }
+                }
             ).catch(err => { console.log(err) });
             this.setState({
                 flights: this.state.flights.filter(element => element.FlightNumber !== FlightNumber)

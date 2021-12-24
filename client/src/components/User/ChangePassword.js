@@ -29,7 +29,16 @@ class Pay extends Component {
             newPass: '',
             newPassRep: '',
         }
-
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } 
+        })
 
 
 
@@ -72,9 +81,19 @@ class Pay extends Component {
                         Email: localStorage.getItem("Email"),
                         Password: newPass
                     };
-                    axios.post('http://localhost:8000/user/ChangePassword', user)
-                    .then().catch(err => console.log(err));
-        
+                    axios.post('http://localhost:8000/user/ChangePassword', user, {
+                        headers: {
+                            "x-auth-token": localStorage.getItem("token")
+                        }
+                    })
+                        .then((res) => {
+                            if (res.data == "Token is not valid") {
+                                alert("Token Expired LogIn Again");
+                                window.location = "/logIn";
+                            }
+                        }
+                        ).catch(err => console.log(err));
+
                     window.location.reload()
                 }
 
@@ -87,6 +106,21 @@ class Pay extends Component {
     SetValues = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
+
+    // componentDidMount(){
+    //     axios.get("http://localhost8000/user/isAuth",{
+    //         headers:{
+    //             "x-auth-token":localStorage.getItem("token"),
+    //         }
+    //     }).then(res=>{
+    //         if(res.data === "Token is not valid"){
+    //             alert("Token expired log in again please");
+    //             window.location="/logIn"
+    //         }else{
+    //             alert("token still valid")
+    //         }
+    //     })
+    // }
 
     render() {
 

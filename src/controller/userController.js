@@ -244,10 +244,12 @@ exports.SendEmail = (req, res) => {
 
 
 exports.findUserInfo = (req, res) => {
-
-    User.find({ Email: req.body.Email }, function (err, docs) {
+    console.log(req.user);
+    console.log("dsfopjhjlk");
+    User.find({ Email: req.user.Email }, function (err, docs) {
         if (err) { }
         else {
+            console.log(docs);
             res.send(JSON.stringify(docs));
         }
     });
@@ -261,7 +263,7 @@ exports.EditUser = (req, res) => {
 
 
 
-    User.findOne({ Email: req.body.UserMail }, (err, docs) => {
+    User.findOne({ Email: req.user.UserMail }, (err, docs) => {
 
         if (attrib.FirstName.length != 0)
             docs["FirstName"] = attrib.FirstName

@@ -66,6 +66,10 @@ exports.getAllFlights = (req, res) => {
 
 exports.getFlightbyNumb = (req, res) => {
   var Numb = '';
+  console.log(req.body.FlightNumber);
+  console.log(req.body.FlightNumber.length);
+  
+
   console.log(req.body)
   if (req.body.FlightNumber.length == 0) {
     Numb = '';
