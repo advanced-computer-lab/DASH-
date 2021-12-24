@@ -292,26 +292,35 @@ class FlightsGuest extends Component {
 
 
 
-                        <p style={{ textAlign: 'center' }}>Flight Details Flno: :{currentFlight.FlightNumber} </p>
-                        <br></br>
+                    <strong style={{ marginLeft: '185px' }}>Flight Details Flno: :{currentFlight.FlightNumber} </strong>
+                    <br></br>
+                    <br></br>
+                    
 
-                        <div className="row row-content">
+                    <div className='row row-content' >
+                        <div className="col-6" style={{ textAlign: 'left' }} >
+                            <p>Baggage Allowance:{currentFlight.baggageallowance} </p>
+                            <strong>Prices for Adults :</strong>
+                            <p>Economy: {currentFlight.priceEconomy}$    </p>
+                            <p>Business: {currentFlight.pricebusiness}$ </p>
+                            <p> First: {currentFlight.priceFirst}$ </p>
+                            <strong >Available Seats:</strong>
+                            <p> Economy: {currentFlight.AvailE} seats </p>
 
-                            <div className="col-12 col-md-6  " style={{ textAlign: 'left' }} >
-                                <p>Baggage Allowance:{currentFlight.baggageallowance} </p>
-                                <p>Adults Economy:{currentFlight.priceEconomy}</p>
-                                <p>Adults First:{currentFlight.priceFirst}</p>
-                                <p>Adults Business:{currentFlight.pricebusiness} </p>
-                            </div>
-                            <div className="col-12 col-md-6 " style={{ textAlign: 'left' }}>
-
-                                <p>children Economy:{(currentFlight.priceEconomy) / 2}</p>
-                                <p>children First:{(currentFlight.priceFirst) / 2}</p>
-                                <p>children Business:{(currentFlight.pricebusiness) / 2} </p>
-                                <p>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </p>
-
-
-                            </div>
+                            
+                        </div>
+                        <div className="col-6" style={{ textAlign: 'left' }}>
+                        <p style={{ marginLeft: '90px' }}>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "  hours"} </p>
+                        <strong style={{ marginLeft: '90px' }}>Prices for Children:</strong>
+                             <p style={{ marginLeft: '90px' }}>Economy: {(currentFlight.priceEconomy) / 2}$</p>
+                            <p style={{ marginLeft: '90px' }}>First: {(currentFlight.priceFirst) / 2}$</p>
+                            <p style={{ marginLeft: '90px' }}>Business: {(currentFlight.pricebusiness) / 2}$ </p>
+                            <br></br>
+                            <p style={{ marginLeft: '90px' }}> Business: {currentFlight.AvailB} seats </p>
+                            
+                            
+                        </div>
+                       <p> First: {currentFlight.AvailF} seats</p>
                             <div className="row row-content"><Button className="btn-dark " style={{ width: "100%", marginLeft: 13 }} onClick={() => {
                                 this.handleModal(currentFlight.FlightNumber)
 

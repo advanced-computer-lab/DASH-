@@ -148,7 +148,7 @@ class FlightAdd extends Component {
     <fieldset>
         <div className="pure-control-group" >
             <label htmlFor ="aligned-ID"  >Flight Number </label>
-            <input type="number" id="aligned-ID" required="true"  placeholder="ID" name ="id" value = {this.state.FlightNumber} onChange={this.onChangeID} />
+            <input type="number" min = '0' id="aligned-ID" required="true"  placeholder="ID" name ="id" value = {this.state.FlightNumber} onChange={this.onChangeID} />
         </div>
         <div className="pure-control-group" >
             <label htmlFor="aligned-toAir" >toAirport</label>
@@ -160,16 +160,16 @@ class FlightAdd extends Component {
         </div>
         <div className="pure-control-group" >
             <label htmlFor="aligned-econ" >Number of Economy class seats</label>
-            <input type="number" id = "aligned-econ" required="true" name ="econ"  value = {this.state.noEconomySeats} onChange={this.onChangeEcon} />
+            <input type="number" min = '0' id = "aligned-econ" required="true" name ="econ"  value = {this.state.noEconomySeats} onChange={this.onChangeEcon} />
         </div>
         <div className="pure-control-group" >
             <label htmlFor="aligned-business" >Number of business class seats</label>
-            <input type="number" id = "aligned-business" required="true" name ="business"  value = {this.state.noBusinessSeats} onChange={this.onChangeBusniess} />
+            <input type="number" min = '0' id = "aligned-business" required="true" name ="business"  value = {this.state.noBusinessSeats} onChange={this.onChangeBusniess} />
         </div>
 
         <div className="pure-control-group" >
             <label htmlFor="aligned-first" >Number of first class seats</label>
-            <input type="number" id = "aligned-first" required="true" name ="first"  value = {this.state.noFirstSeats} onChange={this.onChangeFirst} />
+            <input type="number" min = '0' id = "aligned-first" required="true" name ="first"  value = {this.state.noFirstSeats} onChange={this.onChangeFirst} />
         </div>
         <div className="pure-control-group" >
             <label htmlFor="aligned-Arr" >Arrival time</label>

@@ -231,7 +231,7 @@ class EditFlight extends Component {
                                         <label htmlFor="aligned-ID"  >Flight Number </label>
                                     </div>
                                     <div className="col-12 col-sm-8">
-                                        <input className="form-control" type="number" id="aligned-ID" name="id" placeholder={FlightNumber} value={this.state.FlightNumber} onChange={this.onChangeFlightNumber} />
+                                        <input className="form-control" type="number" min = '0' id="aligned-ID" name="id" placeholder={FlightNumber} value={this.state.FlightNumber} onChange={this.onChangeFlightNumber} />
                                     </div>
                                 </div>
                                 <br />
@@ -258,7 +258,7 @@ class EditFlight extends Component {
                                         <label htmlFor="aligned-econ" >Number of Economy class seats</label>
                                     </div>
                                     <div className="col-12 col-sm-8">
-                                        <input type="number" className="form-control" id="aligned-econ" name="econ" placeholder={ecoSeats} value={this.state.noEconomySeats} onChange={this.onChangeNoEconomySeats} />
+                                        <input type="number" min = '0' className="form-control" id="aligned-econ" name="econ" placeholder={ecoSeats} value={this.state.noEconomySeats} onChange={this.onChangeNoEconomySeats} />
                                     </div>
                                 </div>
                                 <br />
@@ -267,7 +267,7 @@ class EditFlight extends Component {
                                         <label htmlFor="aligned-business" >Number of business class seats</label>
                                     </div>
                                     <div className="col-12 col-sm-8">
-                                        <input type="number" className="form-control" id="aligned-business" name="business" placeholder={busSeats} value={this.state.noBusinessSeats} onChange={this.onChangeNoBusinessSeats} />
+                                        <input type="number" min = '0' className="form-control" id="aligned-business" name="business" placeholder={busSeats} value={this.state.noBusinessSeats} onChange={this.onChangeNoBusinessSeats} />
                                     </div>
                                 </div>
                                 <br />
@@ -276,7 +276,7 @@ class EditFlight extends Component {
                                         <label htmlFor="aligned-first" >Number of first class seats</label>
                                     </div>
                                     <div className="col-12 col-sm-8">
-                                        <input type="number" className="form-control" id="aligned-first" name="first" placeholder={firstSeats} value={this.state.noFirstSeats} onChange={this.onChangeFirstSeats} />
+                                        <input type="number" min = '0' className="form-control" id="aligned-first" name="first" placeholder={firstSeats} value={this.state.noFirstSeats} onChange={this.onChangeFirstSeats} />
                                     </div>
                                 </div>
                                 <br />

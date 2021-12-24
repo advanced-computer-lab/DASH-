@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import React from 'react';
 import { IconButton } from '@mui/material';
-import { Component } from 'react';
+import { Component, useState } from 'react';
 import { Navbar, Nav, Container, Table, Button, Modal } from 'react-bootstrap';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import EditIcon from '@mui/icons-material/Edit';
@@ -23,28 +23,24 @@ const SendEmailDetails = (id, price, ticketNumber, SeatsArrayE, SeatsArrayB, Sea
     })
 )
 
-const Edit = (props) => (
+// const Edit = (props) => (
 
 
-    <Modal show={props.showEdit}>
-        <Modal.Header>
+//     <Modal show={props.showEdit}>
+//         <Modal.Header>
+
+//             <b className="text-center">Reciept</b>
+//             <Button onClick={() => { props.handleModalEdit(props.modalFlightNumber) ;  }} style={{ backgroundColor: "black" }}><CancelPresentationIcon style={{ color: 'white' }}></CancelPresentationIcon></Button>
+
+//         </Modal.Header>
+//         <Modal.Body>
 
 
+//         </Modal.Body>
 
-            <b className="text-center">Reciept</b>
-            <Button onClick={() => { props.handleModalEdit(props) }} style={{ backgroundColor: "black" }}><CancelPresentationIcon style={{ color: 'white' }}></CancelPresentationIcon></Button>
+//     </Modal>
 
-
-
-        </Modal.Header>
-        <Modal.Body>
-
-
-        </Modal.Body>
-
-    </Modal>
-
-)
+// )
 
 const Flight = (props) => (
     <tr >
@@ -75,7 +71,7 @@ const Flight = (props) => (
             <IconButton style={{ fontSize: 20, color: "white" }} onClick={() => { props.handleModal(props.ticket.FlightNumber, props.ticket._id, props.ticket.Price, props.ticket.TicketNumber); flightNumber = props.ticket.FlightNumber; }}><HighlightOffIcon></HighlightOffIcon>Cancel </IconButton>
 
             <IconButton style={{ color: "white", fontSize: 18 }} onClick={() => { SendEmailDetails(props.ticket.FlightNumber, props.ticket.Price, props.ticket.TicketNumber, props.ticket.ReservedSeatsE, props.ticket.ReservedSeatsB, props.ticket.ReservedSeatsF) }}><EmailIcon style={{ color: "white" }}></EmailIcon>Email Details &nbsp;</IconButton>
-            <IconButton onClick={() => { props.handleModalEdit(props.ticket.FlightNumber, props.ticket._id, props.ticket.Price, props.ticket.TicketNumber); flightNumber = props.ticket.FlightNumber; }} style={{ color: "white", fontSize: 18 }} ><EditIcon></EditIcon> &nbsp;</IconButton>
+            <IconButton onClick={() => { props.handleModalEdit(props.ticket.FlightNumber, props.ticket._id, props.ticket.Price, props.ticket.TicketNumber); }} style={{ color: "white", fontSize: 18 }} ><EditIcon></EditIcon> &nbsp;</IconButton>
         </td>
 
     </tr>
@@ -90,14 +86,26 @@ class Reserve extends Component {
         this.handleModal = this.handleModal.bind(this);
         this.handleModalEdit = this.handleModalEdit.bind(this);
         this.DeleteTicket = this.DeleteTicket.bind(this);
+        this.onChangeAvailE = this.onChangeAvailE.bind(this);
+        this.onChangeAvailB = this.onChangeAvailB.bind(this);
+        this.onChangeAvailF = this.onChangeAvailF.bind(this);
         this.state = {
             tickets: [],
             show: false,
             showEdit: false,
             modalFlightNumber: '',
+            flights: [],
+            flightResult: [],
             ticketId: "",
             totalPrice: 0,
-            TicketNumber: 0
+            TicketNumber: 0,
+            currTicket: "",
+            AvailE: '',
+            AvailB: '',
+            AvailF: '',
+            arrTime: '',
+            depTime: ''
+
 
         }
         axios.get("http://localhost:8000/user/isAuth", {
@@ -111,6 +119,7 @@ class Reserve extends Component {
             } 
         })
     }
+
 
     handleModal(id, ticketIdd, price, ticketNumber) {
         this.setState({
@@ -147,11 +156,19 @@ class Reserve extends Component {
 
             })
 
+        axios.get('http://localhost:8000/Flight/getAllFlights')
+            .then((res) => {
+                this.setState({ flights: res.data });
+            })
+            .catch((err) => {
+                console.log(err);
+
+            })
     }
 
     flightsList() {
         return (this.state.tickets.map(currentTicket => {
-            return <Flight ticket={currentTicket} handleModal={this.handleModal} />
+            return <Flight ticket={currentTicket} handleModal={this.handleModal} handleModalEdit={this.handleModalEdit} />
         }))
     }
 
@@ -179,6 +196,48 @@ class Reserve extends Component {
                 "x-auth-token": localStorage.getItem("token")
             }
         });
+    }
+    onChangeAvailE(e) {
+        this.setState({
+            AvailE: e.target.value
+        })
+    }
+    onChangeAvailB(e) {
+        this.setState({
+            AvailB: e.target.value
+        })
+    }
+    onChangeAvailF(e) {
+        this.setState({
+            AvailF: e.target.value
+        })
+    }
+
+    searchFlightDetails() {
+
+        
+        const f = {
+            FlightNumber: '',
+            toAir: '',
+            fromAir: '',
+            dateFlight: '',
+            arrTime: this.state.arrTime,
+            depTime: this.state.depTime,
+            AvailE: this.state.AvailE,
+            AvailB: this.state.AvailB,
+            AvailF: this.state.AvailF,
+            PriceFrom: '',
+            PriceTo: '',
+
+
+
+        }
+        axios.post('http://localhost:8000/Flight/FindFlight', f)
+        .then(res => {
+            this.setState({ flightResult: res.data })
+            console.log(this.state.flightResult)
+        })
+        
     }
 
     render() {
@@ -247,6 +306,72 @@ class Reserve extends Component {
                     </div>
 
                     <div >
+                        {/* <Edit   showEdit = {this.state.showEdit} handleModalEdit = {this.state.handleModalEdit}> </Edit> */}
+                        <Modal   size="xl" show={this.state.showEdit}>
+                            <Modal.Header>
+                                <b className="text-center">Edit Ticket Number {this.state.ticketNum}</b>
+
+
+                                <Button onClick={() => { this.handleModalEdit(this.state.modalFlightNumber) }} style={{ backgroundColor: "black", borderColor: "black" }}><CancelPresentationIcon style={{ color: 'white' }}></CancelPresentationIcon></Button>
+
+                            </Modal.Header>
+
+
+                            <Modal.Body >
+                            </Modal.Body>
+                            <form className="CancelFlight" >
+
+                                <div style={{ marginLeft: "8%" }}>
+                                    <label  >Arrival time</label>
+                                    &nbsp;&nbsp;
+
+                                    <input style={{ width: "70%" }} type="datetime-local" id="aligned-Arr" name="arr" />
+                                    &nbsp;&nbsp;
+                                </div>
+                                <br/>
+
+                                <div style={{ marginLeft: "8%" }}>
+                                    <label  >Departure time</label>
+                                    &nbsp;&nbsp;
+
+                                    <input style={{ width: "70%" }} type="datetime-local" id="aligned-Arr" name="arr" />
+                                    &nbsp;&nbsp;
+                                </div>
+                                <br/>
+
+                                <div style={{marginLeft:"8%"}} className="form-group row">
+
+
+
+                                    <div className="col-6 col-md-3">
+                                        <label htmlFor="aligned-Dep" >Number of available seats </label>
+                                        &nbsp;&nbsp;
+                                    </div>
+
+                                    <div className="col-12 col-md-2">
+                                        <input type="number" min='0' id="aligned-ID" placeholder="Economy" name="id2" className="form-control" value={this.state.AvailE} onChange={this.onChangeAvailE} />
+                                        &nbsp;&nbsp;
+                                    </div>
+                                    <div className="col-12 col-md-2">
+                                        <input type="number" min='0' id="aligned-ID" placeholder="Business" name="id2" className="form-control" value={this.state.AvailB} onChange={this.onChangeAvailB} />
+                                        &nbsp;&nbsp;
+                                    </div>
+                                    <div className="col-12 col-md-2">
+                                        <input type="number" min='0' id="aligned-ID" placeholder="First" name="id2" className="form-control" value={this.state.AvailF} onChange={this.onChangeAvailF} />
+                                        &nbsp;&nbsp;
+                                    </div>
+                                </div>
+
+
+
+                                <button type="button" className="offset-md-4   col-md-4 btn btn-dark" onClick={(props) => {this.searchFlightDetails()}}>Search</button>
+                            </form>
+                            <br />
+
+
+                        </Modal>
+
+
                         <Modal show={this.state.show}>
                             <Modal.Header>
                                 <b className="text-center">Confirm</b>
@@ -254,7 +379,6 @@ class Reserve extends Component {
 
                             </Modal.Header>
 
-                            <Edit showEdit={this.state.showEdit} handleModalEdit={this.state.handleModalEdit}> </Edit>
 
                             <Modal.Body >
                                 Are You Sure You want To Cancel Your Reservation?

@@ -30,7 +30,7 @@ const userSchema = new Schema({
     required: true,
   },
   depTime: {
-    type: String,
+    type: String ,
     required: true,
   },
   arrTime: {
@@ -64,7 +64,9 @@ const userSchema = new Schema({
   AvailF: {
     type: Number,
     required: true,
-  }
+  },
+  
+
 
 
 

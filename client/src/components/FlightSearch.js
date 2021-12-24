@@ -84,22 +84,22 @@ class FlightSearch extends Component {
                     <div className="Flight">
 
                         <label for="aligned-ID" >Flight ID</label>
-                        <input type="number" id="aligned-ID" name="id" />
+                        <input type="number" min = '0' id="aligned-ID" name="id" />
 
                         <label for="aligned-ID" >Departure time </label>
-                        <input type="number" id="aligned-ID" name="depTime" />
+                        <input type="number" min = '0' id="aligned-ID" name="depTime" />
 
                         <label for="aligned-ID" >Arrival time</label>
-                        <input type="number" id="aligned-ID" name="arrTime" />
+                        <input type="number" min = '0' id="aligned-ID" name="arrTime" />
 
                         <label for="aligned-ID" >date</label>
-                        <input type="number" id="aligned-ID" name="dateFlight" />
+                        <input type="number" min = '0' id="aligned-ID" name="dateFlight" />
 
                         <label for="aligned-ID" >To airport </label>
-                        <input type="number" id="aligned-ID" name="toAir" />
+                        <input type="number" min = '0' id="aligned-ID" name="toAir" />
 
                         <label for="aligned-ID" >from airport</label>
-                        <input type="number" id="aligned-ID" name="fromAir" />
+                        <input type="number" min = '0' id="aligned-ID" name="fromAir" />
 
 
 

@@ -7,7 +7,7 @@ exports.addFlight = (req, res) => {
 
   const flight = new Flight(
     {
-      
+
       FlightNumber: req.body.FlightNumber,
       toAir: req.body.toAir,
       fromAir: req.body.fromAir,
@@ -70,6 +70,7 @@ exports.getFlightbyNumb = (req, res) => {
   console.log(req.body.FlightNumber.length);
   
 
+  console.log(req.body)
   if (req.body.FlightNumber.length == 0) {
     Numb = '';
   }
@@ -82,38 +83,47 @@ exports.getFlightbyNumb = (req, res) => {
 
 
 
-  var attrib = { FlightNumber: req.body.FlightNumber, toAir: req.body.toAir, fromAir: req.body.fromAir, depTime: req.body.depTime, arrTime: req.body.arrTime ,AvailE : req.body.AvailE , AvailB : req.body.AvailB , AvailF : req.body.AvailF };
+
+  var attrib = { FlightNumber: req.body.FlightNumber, toAir: req.body.toAir, fromAir: req.body.fromAir, depTime: req.body.depTime, arrTime: req.body.arrTime, AvailE: req.body.AvailE, AvailB: req.body.AvailB, AvailF: req.body.AvailF, PriceFrom: req.body.PriceFrom, PriceTo: req.body.PriceTo };
   //var attrib2 =  [FlightNumber = req.body.FlightNumber, toAir = req.body.toAir, fromAir = req.body.fromAir,dateFlight =req.body.dateFlight, depTime =req.body.depTime,arrTime = req.body.arrTime];
 
   var fil = "";
 
   if (attrib.FlightNumber.length != 0)
-    fil += '"FlightNumber" : ' + attrib.FlightNumber + ((attrib.toAir.length != 0) || (attrib.fromAir.length != 0) || (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) || (attrib.AvailE.length!=0) || (attrib.AvailB.length!=0) || (attrib.AvailF.length!=0) ? "," : "");
+    fil += '"FlightNumber" : ' + attrib.FlightNumber + ((attrib.toAir.length != 0) || (attrib.fromAir.length != 0) || (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) || (attrib.AvailE.length != 0) || (attrib.AvailB.length != 0) || (attrib.AvailF.length != 0) || (attrib.PriceFrom.length != 0) || (attrib.PriceTo.length != 0) ? "," : "");
 
   if (attrib.toAir.length != 0)
-    fil += '"toAir" : ' + '"' + attrib.toAir + '"' + ((attrib.fromAir.length != 0) || (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) || (attrib.AvailE.length!=0) || (attrib.AvailB.length!=0) || (attrib.AvailF.length!=0) ? "," : "");
+    fil += '"toAir" : ' + '"' + attrib.toAir + '"' + ((attrib.fromAir.length != 0) || (attrib.depTime.length != 0) || (attrib.arrTime.length != 0) || (attrib.AvailE.length != 0) || (attrib.AvailB.length != 0) || (attrib.AvailF.length != 0) || (attrib.PriceFrom.length != 0) || (attrib.PriceTo.length != 0) ? "," : "");
 
   if (attrib.fromAir.length != 0)
-    fil += '"fromAir" : ' + '"' + attrib.fromAir + '"' + ((attrib.depTime.length != 0) || (attrib.arrTime.length != 0) || (attrib.AvailE.length!=0) || (attrib.AvailB.length!=0) || (attrib.AvailF.length!=0) ? "," : "");
+    fil += '"fromAir" : ' + '"' + attrib.fromAir + '"' + ((attrib.depTime.length != 0) || (attrib.arrTime.length != 0) || (attrib.AvailE.length != 0) || (attrib.AvailB.length != 0) || (attrib.AvailF.length != 0) || (attrib.PriceFrom.length != 0) || (attrib.PriceTo.length != 0) ? "," : "");
 
   /* if (attrib.dateFlight.length != 0)
      fil += '"dateFlight" : ' + '"' + attrib.dateFlight + '"' + ((attrib.depTime.length != 0) || (attrib.arrTime.length != 0)  ? "," : "");*/
 
   if (attrib.depTime.length != 0)
-    fil += '"depTime" : ' + '"' + attrib.depTime + '"' + ((attrib.arrTime.length != 0) || (attrib.AvailE.length!=0) || (attrib.AvailB.length!=0) || (attrib.AvailF.length!=0) ? "," : "");
+    fil += '"depTime" : ' + '"' + attrib.depTime + '"' + ((attrib.arrTime.length != 0) || (attrib.AvailE.length != 0) || (attrib.AvailB.length != 0) || (attrib.AvailF.length != 0) || (attrib.PriceFrom.length != 0) || (attrib.PriceTo.length != 0) ? "," : "");
 
   if (attrib.arrTime.length != 0)
-    fil += '"arrTime" : ' + '"' + attrib.arrTime + '"' +( (attrib.AvailE.length!=0) || (attrib.AvailB.length!=0) || (attrib.AvailF.length!=0) ? "," : "");
+    fil += '"arrTime" : ' + '"' + attrib.arrTime + '"' + ((attrib.AvailE.length != 0) || (attrib.AvailB.length != 0) || (attrib.AvailF.length != 0) || (attrib.PriceFrom.length != 0) || (attrib.PriceTo.length != 0) ? "," : "");
   if (attrib.AvailE.length != 0)
-    fil += '"AvailE": '+   '{' + '"$gte" : '  + attrib.AvailE   + '}'   +(  (attrib.AvailB.length!=0) || (attrib.AvailF.length!=0) ? "," : "");
+    fil += '"AvailE": ' + '{' + '"$gte" : ' + attrib.AvailE + '}' + ((attrib.AvailB.length != 0) || (attrib.AvailF.length != 0) || (attrib.PriceFrom.length != 0) || (attrib.PriceTo.length != 0) ? "," : "");
   if (attrib.AvailB.length != 0)
-    fil += '"AvailB" : ' + '{' + ' "$gte" :'+ attrib.AvailB  + '}' +( (attrib.AvailF.length!=0) ? "," : "");
+    fil += '"AvailB" : ' + '{' + ' "$gte" :' + attrib.AvailB + '}' + ((attrib.AvailF.length != 0) || (attrib.PriceFrom.length != 0) || (attrib.PriceTo.length != 0) ? "," : "");
   if (attrib.AvailF.length != 0)
-    fil += '"AvailF" : ' + '{' + '"$gte" :' +attrib.AvailF + '}'  ;  
-  
-  
+    fil += '"AvailF" : ' + '{' + ' "$gte" :' + attrib.AvailF + '}' + ((attrib.PriceFrom.length != 0) || (attrib.PriceTo.length != 0) ? "," : "");
+  if ((attrib.PriceFrom.length != 0) && (attrib.PriceTo.length != 0))
+    fil += '"priceEconomy" :' + '{' + '"$gte" :' + attrib.PriceFrom + "," + '"$lte":' + attrib.PriceTo + '}'
+  if ((attrib.PriceFrom.length != 0) && (attrib.PriceTo.length == 0))
+    fil += '"priceEconomy" :' + '{' + '"$gte" :' + attrib.PriceFrom + '}'
+  if ((attrib.PriceFrom.length == 0) && (attrib.PriceTo.length != 0))
+    fil += '"priceEconomy" :' + '{' + '"$lte" :' + attrib.PriceTo + '}'
+
+
+  console.log(fil)
   var filterObj = JSON.parse('{' + fil + '}');
-  
+  console.log(filterObj)
+
 
 
 
@@ -185,7 +195,7 @@ exports.editFlight = (req, res) => {
   Flight.findOneAndUpdate({ FlightNumber: req.body.backFlightNumber }, { $set: filterObj }, { new: true }, (err, doc) => {
 
   })
- 
+
 
 }
 
@@ -199,7 +209,7 @@ exports.showFlight = (req, res) => {
 
 
 exports.getAllTickets = (req, res) => {
-  Ticket.find({Email:req.body.Email}).then(result => {
+  Ticket.find({ Email: req.body.Email }).then(result => {
     res.header("Content-Type", 'application/json');
     res.send(result);
   });

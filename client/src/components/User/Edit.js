@@ -160,33 +160,38 @@ class Edit extends Component {
             }
         })
             .then(res => {
-                if (res.data == "Token is not valid") {
-                    alert("Token Expired LogIn Again");
-                    window.location = "/logIn";
-                } else {
-
-                    if (res.data == 0) {
+                if (res.data == 0) {
+                    if (res.data == "Token is not valid") {
+                        alert("Token Expired LogIn Again");
+                        window.location = "/logIn";
+                    } else {
                         console.log(localStorage.getItem("Email"));
 
-                        axios.post('http://localhost:8000/user/EditUser', fl, {
-                            headers: {
-                                "x-auth-token": localStorage.getItem("token")
-                            }
-                        })
+                        axios.post('http://localhost:8000/user/EditUser', fl)
                             .then(res => {
+                                alert(localStorage.getItem("Email"))
+
+
                             }).catch((err) => {
                                 alert("error happened")
                             })
+
+                        if (fl.Email.length != 0) {
+
+                            localStorage.removeItem("Email")
+                            localStorage.setItem("Email", fl.Email);
+                        }
+
                         window.location = 'http://localhost:3000/user/Edit';
                         alert("User Edited Successfuly")
-                        localStorage.setItem("Email", fl.Email);
+
 
                         // window.location = '/user/home';
                     }
-                    else {
-                        alert("email is already exists choose another one")
-                        window.location = 'http://localhost:3000/user/Edit';
-                    }
+                }
+                else {
+                    alert("email is already exists choose another one")
+                    window.location = 'http://localhost:3000/user/Edit';
                 }
             })
 
