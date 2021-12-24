@@ -38,6 +38,7 @@ class Home extends Component {
       Passport: '',
       FirstN: '',
       LastN: '',
+      UserName: '',
     }
     var x = {
       Email: localStorage.getItem("Email")
@@ -48,6 +49,7 @@ class Home extends Component {
         this.setState({ Passport: res.data[0].Passportnumber });
         this.setState({ FirstN: res.data[0].FirstName });
         this.setState({ LastN: res.data[0].LastName });
+        this.setState({ UserName: res.data[0].Username });
         console.log(res.data[0].Passportnumber)
 
 
@@ -139,19 +141,15 @@ class Home extends Component {
               />
               <CardContent >
                 <Typography gutterBottom variant="h6" component="div">
-                  First Name : {this.state.FirstN}
+                  Username: {this.state.UserName}
                 </Typography>
 
-                <Typography gutterBottom variant="h6" component="div">
-                  Last Name : {this.state.LastN}
-                </Typography>
-
-                <Typography gutterBottom variant="h6" component="div">
+                <Typography style={{wordWrap:"break-word"}} gutterBottom variant="h6" component="p">
                  {localStorage.getItem("Email")}
                 </Typography>
 
                 <Typography gutterBottom variant="h6" component="div">
-                  Passport Number : {this.state.Passport}
+                  Passport Number: {this.state.Passport}
                 </Typography>
 
 

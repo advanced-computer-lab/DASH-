@@ -142,7 +142,7 @@ const Flight = (props) => (
         <td>{props.flight.noFirstSeats}</td>
         <td>{props.flight.depTime}</td>
         <td>{props.flight.arrTime}</td>
-        
+
 
 
 
@@ -205,17 +205,17 @@ class SearchUser extends Component {
             AvailE: '',
             AvailB: '',
             AvailF: '',
-            PriceFrom : '' ,
-            PriceTo : '',
-            
+            PriceFrom: '',
+            PriceTo: '',
+
 
             showFlight: [],
             show: false,
-              
-    
+
+
 
             modalFlightNumber: '',
-        
+
             AvailE: '',
             AvailB: '',
             AvailF: '',
@@ -344,13 +344,13 @@ class SearchUser extends Component {
                         console.log(request.AvailB);
                         console.log(request.AvailF);
 
-                        for (let i = beginE+1; i <= beginE + passengersE; i++)
+                        for (let i = beginE + 1; i <= beginE + passengersE; i++)
                             arrE.push("E" + i);
 
-                        for (let i = beginB+1; i <= beginB + passengersB; i++)
+                        for (let i = beginB + 1; i <= beginB + passengersB; i++)
                             arrB.push("B" + i);
 
-                        for (let i = beginF+1; i <= beginF + passengersF; i++)
+                        for (let i = beginF + 1; i <= beginF + passengersF; i++)
                             arrF.push("F" + i);
 
                         request.SeatsE = arrE;
@@ -366,15 +366,16 @@ class SearchUser extends Component {
                         var SeatsArrayB = arrB;
                         var SeatsArrayF = arrF;
 
-                        request.ReservedSeatsE = SeatsArrayE.toString(); 
-                        request.ReservedSeatsB = SeatsArrayB.toString(); 
-                        request.ReservedSeatsF = SeatsArrayF.toString(); 
+                        request.ReservedSeatsE = SeatsArrayE.toString();
+                        request.ReservedSeatsB = SeatsArrayB.toString();
+                        request.ReservedSeatsF = SeatsArrayF.toString();
 
                         axios.post('http://localhost:8000/ticket/book', request)
                             .then((response) => {
-                                if (response) {alert("Flight Booked Successfuly" + " Seats Economy : " + arrE + " Seats Business : " + arrB+ " Seats First : " + arrF)
-                                window.location = '/user/search' ;
-                            }
+                                if (response) {
+                                    alert("Flight Booked Successfuly" + " Seats Economy : " + arrE + " Seats Business : " + arrB + " Seats First : " + arrF)
+                                    window.location = '/user/search';
+                                }
                                 else alert("blabizo");
 
                             }, (error) => {
@@ -477,20 +478,20 @@ class SearchUser extends Component {
             ChildF: e.target.value
         })
     }
-    onChangePriceFrom(e){
+    onChangePriceFrom(e) {
         this.setState({
-            PriceFrom : e.target.value
+            PriceFrom: e.target.value
 
         })
     }
-    onChangePriceTo(e){
+    onChangePriceTo(e) {
         this.setState({
-            PriceTo : e.target.value
+            PriceTo: e.target.value
 
         })
     }
-     
-      
+
+
 
 
     flightsList() {
@@ -504,14 +505,14 @@ class SearchUser extends Component {
             AvailE: this.state.AvailE,
             AvailB: this.state.AvailB,
             AvailF: this.state.AvailF,
-            PriceFrom : this.state.PriceFrom,
-            PriceTo : this.state.PriceTo,
+            PriceFrom: this.state.PriceFrom,
+            PriceTo: this.state.PriceTo,
 
 
 
         }
 
-        
+
 
 
 
@@ -556,10 +557,10 @@ class SearchUser extends Component {
 
 
 
-                <strong style={{ marginLeft: '185px' }}>Flight Details Flno: :{currentFlight.FlightNumber} </strong>
+                    <strong style={{ marginLeft: '185px' }}>Flight Details Flno: :{currentFlight.FlightNumber} </strong>
                     <br></br>
                     <br></br>
-                    
+
 
                     <div className='row row-content' >
                         <div className="col-6" style={{ textAlign: 'left' }} >
@@ -571,20 +572,20 @@ class SearchUser extends Component {
                             <strong >Available Seats:</strong>
                             <p> Economy: {currentFlight.AvailE} seats </p>
 
-                            
+
                         </div>
                         <div className="col-6" style={{ textAlign: 'left' }}>
-                        <p style={{ marginLeft: '90px' }}>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "  hours"} </p>
-                        <strong style={{ marginLeft: '90px' }}>Prices for Children:</strong>
-                             <p style={{ marginLeft: '90px' }}>Economy: {(currentFlight.priceEconomy) / 2}$</p>
+                            <p style={{ marginLeft: '90px' }}>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "  hours"} </p>
+                            <strong style={{ marginLeft: '90px' }}>Prices for Children:</strong>
+                            <p style={{ marginLeft: '90px' }}>Economy: {(currentFlight.priceEconomy) / 2}$</p>
                             <p style={{ marginLeft: '90px' }}>First: {(currentFlight.priceFirst) / 2}$</p>
                             <p style={{ marginLeft: '90px' }}>Business: {(currentFlight.pricebusiness) / 2}$ </p>
                             <br></br>
                             <p style={{ marginLeft: '90px' }}> Business: {currentFlight.AvailB} seats </p>
-                            
-                            
+
+
                         </div>
-                       <p> First: {currentFlight.AvailF} seats</p>
+                        <p> First: {currentFlight.AvailF} seats</p>
                         <div className="row row-content"><Button className="btn-dark" style={{ width: "100%" }} onClick={() => {
                             this.handleModal(currentFlight.FlightNumber)
 
@@ -599,15 +600,15 @@ class SearchUser extends Component {
                         ChildE: this.state.ChildE,
                         ChildB: this.state.ChildB,
                         ChildF: this.state.ChildF,
-    
+
                         AvailE: currentFlight.AvailE,
                         AvailB: currentFlight.AvailB,
                         AvailF: currentFlight.AvailF,
-    
+
                         noEconomySeats: currentFlight.noEconomySeats,
                         noBusinessSeats: currentFlight.noBusinessSeats,
                         noFirstSeats: currentFlight.noFirstSeats,
-    
+
 
                     }} show={this.state.show} func={{
                         onChangeAdultE: this.onChangeAdultE,
@@ -631,10 +632,10 @@ class SearchUser extends Component {
         }))
 
     }
-    
+
 
     render() {
-       
+
 
         return (
 
@@ -769,9 +770,9 @@ class SearchUser extends Component {
                                     &nbsp;&nbsp;
                                 </div>
                             </div>
-                           
-                            
-                            
+
+
+
                             <div className="form-group row">
 
                                 <div className="col-6 col-md-3">
@@ -780,13 +781,13 @@ class SearchUser extends Component {
                                 </div>
 
                                 <div className="col-12 col-md-3">
-                                <input type="number" min='0' id="aligned-ID" placeholder="From" name="id2" className="form-control" value={this.state.PriceFrom} onChange={this.onChangePriceFrom} />
-                                    
+                                    <input type="number" min='0' id="aligned-ID" placeholder="From" name="id2" className="form-control" value={this.state.PriceFrom} onChange={this.onChangePriceFrom} />
+
                                     &nbsp;&nbsp;
                                 </div>
                                 <div className="col-12 col-md-3">
-                                <input type="number" min='0' id="aligned-ID" placeholder="To" name="id2" className="form-control" value={this.state.PriceTo} onChange={this.onChangePriceTo} />
-                                    
+                                    <input type="number" min='0' id="aligned-ID" placeholder="To" name="id2" className="form-control" value={this.state.PriceTo} onChange={this.onChangePriceTo} />
+
                                     &nbsp;&nbsp;
                                 </div>
                             </div>

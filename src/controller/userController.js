@@ -263,16 +263,29 @@ exports.EditUser = (req, res) => {
 
     User.findOne({ Email: req.body.UserMail }, (err, docs) => {
 
-        docs["FirstName"] = attrib.FirstName
-        docs["LastName"] = attrib.LastName
+        if (attrib.FirstName.length != 0)
+            docs["FirstName"] = attrib.FirstName
 
-        docs["Email"] = attrib.Email
-        docs["Username"] = attrib.Username
-        docs["Address"] = attrib.Address
-        docs["Telephone"] = attrib.Telephone
-        docs["CountryCode"] = attrib.CountryCode
+        if (attrib.LastName.length != 0)
+            docs["LastName"] = attrib.LastName
 
-        docs["Passportnumber"] = attrib.Passportnumber
+        if (attrib.Email.length != 0)
+            docs["Email"] = attrib.Email
+
+        if (attrib.Username.length != 0)
+            docs["Username"] = attrib.Username
+
+        if (attrib.Address.length != 0)
+            docs["Address"] = attrib.Address
+
+        if (attrib.Telephone.length != 0)
+            docs["Telephone"] = attrib.Telephone
+
+        if (attrib.CountryCode.length != 0)
+            docs["CountryCode"] = attrib.CountryCode
+
+        if (attrib.Passportnumber.length != 0)
+            docs["Passportnumber"] = attrib.Passportnumber
 
         docs.save();
 

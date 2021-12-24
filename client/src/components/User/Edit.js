@@ -132,12 +132,22 @@ class Edit extends Component {
 
                     axios.post('http://localhost:8000/user/EditUser', fl)
                         .then(res => {
+                            alert(localStorage.getItem("Email"))
+                            
+                            
                         }).catch((err) => {
                             alert("error happened")
                         })
+
+                        if (fl.Email.length !=0){
+                            
+                            localStorage.removeItem("Email")
+                            localStorage.setItem("Email", fl.Email);
+                            }
+                  
                     window.location = 'http://localhost:3000/user/Edit';
                     alert("User Edited Successfuly")
-                    localStorage.setItem("Email", fl.Email);
+                   
 
                     // window.location = '/user/home';
                 }
