@@ -1,5 +1,6 @@
 const express = require('express');
 const Flight = require('../models/Flight'); 
+const auth = require("../middleware/auth");
 
 const FlightControl = require('../controller/FlightController');
 const FlightRouter = express.Router();
@@ -7,19 +8,19 @@ FlightRouter.use(express.json());
 FlightRouter.use(express.urlencoded({extended:false}));
 
 
-FlightRouter.post('/add',FlightControl.addFlight);
-FlightRouter.post('/find',FlightControl.findFlight);
-FlightRouter.get('/getAllFlights',FlightControl.getAllFlights);
-FlightRouter.post('/deleteFlight',FlightControl.deleteFlight);
-FlightRouter.post('/FindFlight',FlightControl.getFlightbyNumb);
+FlightRouter.post('/add',auth,FlightControl.addFlight);
+FlightRouter.post('/find',auth,FlightControl.findFlight);
+FlightRouter.get('/getAllFlights',auth,FlightControl.getAllFlights);
+FlightRouter.post('/deleteFlight',auth,FlightControl.deleteFlight);
+FlightRouter.post('/FindFlight',auth,FlightControl.getFlightbyNumb);
 
-FlightRouter.post('/editFlight',FlightControl.editFlight)
+FlightRouter.post('/editFlight', auth ,FlightControl.editFlight)
 
 
 
-FlightRouter.post('/showFlight',FlightControl.showFlight);
+FlightRouter.post('/showFlight',auth,FlightControl.showFlight);
 
-FlightRouter.post('/getAllTickets',FlightControl.getAllTickets);
+FlightRouter.post('/getAllTickets',auth,FlightControl.getAllTickets);
 
 // FlightRouter.post('/availableEconomy',(req,res)=>{
 //     Flight.findOne({FlightNumber:req.body.FlightNumbaer})
@@ -37,7 +38,7 @@ FlightRouter.post('/getAllTickets',FlightControl.getAllTickets);
 
 //     })
 // })
-FlightRouter.post('/av',(req,res)=>{
+FlightRouter.post('/av',auth,(req,res)=>{
     Flight.find({FlightNumber:req.body.FlightNumber})
     .then(result=>{
         

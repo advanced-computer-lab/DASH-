@@ -16,7 +16,11 @@ var flightNumber = 0;
 
 
 const SendEmailDetails = (id, price, ticketNumber, SeatsArrayE, SeatsArrayB, SeatsArrayF) => (
-    axios.post("http://localhost:8000/user/SendEmailDetails", { TicketNumber: ticketNumber, Price: price, flightNumber: id, email: localStorage.getItem("Email"), SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF })
+    axios.post("http://localhost:8000/user/SendEmailDetails", { TicketNumber: ticketNumber, Price: price, flightNumber: id, email: localStorage.getItem("Email"), SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF }, {
+        headers: {
+            "x-auth-token": localStorage.getItem("token")
+        }
+    })
 )
 
 const Edit = (props) => (
@@ -71,7 +75,7 @@ const Flight = (props) => (
             <IconButton style={{ fontSize: 20, color: "white" }} onClick={() => { props.handleModal(props.ticket.FlightNumber, props.ticket._id, props.ticket.Price, props.ticket.TicketNumber); flightNumber = props.ticket.FlightNumber; }}><HighlightOffIcon></HighlightOffIcon>Cancel </IconButton>
 
             <IconButton style={{ color: "white", fontSize: 18 }} onClick={() => { SendEmailDetails(props.ticket.FlightNumber, props.ticket.Price, props.ticket.TicketNumber, props.ticket.ReservedSeatsE, props.ticket.ReservedSeatsB, props.ticket.ReservedSeatsF) }}><EmailIcon style={{ color: "white" }}></EmailIcon>Email Details &nbsp;</IconButton>
-            <IconButton onClick={() => {props.handleModalEdit(props.ticket.FlightNumber, props.ticket._id, props.ticket.Price, props.ticket.TicketNumber); flightNumber = props.ticket.FlightNumber; }} style={{ color: "white", fontSize: 18 }} ><EditIcon></EditIcon> &nbsp;</IconButton>
+            <IconButton onClick={() => { props.handleModalEdit(props.ticket.FlightNumber, props.ticket._id, props.ticket.Price, props.ticket.TicketNumber); flightNumber = props.ticket.FlightNumber; }} style={{ color: "white", fontSize: 18 }} ><EditIcon></EditIcon> &nbsp;</IconButton>
         </td>
 
     </tr>
@@ -95,7 +99,17 @@ class Reserve extends Component {
             totalPrice: 0,
             TicketNumber: 0
 
-        };
+        }
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } 
+        })
     }
 
     handleModal(id, ticketIdd, price, ticketNumber) {
@@ -119,7 +133,12 @@ class Reserve extends Component {
     }
 
     componentDidMount() {
-        axios.post('http://localhost:8000/Flight/getAllTickets', { Email: localStorage.getItem('Email') })
+        
+        axios.post('http://localhost:8000/Flight/getAllTickets', { Email: localStorage.getItem('Email') }, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then((res) => {
                 this.setState({ tickets: res.data });
             })
@@ -146,12 +165,20 @@ class Reserve extends Component {
                     email: localStorage.getItem("Email"),
                     ticketId: this.state.ticketId,
                 }
-            });
+            }, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        });
         window.location.reload();
     }
 
     SendEmail(id, price, ticketNumber) {
-        axios.post("http://localhost:8000/user/SendEmail", { TicketNumber: ticketNumber, Price: price, flightID: id, email: localStorage.getItem("Email") });
+        axios.post("http://localhost:8000/user/SendEmail", { TicketNumber: ticketNumber, Price: price, flightID: id, email: localStorage.getItem("Email") }, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        });
     }
 
     render() {
@@ -227,7 +254,7 @@ class Reserve extends Component {
 
                             </Modal.Header>
 
-                                   <Edit showEdit = {this.state.showEdit} handleModalEdit = {this.state.handleModalEdit}> </Edit>
+                            <Edit showEdit={this.state.showEdit} handleModalEdit={this.state.handleModalEdit}> </Edit>
 
                             <Modal.Body >
                                 Are You Sure You want To Cancel Your Reservation?

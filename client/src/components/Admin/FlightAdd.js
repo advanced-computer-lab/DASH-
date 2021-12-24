@@ -38,6 +38,16 @@ class FlightAdd extends Component {
             priceEconomy: 0,
             priceFirst: 0,
         }
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            }
+        })
 
     }
 
@@ -155,28 +165,35 @@ class FlightAdd extends Component {
 
 
         //console.log(fl);
-        axios.post('http://localhost:8000/Flight/find', { FlightNumber: this.state.FlightNumber })
+        axios.post('http://localhost:8000/Flight/find', { FlightNumber: this.state.FlightNumber }, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
                 //console.log(res.data);
+                if (res.data == "Token is not valid") {
+                    alert("Token expired log in again please");
+                    window.location = "/logIn";
+                } else {
 
-                if (res.data === 0) {
-                    axios.post('http://localhost:8000/Flight/add', fl)
-                        .then(res => console.log(res.data),
+                    if (res.data === 0) {
+                        axios.post('http://localhost:8000/Flight/add', fl, {
+                            headers: {
+                                "x-auth-token": localStorage.getItem("token")
+                            }
+                        }).then(res => alert("Flight Number added"),
                             window.location = '/',
-                            alert("Flight Number added"),
 
                         )
-                        .catch((error) => {
-                            //s console.log(error.message)
-                            // console.log("dareen");
 
-                        });
-                }
-                else {
-                    window.location = '/add';
-                    alert("Flight Number already exist");
-                }
+                    }
+                    else {
+                        window.location = '/add';
+                        alert("Flight Number already exist");
+                    }
 
+                }
             })
 
 

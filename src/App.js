@@ -10,7 +10,7 @@ const flightController = require("./controller/FlightController");
 
 const Ticket = require("./models/Ticket");
 
-const config = require("config");
+
 //const bodyParser = require("body-parser");
 //const session = require("express-session");
 //const MongoDBSession = require('connect-mongodb-session')(session);
@@ -19,8 +19,9 @@ const config = require("config");
 // THIS IS WRONG NEVER DO THAT !! Only for the task we put the DB Link here!! NEVER DO THAAAT AGAIN !!
 dotenv.config();
 
-
-const MongoURI = config.get("MongoURI");
+const auth = require('./middleware/auth') ;
+const config = require("config");
+const MongoURI = process.env.Mongo_URI;
 
 
 //App variables
@@ -149,6 +150,9 @@ app.use('/ticket',ticketRouter);
 //         }
 //     }); 
 
+app.post("/blabizo" , auth , (req,res)=>{
+    res.json(req.user)
+})
 
 
 app.listen(port, () => {

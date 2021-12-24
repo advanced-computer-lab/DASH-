@@ -3,10 +3,24 @@ import React from 'react';
 import { Component } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import 'font-awesome/css/font-awesome.min.css';
+import axios from "axios";
 
 
 class NavBar extends Component {
-
+    constructor(props){
+        super(props);
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } 
+        })
+    }
+    
 
     render() {
         return (

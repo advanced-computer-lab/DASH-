@@ -10,7 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 //import "react/popper";
 import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
-import {Navigate} from 'react-router-dom'; 
+import { Navigate } from 'react-router-dom';
 import LoginIcon from '@mui/icons-material/Login';
 
 
@@ -26,14 +26,14 @@ const MM = (props) => (
 
         </Modal.Header>
         <Modal.Body>
-                        
-               
-                <link rel = 'asdas' href='http://localhost:3000/sign'/>  
-                <a href='http://localhost:3000/sign'>SignUp here to Book this Flight</a>
-                
-                
-                
-            
+
+
+            <link rel='asdas' href='http://localhost:3000/sign' />
+            <a href='http://localhost:3000/sign'>SignUp here to Book this Flight</a>
+
+
+
+
         </Modal.Body>
 
     </Modal>
@@ -115,6 +115,16 @@ class SearchGuest extends Component {
 
 
         }
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            }
+        })
     }
 
 
@@ -153,32 +163,52 @@ class SearchGuest extends Component {
             FlightNumber: this.state.modalFlightNumber,
         }
 
-        axios.post('http://localhost:8000/Flight/av', x)
+        axios.post('http://localhost:8000/Flight/av', x, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
-                const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
-                const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
-                const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
-                const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
-                const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
-                const total = pe + pb + pf;
-                request.totalPrice = total;
-                if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
-                    if (ae > -1 && ab > -1 && af > -1) {
-                        console.log(request)
-                        axios.post('http://localhost:8000/ticket/book', request)
-                            .then((response) => {
-                                if (response) alert("Flight Booked Successfuly");
-                                else alert("blabizo");
-
-                            }, (error) => {
-                                alert("Error Happened ")
-                            });
-                    } else {
-                        alert('No enough seats for your request');
-                    }
+                if (res.data == "Token is not valid") {
+                    alert("Token expired log in again please");
+                    window.location = "/logIn";
                 } else {
 
+                    const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
+                    const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
+                    const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
+                    const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
+                    const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
+                    const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
+                    const total = pe + pb + pf;
+                    request.totalPrice = total;
+                    if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
+                        if (ae > -1 && ab > -1 && af > -1) {
+                            console.log(request)
+                            axios.post('http://localhost:8000/ticket/book', request,{
+                                headers: {
+                                    "x-auth-token": localStorage.getItem("token")
+                                }
+                            })
+                                .then((response) => {
+                                    if(res.data =="Token is not valid"){
+                                        alert("Token expired log in again please");
+                                        window.location="/logIn";
+                                    }else{
+
+                                        if (response) alert("Flight Booked Successfuly");
+                                        else alert("Error Happeed");
+                                    }
+
+                                }, (error) => {
+                                    alert("Error Happened ")
+                                });
+                        } else {
+                            alert('No enough seats for your request');
+                        }
+                    } else {
+
+                    }
                 }
             }).catch(err => {
                 alert(err);
@@ -395,14 +425,14 @@ class SearchGuest extends Component {
                                 <Nav navbarScroll className="me-auto">
 
 
-                                <Nav.Link href="/Guest/HomeGuest"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
-                                        <Nav.Link href="/Guest/SearchGuest"><i className="fa fa-search fa-lg"></i> Search</Nav.Link>
-                                        <Nav.Link href="/Guest/FlightsGuest"><i className="fa fa-list fa-lg"></i> Flights List</Nav.Link>
-                                        <Nav.Link href="/logIn"  className="position-absolute end-0"><LoginIcon></LoginIcon> LogIn</Nav.Link>
-                                       
-                                    
-                                    
-                                    
+                                    <Nav.Link href="/Guest/HomeGuest"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
+                                    <Nav.Link href="/Guest/SearchGuest"><i className="fa fa-search fa-lg"></i> Search</Nav.Link>
+                                    <Nav.Link href="/Guest/FlightsGuest"><i className="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+                                    <Nav.Link href="/logIn" className="position-absolute end-0"><LoginIcon></LoginIcon> LogIn</Nav.Link>
+
+
+
+
 
 
                                 </Nav>

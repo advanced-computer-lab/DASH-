@@ -194,7 +194,7 @@ class SearchUser extends Component {
             arrTime: '',
             NumPass: '',
             CabinClass: '',
-        
+
             AvailE: 0,
             AvailB: 0,
             AvailF: 0,
@@ -212,6 +212,17 @@ class SearchUser extends Component {
 
 
         };
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } 
+        })
+
     }
 
 
@@ -269,7 +280,11 @@ class SearchUser extends Component {
             FlightNumber: this.state.modalFlightNumber,
         }
 
-        axios.post('http://localhost:8000/Flight/av', x)
+        axios.post('http://localhost:8000/Flight/av', x, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
                 const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
                 const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
@@ -323,13 +338,13 @@ class SearchUser extends Component {
                         console.log(request.AvailB);
                         console.log(request.AvailF);
 
-                        for (let i = beginE+1; i <= beginE + passengersE; i++)
+                        for (let i = beginE + 1; i <= beginE + passengersE; i++)
                             arrE.push("E" + i);
 
-                        for (let i = beginB+1; i <= beginB + passengersB; i++)
+                        for (let i = beginB + 1; i <= beginB + passengersB; i++)
                             arrB.push("B" + i);
 
-                        for (let i = beginF+1; i <= beginF + passengersF; i++)
+                        for (let i = beginF + 1; i <= beginF + passengersF; i++)
                             arrF.push("F" + i);
 
                         request.SeatsE = arrE;
@@ -345,13 +360,17 @@ class SearchUser extends Component {
                         var SeatsArrayB = arrB;
                         var SeatsArrayF = arrF;
 
-                        request.ReservedSeatsE = SeatsArrayE.toString(); 
-                        request.ReservedSeatsB = SeatsArrayB.toString(); 
-                        request.ReservedSeatsF = SeatsArrayF.toString(); 
+                        request.ReservedSeatsE = SeatsArrayE.toString();
+                        request.ReservedSeatsB = SeatsArrayB.toString();
+                        request.ReservedSeatsF = SeatsArrayF.toString();
 
-                        axios.post('http://localhost:8000/ticket/book', request)
+                        axios.post('http://localhost:8000/ticket/book', request, {
+                            headers: {
+                                "x-auth-token": localStorage.getItem("token")
+                            }
+                        })
                             .then((response) => {
-                                if (response) alert("Flight Booked Successfuly" + " Seats Economy : " + arrE + " Seats Business : " + arrB+ " Seats First : " + arrF);
+                                if (response) alert("Flight Booked Successfuly" + " Seats Economy : " + arrE + " Seats Business : " + arrB + " Seats First : " + arrF);
                                 else alert("blabizo");
 
                             }, (error) => {
@@ -474,9 +493,19 @@ class SearchUser extends Component {
 
 
 
-        axios.post('http://localhost:8000/Flight/FindFlight', f)
+        axios.post('http://localhost:8000/Flight/FindFlight', f, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                this.setState({ flights: res.data })
+                if(res.data =="Token is not valid"){
+                    alert("Token expired log in again please");
+                    window.location="/logIn";
+                }else{
+
+                    this.setState({ flights: res.data })
+                }
 
 
             })
@@ -485,7 +514,11 @@ class SearchUser extends Component {
     }
     FlightDetails(id) {
         var temp = { FlightNumber: id };
-        axios.post('http://localhost:8000/Flight/showFlight', temp)
+        axios.post('http://localhost:8000/Flight/showFlight', temp, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
                 this.setState({ showFlight: res.data })
 
@@ -547,15 +580,15 @@ class SearchUser extends Component {
                         ChildE: this.state.ChildE,
                         ChildB: this.state.ChildB,
                         ChildF: this.state.ChildF,
-    
+
                         AvailE: currentFlight.AvailE,
                         AvailB: currentFlight.AvailB,
                         AvailF: currentFlight.AvailF,
-    
+
                         noEconomySeats: currentFlight.noEconomySeats,
                         noBusinessSeats: currentFlight.noBusinessSeats,
                         noFirstSeats: currentFlight.noFirstSeats,
-    
+
 
                     }} show={this.state.show} func={{
                         onChangeAdultE: this.onChangeAdultE,
@@ -580,6 +613,21 @@ class SearchUser extends Component {
 
     }
 
+    // componentDidMount() {
+    //     axios.get("http://localhost:8000/user/isAuth", {}, {
+    //         headers: {
+    //             "x-auth-token": localStorage.getItem("token"),
+    //         }
+    //     }).then(res => {
+    //         if (res.data == "Token is not valid") {
+    //             alert("Token expired log in again please");
+    //             window.location = "/logIn"
+    //         } else {
+    //             //alert("token still valid")
+    //         }
+    //         console.log(res);
+    //     })
+    // }
     render() {
 
         return (

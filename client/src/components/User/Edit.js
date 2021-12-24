@@ -39,7 +39,18 @@ class Edit extends Component {
             CountryCode: '',
 
 
-        };
+        }
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            }
+
+        })
     }
     onChangeFirstname(e) {
         this.setState({
@@ -89,6 +100,20 @@ class Edit extends Component {
         });
 
     }
+    // componentDidMount(){
+    //     axios.post("http://localhost:8000/user/isAuth",{},{
+    //         headers:{
+    //             "x-auth-token":localStorage.getItem("token"),
+    //         }
+    //     }).then(res=>{
+    //         if(res.data == "Token is not valid"){
+    //             alert("Token expired log in again please");
+    //             window.location="/logIn"
+    //         }else{
+    //             alert("token still valid")
+    //         }
+    //     })
+    // }
 
     submit(e) {
         e.preventDefault();
@@ -114,7 +139,11 @@ class Edit extends Component {
 
         }
 
-        axios.post('http://localhost:8000/user/FindUsername', us)
+        axios.post('http://localhost:8000/user/FindUsername', us, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
                 console.log(res.data)
                 if (res.data != 0) {
@@ -125,25 +154,39 @@ class Edit extends Component {
             })
 
 
-        axios.post('http://localhost:8000/user/FindEmail', ma)
+        axios.post('http://localhost:8000/user/FindEmail', ma, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                if (res.data == 0) {
-                    console.log(localStorage.getItem("Email"));
+                if (res.data == "Token is not valid") {
+                    alert("Token Expired LogIn Again");
+                    window.location = "/logIn";
+                } else {
 
-                    axios.post('http://localhost:8000/user/EditUser', fl)
-                        .then(res => {
-                        }).catch((err) => {
-                            alert("error happened")
+                    if (res.data == 0) {
+                        console.log(localStorage.getItem("Email"));
+
+                        axios.post('http://localhost:8000/user/EditUser', fl, {
+                            headers: {
+                                "x-auth-token": localStorage.getItem("token")
+                            }
                         })
-                    window.location = 'http://localhost:3000/user/Edit';
-                    alert("User Edited Successfuly")
-                    localStorage.setItem("Email", fl.Email);
+                            .then(res => {
+                            }).catch((err) => {
+                                alert("error happened")
+                            })
+                        window.location = 'http://localhost:3000/user/Edit';
+                        alert("User Edited Successfuly")
+                        localStorage.setItem("Email", fl.Email);
 
-                    // window.location = '/user/home';
-                }
-                else {
-                    alert("email is already exists choose another one")
-                    window.location = 'http://localhost:3000/user/Edit';
+                        // window.location = '/user/home';
+                    }
+                    else {
+                        alert("email is already exists choose another one")
+                        window.location = 'http://localhost:3000/user/Edit';
+                    }
                 }
             })
 
@@ -275,7 +318,7 @@ class Edit extends Component {
                                 <br />
                                 <br />
                                 <br />
-                                
+
                                 <div className="form-group row" >
                                     <div className="offset-sm-4 col-12 col-sm-6 ">
                                         <button type="submit" className="btn btn-dark form-control" >Edit</button>
