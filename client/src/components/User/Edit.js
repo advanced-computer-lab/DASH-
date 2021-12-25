@@ -145,7 +145,7 @@ class Edit extends Component {
             }
         })
             .then(res => {
-                console.log(res.data)
+                
                 if (res.data != 0) {
                     alert("User Name already exists choose another one")
                     window.location = '/sign';
@@ -165,7 +165,7 @@ class Edit extends Component {
                         alert("Token Expired LogIn Again");
                         window.location = "/logIn";
                     } else {
-                        console.log(localStorage.getItem("Email"));
+                        
 
                         axios.post('http://localhost:8000/user/EditUser', fl)
                             .then(res => {

@@ -45,17 +45,36 @@ const Demo = styled('div')(({ theme }) => ({
 //import AddBoxIcon from '@mui/icons-material/AddBox';
 
 const onFinish = (token, flightNumber, amount, ticket, deleteFunc) => {
-    axios.post("http://localhost:8000/user/SendEmailPay", { token: token, amount: amount, flightNumber: flightNumber, SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF });
-    console.log(ticket)
-    deleteFunc(ticket._id,ticket.FlightNumber)
+    axios.post("http://localhost:8000/user/SendEmailPay", { token: token, amount: amount, flightNumber: flightNumber, SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF },{
+        headers: {
+            "x-auth-token": localStorage.getItem("token")
+        }
+    }).then(res=>{
+        if (res.data == "Token is not valid") {
+            alert("Token expired log in again please");
+            window.location="/logIn"
+        }
+    });
+    
+    deleteFunc(ticket._id, ticket.FlightNumber)
     Book();
 }
 
 const Book = () => (
-    axios.post('http://localhost:8000/ticket/book', request)
+    axios.post('http://localhost:8000/ticket/book', request,{
+        headers: {
+            "x-auth-token": localStorage.getItem("token")
+        }
+    })
         .then((response) => {
-            alert("Flight Booked Successfuly" + " Seats Economy : " + SeatsArrayE + " Seats Business : " + SeatsArrayB + " Seats First : " + SeatsArrayF);
-            // else alert("blabizo");
+            if (response.data == "Token is not valid") {
+                alert("Token expired log in again please");
+                window.location="/logIn"
+            }else{
+
+                alert("Flight Booked Successfuly" + " Seats Economy : " + SeatsArrayE + " Seats Business : " + SeatsArrayB + " Seats First : " + SeatsArrayF);
+                // else alert("blabizo");
+            }
 
         }, (error) => {
             alert("Error Happened ")
@@ -90,9 +109,14 @@ var GridArray = (props) => (
 
 
 const SendEmailDetails = (id, price, ticketNumber, SeatsArrayE, SeatsArrayB, SeatsArrayF) => (
-    axios.post("http://localhost:8000/user/SendEmailDetails", { TicketNumber: ticketNumber, Price: price, flightNumber: id, email: localStorage.getItem("Email"), SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF }, {
+    axios.post("http://localhost:8000/user/SendEmailDetails", { TicketNumber: ticketNumber, Price: price, flightNumber: id, email: localStorage.getItem("Email"), SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF },{
         headers: {
             "x-auth-token": localStorage.getItem("token")
+        }
+    }).then(res=>{
+        if (res.data == "Token is not valid") {
+            alert("Token expired log in again please");
+            window.location="/logIn"
         }
     })
 )
@@ -369,20 +393,6 @@ class Reserve extends Component {
             showPay: false,
         };
 
-            
-
-
-        
-        axios.get("http://localhost:8000/user/isAuth", {
-            headers: {
-                "x-auth-token": localStorage.getItem("token"),
-            }
-        }).then(res => {
-            if (res.data == "Token is not valid") {
-                alert("Token Expired LogIn Again");
-                window.location = "/logIn";
-            } 
-        })
     }
 
 
@@ -446,96 +456,100 @@ class Reserve extends Component {
         }
 
 
-        axios.post('http://localhost:8000/Flight/av', x)
+        axios.post('http://localhost:8000/Flight/av', x, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
-                const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
-                const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
-                const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
-                const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
-                const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
-
-                const total = pe + pb + pf;
-                request.totalPrice = total;
-                console.log("TOTAAAAAAL")
-                console.log(ticket.Price - total)
-                this.setState({ amount: (total - ticket.Price) });
-                request.Departure = res.data.Departure;
-                request.Arrival = res.data.Arrival;
-                request.DepartureTime = res.data.DepartureTime;
-                request.ArrivalTime = res.data.ArrivalTime;
-
-                request.AvailE = res.data.AE;
-                request.AvailB = res.data.AB;
-                request.AvailF = res.data.AF;
-
-                request.noEconomySeats = res.data.noEconomySeats;
-                request.noBusinessSeats = res.data.noBusinessSeats;
-                request.noFirstSeats = res.data.noFirstSeats;
-
-                console.log("ASDFASDFASDFASDF");
-
-                if (total == 0) {
-                    this.setState({ showPay: false })
-                    alert("You have to Book at least 1 Seat!");
-                    return;
-                }
-
-
-
-                if (ae > -1 && ab > -1 && af > -1) {
-
-                    var passengersE = (Number(request.AdultE) + Number(request.ChildE));
-                    var passengersB = (Number(request.AdultB) + Number(request.ChildB));
-                    var passengersF = (Number(request.AdultF) + Number(request.ChildF));
-
-                    var beginE = Number(request.noEconomySeats) - Number(request.AvailE);
-                    var beginB = Number(request.noBusinessSeats) - Number(request.AvailB);
-                    var beginF = Number(request.noFirstSeats) - Number(request.AvailF);
-
-                    var arrE = [];
-                    var arrF = [];
-                    var arrB = [];
-
-
-                    console.log(beginF);
-
-                    console.log(request.AvailE);
-                    console.log(request.AvailB);
-                    console.log(request.AvailF);
-
-                    for (let i = beginE + 1; i <= beginE + passengersE; i++)
-                        arrE.push("E" + i);
-
-                    for (let i = beginB + 1; i <= beginB + passengersB; i++)
-                        arrB.push("B" + i);
-
-                    for (let i = beginF + 1; i <= beginF + passengersF; i++)
-                        arrF.push("F" + i);
-
-                    request.SeatsE = arrE;
-                    request.SeatsB = arrB;
-                    request.SeatsF = arrF;
-
-
-                    console.log(arrE);
-                    console.log(arrF);
-                    console.log(arrB);
-
-                    SeatsArrayE = arrE;
-                    SeatsArrayB = arrB;
-                    SeatsArrayF = arrF;
-
-                    request.ReservedSeatsE = JSON.stringify(SeatsArrayE);
-                    request.ReservedSeatsB = JSON.stringify(SeatsArrayB);
-                    request.ReservedSeatsF = JSON.stringify(SeatsArrayF);
-
-
-                    this.setState({ showPay: true })
-
+                if (res.data == "Token is not valid") {
+                    alert("Token expired log in again please");
+                    window.location = "/logIn"
                 } else {
-                    this.setState({ showPay: false })
-                    alert('No enough seats for your request');
+
+                    const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
+                    const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
+                    const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
+                    const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
+                    const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
+                    const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
+
+                    const total = pe + pb + pf;
+                    request.totalPrice = total;
+                    
+                   
+                    this.setState({ amount: (total - ticket.Price) });
+                    request.Departure = res.data.Departure;
+                    request.Arrival = res.data.Arrival;
+                    request.DepartureTime = res.data.DepartureTime;
+                    request.ArrivalTime = res.data.ArrivalTime;
+
+                    request.AvailE = res.data.AE;
+                    request.AvailB = res.data.AB;
+                    request.AvailF = res.data.AF;
+
+                    request.noEconomySeats = res.data.noEconomySeats;
+                    request.noBusinessSeats = res.data.noBusinessSeats;
+                    request.noFirstSeats = res.data.noFirstSeats;
+
+                   
+
+                    if (total == 0) {
+                        this.setState({ showPay: false })
+                        alert("You have to Book at least 1 Seat!");
+                        return;
+                    }
+
+
+
+                    if (ae > -1 && ab > -1 && af > -1) {
+
+                        var passengersE = (Number(request.AdultE) + Number(request.ChildE));
+                        var passengersB = (Number(request.AdultB) + Number(request.ChildB));
+                        var passengersF = (Number(request.AdultF) + Number(request.ChildF));
+
+                        var beginE = Number(request.noEconomySeats) - Number(request.AvailE);
+                        var beginB = Number(request.noBusinessSeats) - Number(request.AvailB);
+                        var beginF = Number(request.noFirstSeats) - Number(request.AvailF);
+
+                        var arrE = [];
+                        var arrF = [];
+                        var arrB = [];
+
+
+                       
+
+                        for (let i = beginE + 1; i <= beginE + passengersE; i++)
+                            arrE.push("E" + i);
+
+                        for (let i = beginB + 1; i <= beginB + passengersB; i++)
+                            arrB.push("B" + i);
+
+                        for (let i = beginF + 1; i <= beginF + passengersF; i++)
+                            arrF.push("F" + i);
+
+                        request.SeatsE = arrE;
+                        request.SeatsB = arrB;
+                        request.SeatsF = arrF;
+
+
+                       
+
+                        SeatsArrayE = arrE;
+                        SeatsArrayB = arrB;
+                        SeatsArrayF = arrF;
+
+                        request.ReservedSeatsE = JSON.stringify(SeatsArrayE);
+                        request.ReservedSeatsB = JSON.stringify(SeatsArrayB);
+                        request.ReservedSeatsF = JSON.stringify(SeatsArrayF);
+
+
+                        this.setState({ showPay: true })
+
+                    } else {
+                        this.setState({ showPay: false })
+                        alert('No enough seats for your request');
+                    }
                 }
             }).catch(err => {
                 alert(err);
@@ -605,23 +619,38 @@ class Reserve extends Component {
     }
 
     componentDidMount() {
-        
         axios.post('http://localhost:8000/Flight/getAllTickets', { Email: localStorage.getItem('Email') }, {
             headers: {
                 "x-auth-token": localStorage.getItem("token")
             }
         })
             .then((res) => {
-                this.setState({ tickets: res.data });
+                if (res.data == "Token is not valid") {
+                    alert("Token expired log in again please");
+                    window.location = "/logIn"
+                } else {
+
+                    this.setState({ tickets: res.data });
+                }
             })
             .catch((err) => {
                 console.log(err);
 
             })
 
-        axios.get('http://localhost:8000/Flight/getAllFlights')
+        axios.get('http://localhost:8000/Flight/getAllFlights', {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then((res) => {
-                this.setState({ flights: res.data });
+                if (res.data == "Token is not valid") {
+                    alert("Token expired log in again please");
+                    window.location = "/logIn"
+                } else {
+
+                    this.setState({ flights: res.data });
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -635,7 +664,7 @@ class Reserve extends Component {
         }))
     }
 
-    DeleteTicketAlreadyReserved(ticketID,flightNum) {
+    DeleteTicketAlreadyReserved(ticketID, flightNum) {
         axios.delete(`http://localhost:8000/delete/`,
             {
                 data:
@@ -644,7 +673,17 @@ class Reserve extends Component {
                     email: localStorage.getItem("Email"),
                     ticketId: ticketID,
                 }
-            });
+            }, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token expired log in again please");
+                window.location = "/logIn"
+            }
+        });
+
         window.location.reload();
     }
 
@@ -661,6 +700,11 @@ class Reserve extends Component {
             headers: {
                 "x-auth-token": localStorage.getItem("token")
             }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token expired log in again please");
+                window.location = "/logIn"
+            }
         });
         window.location.reload();
     }
@@ -669,6 +713,11 @@ class Reserve extends Component {
         axios.post("http://localhost:8000/user/SendEmail", { TicketNumber: ticketNumber, Price: price, flightID: id, email: localStorage.getItem("Email") }, {
             headers: {
                 "x-auth-token": localStorage.getItem("token")
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token expired log in again please");
+                window.location = "/logIn"
             }
         });
     }
@@ -707,12 +756,22 @@ class Reserve extends Component {
 
 
         }
-        axios.post('http://localhost:8000/Flight/FindFlight', f)
+        axios.post('http://localhost:8000/Flight/FindFlight', f, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                for (let i = 0; i < res.data.length; i++)
-                    res.data[i].open = false
-                this.setState({ flightResult: res.data })
-                console.log(this.state.flightResult)
+                if (res.data == "Token is not valid") {
+                    alert("Token expired log in again please");
+                    window.location = "/logIn"
+                } else {
+
+                    for (let i = 0; i < res.data.length; i++)
+                        res.data[i].open = false
+                    this.setState({ flightResult: res.data })
+                    
+                }
             })
 
     }
@@ -726,28 +785,37 @@ class Reserve extends Component {
         var AdultF = ticket.FirstSeatAdult
         var ChildF = ticket.FirstSeatChild
 
-        console.log(ticket)
-        console.log(flightNum)
+        
         const x = {
             FlightNumber: flightNum,
         }
 
-        axios.post('http://localhost:8000/Flight/av', x)
+        axios.post('http://localhost:8000/Flight/av', x, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                console.log(res)
-                // const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
-                // const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
-                // const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
-                const pe = (Number(res.data.priceE) * Number(AdultE)) + (Number(res.data.priceE) * Number(ChildE) * 0.5);
-                const pb = (Number(res.data.priceB) * Number(AdultB)) + (Number(res.data.priceB) * Number(ChildB) * 0.5);
-                const pf = (Number(res.data.priceF) * Number(AdultF)) + (Number(res.data.priceF) * Number(ChildF) * 0.5);
+                if (res.data == "Token is not valid") {
+                    alert("Token expired log in again please");
+                    window.location = "/logIn"
+                } else {
 
-                const total = Number(pe + pb + pf);
-                alert(total)
+                  
+                    // const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
+                    // const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
+                    // const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
+                    const pe = (Number(res.data.priceE) * Number(AdultE)) + (Number(res.data.priceE) * Number(ChildE) * 0.5);
+                    const pb = (Number(res.data.priceB) * Number(AdultB)) + (Number(res.data.priceB) * Number(ChildB) * 0.5);
+                    const pf = (Number(res.data.priceF) * Number(AdultF)) + (Number(res.data.priceF) * Number(ChildF) * 0.5);
 
-                this.setState({ amount: total - ticket.price });
+                    const total = Number(pe + pb + pf);
+                    alert(total)
 
-                return (total - ticket.Price)
+                    this.setState({ amount: total - ticket.price });
+
+                    return (total - ticket.Price)
+                }
             })
     }
 
@@ -756,8 +824,7 @@ class Reserve extends Component {
     };
 
     generate(ticket) {
-        console.log("Ticket: ")
-        console.log(this.state.flightResult[0])
+       
         return this.state.flightResult.map((value, index) =>
             React.cloneElement(<><IconButton onClick={(props) => (this.handleModalBook(value.FlightNumber, index))}>
                 <ListItem>

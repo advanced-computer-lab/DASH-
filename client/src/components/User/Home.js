@@ -20,12 +20,6 @@ import * as THREE from 'three'
 
 
 
-const styles = {
-  media: {
-    objectFit: 'cover',
-
-  }
-};
 
 class Home extends Component {
 
@@ -59,7 +53,7 @@ class Home extends Component {
           this.setState({ FirstN: res.data[0].FirstName });
           this.setState({ LastN: res.data[0].LastName });
           this.setState({ UserName: res.data[0].Username });
-          console.log(res.data[0].Passportnumber)
+         
 
         }
 
@@ -154,7 +148,7 @@ class Home extends Component {
                     Username: {this.state.UserName}
                   </Typography>
 
-                  <Typography style={{ wordWrap: "break-word" }} gutterBottom variant="h6" component="p">
+                  <Typography style={{ wordWrap: "break-word" }} gutterBottom variant="h6" component="div">
                     {localStorage.getItem("Email")}
                   </Typography>
 

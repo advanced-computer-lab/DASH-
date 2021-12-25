@@ -183,7 +183,7 @@ class SearchGuest extends Component {
                     request.totalPrice = total;
                     if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
                         if (ae > -1 && ab > -1 && af > -1) {
-                            console.log(request)
+                            
                             axios.post('http://localhost:8000/ticket/book', request,{
                                 headers: {
                                     "guest":"guest"

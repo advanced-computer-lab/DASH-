@@ -30,7 +30,7 @@ class MyFlights extends Component {
 
     submit() {
         var array = [];
-        console.log("enter");
+        
         const temp = {
             mail: localStorage.getItem("Email"),
         }
@@ -54,7 +54,7 @@ class MyFlights extends Component {
     }
 
     flightlist() {
-        console.log("asdasdas")
+        
 
         return (this.state.MyFlight.map(currentFlight => {
             return <p>{currentFlight} </p>

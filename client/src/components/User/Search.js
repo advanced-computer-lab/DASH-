@@ -13,8 +13,26 @@ import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
 //import InputRange from 'react-input-range';
 
+import StripeCheckout from 'react-stripe-checkout';
 
 
+
+
+var SeatsArrayE = [];
+var SeatsArrayB = [];
+var SeatsArrayF = [];
+var request;
+
+const onFinish = (token, flightNumber, amount) => {
+    axios.post("http://localhost:8000/user/SendEmailPay", { token: token, amount: amount, flightNumber: flightNumber, SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF },
+        {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        }
+    );
+    Book();
+}
 
 
 
@@ -25,6 +43,29 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
 }));
+
+const Book = () => (
+    axios.post('http://localhost:8000/ticket/book', request,
+        {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        }
+    )
+        .then((res) => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } else {
+
+                alert("Flight Booked Successfuly" + " Seats Economy : " + SeatsArrayE + " Seats Business : " + SeatsArrayB + " Seats First : " + SeatsArrayF);
+                // else alert("blabizo");
+
+            }
+        }, (error) => {
+            alert("Error Happened ")
+        })
+)
 
 
 function SetColor(index, AvailE, size, Class) {
@@ -40,6 +81,63 @@ var GridArray = (props) => (
             {SetColor(index, element, props.Seats.length, props.Class)}
         </Grid>
     })
+)
+
+const Payment = (props) => (
+
+
+    <Modal show={props.showPay}>
+        <Modal.Header>
+
+
+
+            <b className="text-center">Reciept</b>
+            <Button onClick={() => { props.handleModalPay(props.FlightNumber) }} style={{ backgroundColor: "black" }}><CancelPresentationIcon style={{ color: 'white' }}></CancelPresentationIcon></Button>
+
+
+
+        </Modal.Header>
+        <Modal.Body>
+
+            <h6> Amount To Pay: {props.amount}$</h6>
+
+
+            <br />
+            <h6> Reserved Seats</h6>
+
+
+
+            {SeatsArrayE.map(seat => {
+                return <><h7>Seat: {seat} in Economy Class</h7><br /></>
+            }
+            )}
+
+            <br />
+            {SeatsArrayB.map(seat => {
+                return <><h7>Seat: {seat} in Business Class</h7><br /></>
+            }
+            )}
+
+            <br />
+            {SeatsArrayF.map(seat => {
+                return <><h7>Seat: {seat} in First Class</h7><br /></>
+            }
+            )}
+            <br />
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <StripeCheckout
+                    amount={props.amount * 100}
+                    image="https://dvh1deh6tagwk.cloudfront.net/finder-au/wp-uploads/2016/05/Airplane.Square.jpg"
+                    currency="USD"
+                    name="Dash Flights"
+                    token={(token) => onFinish(token, props.FlightNumber, props.amount)}
+                    stripeKey="pk_test_51K8riMCMGq5st9AY99SVdeJHjz4jGecBhK7VXnQd7MMRTxtObR6INME7mP9G0c17uIS4RFovG517MYMHN2apCC3n008c7qWirP"
+                />
+            </div>
+        </Modal.Body>
+
+    </Modal>
+
 )
 
 
@@ -175,6 +273,7 @@ class SearchUser extends Component {
         this.onChangeDep = this.onChangeDep.bind(this);
         this.test2 = this.test2.bind(this);
         this.handleModal = this.handleModal.bind(this);
+        this.handleModalPay = this.handleModalPay.bind(this);
 
         this.onChangeAdultE = this.onChangeAdultE.bind(this);
         this.onChangeAdultB = this.onChangeAdultB.bind(this);
@@ -241,7 +340,7 @@ class SearchUser extends Component {
             if (res.data == "Token is not valid") {
                 alert("Token Expired LogIn Again");
                 window.location = "/logIn";
-            } 
+            }
         })
 
     }
@@ -250,6 +349,13 @@ class SearchUser extends Component {
     handleModal(id) {
         this.setState({
             show: !this.state.show,
+            modalFlightNumber: id,
+        })
+    }
+
+    handleModalPay(id) {
+        this.setState({
+            showPay: !this.state.showPay,
             modalFlightNumber: id,
         })
     }
@@ -266,7 +372,7 @@ class SearchUser extends Component {
         // if(this.state.modalFlightNumber==100) window.location='/user/home'
         e.preventDefault();
 
-        const request = {
+        request = {
             Email: localStorage.getItem("Email"),
             FlightNumber: this.state.modalFlightNumber,
             AdultE: this.state.AdultE,
@@ -297,6 +403,7 @@ class SearchUser extends Component {
 
             ReservedSeats: '',
         }
+
         const x = {
             FlightNumber: this.state.modalFlightNumber,
         }
@@ -307,37 +414,43 @@ class SearchUser extends Component {
             }
         })
             .then(res => {
-                const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
-                const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
-                const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
-                const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
-                const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
-                const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
+                if (res.data == "Token is not valid") {
+                    alert("Token Expired LogIn Again");
+                    window.location = "/logIn";
+                } else {
 
-                const total = pe + pb + pf;
-                request.totalPrice = total;
-                request.Departure = res.data.Departure;
-                request.Arrival = res.data.Arrival;
-                request.DepartureTime = res.data.DepartureTime;
-                request.ArrivalTime = res.data.ArrivalTime;
+                    const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
+                    const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
+                    const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
+                    const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
+                    const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
+                    const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
 
-                request.AvailE = res.data.AE;
-                request.AvailB = res.data.AB;
-                request.AvailF = res.data.AF;
+                    const total = pe + pb + pf;
+                    request.totalPrice = total;
+                    this.setState({ amount: total });
+                    request.Departure = res.data.Departure;
+                    request.Arrival = res.data.Arrival;
+                    request.DepartureTime = res.data.DepartureTime;
+                    request.ArrivalTime = res.data.ArrivalTime;
 
-                request.noEconomySeats = res.data.noEconomySeats;
-                request.noBusinessSeats = res.data.noBusinessSeats;
-                request.noFirstSeats = res.data.noFirstSeats;
+                    request.AvailE = res.data.AE;
+                    request.AvailB = res.data.AB;
+                    request.AvailF = res.data.AF;
 
-                console.log("ASDFASDFASDFASDF");
-                console.log(res.data.noFirstSeats)
-                if (total == 0) {
-                    alert("You have to Book at least 1 Seat!");
-                    return;
-                }
+                    request.noEconomySeats = res.data.noEconomySeats;
+                    request.noBusinessSeats = res.data.noBusinessSeats;
+                    request.noFirstSeats = res.data.noFirstSeats;
 
 
-                if (window.confirm("The total price is :" + total + "$\n" + 'Are you sure you want to book this flight? ')) {
+                    if (total == 0) {
+                        this.setState({ showPay: false })
+                        alert("You have to Book at least 1 Seat!");
+                        return;
+                    }
+
+
+
                     if (ae > -1 && ab > -1 && af > -1) {
 
                         var passengersE = (Number(request.AdultE) + Number(request.ChildE));
@@ -353,11 +466,9 @@ class SearchUser extends Component {
                         var arrB = [];
 
 
-                        console.log(beginF);
 
-                        console.log(request.AvailE);
-                        console.log(request.AvailB);
-                        console.log(request.AvailF);
+
+
 
                         for (let i = beginE + 1; i <= beginE + passengersE; i++)
                             arrE.push("E" + i);
@@ -373,38 +484,22 @@ class SearchUser extends Component {
                         request.SeatsF = arrF;
 
 
-                        console.log(arrE);
-                        console.log(arrF);
-                        console.log(arrB);
 
-                        var SeatsArrayE = arrE;
-                        var SeatsArrayB = arrB;
-                        var SeatsArrayF = arrF;
 
-                        request.ReservedSeatsE = SeatsArrayE.toString();
-                        request.ReservedSeatsB = SeatsArrayB.toString();
-                        request.ReservedSeatsF = SeatsArrayF.toString();
+                        SeatsArrayE = arrE;
+                        SeatsArrayB = arrB;
+                        SeatsArrayF = arrF;
 
-                        axios.post('http://localhost:8000/ticket/book', request, {
-                            headers: {
-                                "x-auth-token": localStorage.getItem("token")
-                            }
-                        })
-                            .then((response) => {
-                                if (response) {
-                                    alert("Flight Booked Successfuly" + " Seats Economy : " + arrE + " Seats Business : " + arrB + " Seats First : " + arrF)
-                                    window.location = '/user/search';
-                                }
-                                else alert("blabizo");
+                        request.ReservedSeatsE = JSON.stringify(SeatsArrayE);
+                        request.ReservedSeatsB = JSON.stringify(SeatsArrayB);
+                        request.ReservedSeatsF = JSON.stringify(SeatsArrayF);
 
-                            }, (error) => {
-                                alert("Error Happened ")
-                            });
+                        this.setState({ showPay: true })
+
                     } else {
+                        this.setState({ showPay: false })
                         alert('No enough seats for your request');
                     }
-                } else {
-
                 }
             }).catch(err => {
                 alert(err);
@@ -415,7 +510,6 @@ class SearchUser extends Component {
         })
 
     }
-
 
     onChangeN(e) {
         this.setState({ FlightNumber: e.target.value })
@@ -539,10 +633,10 @@ class SearchUser extends Component {
             }
         })
             .then(res => {
-                if(res.data =="Token is not valid"){
+                if (res.data == "Token is not valid") {
                     alert("Token expired log in again please");
-                    window.location="/logIn";
-                }else{
+                    window.location = "/logIn";
+                } else {
 
                     this.setState({ flights: res.data })
                 }
@@ -560,7 +654,13 @@ class SearchUser extends Component {
             }
         })
             .then(res => {
-                this.setState({ showFlight: res.data })
+                if (res.data == "Token is not valid") {
+                    alert("Token expired log in again please");
+                    window.location = "/logIn"
+                } else {
+
+                    this.setState({ showFlight: res.data })
+                }
 
 
             })
@@ -624,7 +724,7 @@ class SearchUser extends Component {
                     </div>
 
 
-                    <MM FlightNumber={currentFlight.FlightNumber} handleModal={this.handleModal} Seats={{
+                    <MM counter={this.state.counter} onCounter={this.onCounter} FlightNumber={currentFlight.FlightNumber} handleModal={this.handleModal} Seats={{
                         AdultE: this.state.AdultE,
                         AdultB: this.state.AdultB,
                         AdultF: this.state.AdultF,
@@ -640,7 +740,6 @@ class SearchUser extends Component {
                         noBusinessSeats: currentFlight.noBusinessSeats,
                         noFirstSeats: currentFlight.noFirstSeats,
 
-
                     }} show={this.state.show} func={{
                         onChangeAdultE: this.onChangeAdultE,
                         onChangeAdultB: this.onChangeAdultB,
@@ -651,6 +750,16 @@ class SearchUser extends Component {
 
                     }}
                         submitModal={this.submitModal}
+                        handleModalPay={this.handleModalPay}
+
+                    />
+
+                    <Payment showPay={this.state.showPay}
+                        submitModal={this.submitModal}
+                        handleModalPay={this.handleModalPay}
+                        handleModal={this.handleModal}
+                        FlightNumber={currentFlight.FlightNumber}
+                        amount={this.state.amount}
                     />
 
 

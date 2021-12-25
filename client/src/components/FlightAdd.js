@@ -106,14 +106,14 @@ class FlightAdd extends Component {
         }
 
         
-        console.log(fl);
+      
         axios.post('http://localhost:8000/Flight/find',{FlightNumber : this.state.FlightNumber})
           .then(res=> {
-            console.log(res.data);
+           
           
   if (res.data === 0){
         axios.post('http://localhost:8000/Flight/add',fl)
-        .then(res => console.log(res.data),
+        .then(res => 
         window.location = '/',
         alert("Flight Number added"),
           

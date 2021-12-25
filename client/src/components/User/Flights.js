@@ -128,9 +128,6 @@ const MM = (props) => (
 
 )
 
-var SeatsArrayE = [];
-var SeatsArrayB = [];
-var SeatsArrayF = [];
 var request;
 
 const onFinish = (token, flightNumber, amount) => {
@@ -454,8 +451,7 @@ class Flights extends Component {
                     request.noBusinessSeats = res.data.noBusinessSeats;
                     request.noFirstSeats = res.data.noFirstSeats;
 
-                    console.log("ASDFASDFASDFASDF");
-                    console.log(res.data.noFirstSeats)
+                  
                     if (total == 0) {
                         this.setState({ showPay: false })
                         alert("You have to Book at least 1 Seat!");
@@ -479,11 +475,9 @@ class Flights extends Component {
                         var arrB = [];
 
 
-                        console.log(beginF);
+                       
 
-                        console.log(request.AvailE);
-                        console.log(request.AvailB);
-                        console.log(request.AvailF);
+                        
 
                         for (let i = beginE + 1; i <= beginE + passengersE; i++)
                             arrE.push("E" + i);
@@ -499,9 +493,7 @@ class Flights extends Component {
                         request.SeatsF = arrF;
 
 
-                        console.log(arrE);
-                        console.log(arrF);
-                        console.log(arrB);
+                        
 
                         SeatsArrayE = arrE;
                         SeatsArrayB = arrB;
@@ -542,7 +534,7 @@ class Flights extends Component {
                 } else {
                     this.setState({ flights: res.data });
                 }
-                console.log(res);
+                
 
             })
             .catch((err) => {
