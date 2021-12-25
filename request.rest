@@ -1,0 +1,27 @@
+POST http://localhost:8000/blabizo
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNoYXphQGdtYWlsLmNvbSIsImlhdCI6MTY0MDI4Mzc1MiwiZXhwIjoxNjQwMjgzODUyfQ.pXKhpfpKPECKWO2W7CxdB_iwLngzpAiIB9g-9I8NilU
+Content-Type: application/json
+
+{
+
+}
+###
+POST http://localhost:8000/user/logIn
+Content-Type: application/json
+
+{
+    "Email":"shaza@gmail.com",
+    "Password":"123"
+}
+
+###
+POST http://localhost:8000/user/FindInfo
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNoYXphQGdtYWlsLmNvbSIsImlhdCI6MTY0MDI4NjU3OCwiZXhwIjoxNjQwMzg2NTc4fQ.Ry9TGc9SfSqqrFckjG36w6tm5QZhrFLuBiW8iPvAQHU
+Content-Type: application/json
+
+{
+    
+}
+
+
+###

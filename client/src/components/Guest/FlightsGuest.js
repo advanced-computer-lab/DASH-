@@ -7,7 +7,7 @@ import { Component } from 'react';
 import { Navbar, Nav, Container, Table, Button, Modal } from 'react-bootstrap';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import InfoIcon from '@mui/icons-material/Info';
-import EditIcon from '@mui/icons-material/Edit';
+
 import LoginIcon from '@mui/icons-material/Login';
 
 //import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -21,10 +21,10 @@ const MM = (props) => (
 
         </Modal.Header>
         <Modal.Body>
-            
-        <link rel = 'asdas' href='http://localhost:3000/sign'/>  
-                <a href='http://localhost:3000/sign'>SignUp here to Book this Flight</a>
-                
+
+            <link rel='asdas' href='http://localhost:3000/sign' />
+            <a href='http://localhost:3000/sign'>SignUp here to Book this Flight</a>
+
         </Modal.Body>
 
     </Modal>
@@ -43,7 +43,7 @@ const Flight = (props) => (
 
 
         <td>
-        <IconButton style={{ color: "white", fontSize: 18 }} onClick={() => { props.FlightDetails(props.flight.FlightNumber) }}>Details &nbsp; <InfoIcon style={{ color: "white" }}></InfoIcon></IconButton>
+            <IconButton style={{ color: "white", fontSize: 18 }} onClick={() => { props.FlightDetails(props.flight.FlightNumber) }}>Details &nbsp; <InfoIcon style={{ color: "white" }}></InfoIcon></IconButton>
 
         </td>
 
@@ -101,6 +101,7 @@ class FlightsGuest extends Component {
 
 
         };
+
     }
 
     handleModal(id) {
@@ -162,32 +163,47 @@ class FlightsGuest extends Component {
             FlightNumber: this.state.modalFlightNumber,
         }
 
-        axios.post('http://localhost:8000/Flight/av', x)
+        axios.post('http://localhost:8000/Flight/av', x, {
+            headers: {
+                "guest" : "guest"
+            }
+        })
             .then(res => {
-                const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
-                const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
-                const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
-                const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
-                const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
-                const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
-                const total = pe + pb + pf;
-                request.totalPrice = total;
-                if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
-                    if (ae > -1 && ab > -1 && af > -1) {
-                        console.log(request)
-                        axios.post('http://localhost:8000/ticket/book', request)
-                            .then((response) => {
-                                if (response) alert("Flight Booked Successfuly");
-                                else alert("blabizo");
+                // if(res.data =="isGuest")
+                 {
 
-                            }, (error) => {
-                                alert("Error Happened ")
-                            });
+                    const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
+                    const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
+                    const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
+                    const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
+                    const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
+                    const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
+                    const total = pe + pb + pf;
+                    request.totalPrice = total;
+                    if (window.confirm("The total price is :" + total + "\n" + 'Are you sure you want to book this flight? ')) {
+                        if (ae > -1 && ab > -1 && af > -1) {
+                           
+                            axios.post('http://localhost:8000/ticket/book', request, {
+                                headers: {
+                                    "guest":"guest"
+                                }
+                            })
+                                .then((response) => {
+                                    // if(response.data == "isGuest")
+                                    {
+                                        if (response) alert("Flight Booked Successfuly");
+                                        else alert("error happened");
+                                    }
+
+                                }, (error) => {
+                                    alert("Error Happened ")
+                                });
+                        } else {
+                            alert('No enough seats for your request');
+                        }
                     } else {
-                        alert('No enough seats for your request');
-                    }
-                } else {
 
+                    }
                 }
             }).catch(err => {
                 alert(err);
@@ -201,9 +217,17 @@ class FlightsGuest extends Component {
 
 
     componentDidMount() {
-        axios.get('http://localhost:8000/Flight/getAllFlights')
+        axios.get('http://localhost:8000/Flight/getAllFlights', {
+            headers: {
+                "guest":"guest"
+            }
+        })
             .then((res) => {
-                this.setState({ flights: res.data });
+                // if(res.data =="isGuest")
+                {
+
+                    this.setState({ flights: res.data });
+                }
 
             })
             .catch((err) => {
@@ -219,9 +243,17 @@ class FlightsGuest extends Component {
     }
     FlightDetails(id) {
         var temp = { FlightNumber: id };
-        axios.post('http://localhost:8000/Flight/showFlight', temp)
+        axios.post('http://localhost:8000/Flight/showFlight', temp, {
+            headers: {
+                "guest":"guest"
+            }
+        })
             .then(res => {
-                this.setState({ showFlight: res.data })
+                // if(res.data == "isGuest")
+                {
+
+                    this.setState({ showFlight: res.data })
+                }
 
 
             })
@@ -239,11 +271,11 @@ class FlightsGuest extends Component {
 
             return <div className="container-fluid">
                 <div className="row row-content">
-                    <form className="col-md-6 offset-md-3" style={{ padding: 30, boxShadow: "0px 5px 20px 0px rgba(0, 0, 0, 0.3)", borderRadius: 20 }}>
+                    <form className="col-md-6 offset-md-3" style={{ backgroundColor:"rgba(255,255,255,0.5)",padding: 30, boxShadow: "0px 5px 20px 0px rgba(0, 0, 0, 0.3)", borderRadius: 20 }}>
 
 
 
-                    <strong style={{ marginLeft: '185px' }}>Flight Details Flno: :{currentFlight.FlightNumber} </strong>
+                    <strong style={{ marginLeft: '185px' }}>Flight Number :{currentFlight.FlightNumber} </strong>
                     <br></br>
                     <br></br>
                     
@@ -321,7 +353,7 @@ class FlightsGuest extends Component {
         return (
 
 
-
+            <body    style={ { height:"100vh",backgroundImage:'url("https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJhdmVsJTIwbWFwfGVufDB8fDB8fA%3D%3D&w=1000&q=80")' ,backgroundRepeat:"no-repeat" , backgroundSize:"cover" , backgroundColor:"rgba(0,0,0,0.1)"}} >
             <div className="container-fluid">
                 <div className="row">
 
@@ -332,11 +364,11 @@ class FlightsGuest extends Component {
                             <Navbar.Toggle aria-controls="navbarScroll" />
                             <Navbar.Collapse id="navbarScroll">
                                 <Nav navbarScroll className="me-auto">
-                                <Nav.Link href="/Guest/HomeGuest"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
-                                        <Nav.Link href="/Guest/SearchGuest"><i className="fa fa-search fa-lg"></i> Search</Nav.Link>
-                                        <Nav.Link href="/Guest/FlightsGuest"><i className="fa fa-list fa-lg"></i> Flights List</Nav.Link>
-                                        <Nav.Link href="/logIn"  className="position-absolute end-0"><LoginIcon></LoginIcon> LogIn</Nav.Link>
-                                        
+                                    <Nav.Link href="/Guest/HomeGuest"><i className="fa fa-home fa-lg"></i> Home</Nav.Link>
+                                    <Nav.Link href="/Guest/SearchGuest"><i className="fa fa-search fa-lg"></i> Search</Nav.Link>
+                                    <Nav.Link href="/Guest/FlightsGuest"><i className="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+                                    <Nav.Link href="/logIn" className="position-absolute end-0"><LoginIcon></LoginIcon> LogIn</Nav.Link>
+
 
                                 </Nav>
                             </Navbar.Collapse>
@@ -383,6 +415,7 @@ class FlightsGuest extends Component {
 
                 </div>
             </div>
+            </body>
 
 
 

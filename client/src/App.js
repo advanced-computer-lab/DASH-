@@ -9,6 +9,8 @@ import EditFlight from './components/Admin/EditFlight';
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 
+import ChangePassword from './components/User/ChangePassword';
+
 
 import MyFlights from './components/User/MyFlights';
 
@@ -78,6 +80,7 @@ class App extends Component {
           } />
 
           <Route exact path='/sign' element={<SignUp />} />
+          <Route exact path='user/ChangePassword' element={<ChangePassword />} />
 
 
           <Route exact path='/logIn' element={<LogIn />} />

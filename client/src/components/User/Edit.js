@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import EditIcon from "@mui/icons-material/Edit";
 import { Navbar, Nav, Container } from 'react-bootstrap';
-const { Component } = require("react"); 
+const { Component } = require("react");
 
 
 
@@ -16,14 +16,41 @@ class Edit extends Component {
 
         this.submit = this.submit.bind(this);
 
+        this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangeAddress = this.onChangeAddress.bind(this);
+        this.onChangeCountryCode = this.onChangeCountryCode.bind(this);
+        this.onChangeTelephone = this.onChangeTelephone.bind(this);
+
+
         this.state = {
             FirstName: '',
             LastName: '',
             Email: '',
+            Username: '',
             Passportnumber: '',
 
+            Telephone: '',
+            Address: '',
+            CountryCode: '',
 
-        };
+
+            Telephone: '',
+            Address: '',
+            CountryCode: '',
+
+
+        }
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            }
+
+        })
     }
     onChangeFirstname(e) {
         this.setState({
@@ -46,6 +73,48 @@ class Edit extends Component {
         });
     }
 
+
+    onChangeTelephone(e) {
+        this.setState({
+            Telephone: e.target.value
+        });
+
+    }
+
+    onChangeCountryCode(e) {
+        this.setState({
+            CountryCode: e.target.value
+        });
+
+    }
+
+    onChangeAddress(e) {
+        this.setState({
+            Address: e.target.value
+        });
+
+    }
+    onChangeUsername(e) {
+        this.setState({
+            Username: e.target.value
+        });
+
+    }
+    // componentDidMount(){
+    //     axios.post("http://localhost:8000/user/isAuth",{},{
+    //         headers:{
+    //             "x-auth-token":localStorage.getItem("token"),
+    //         }
+    //     }).then(res=>{
+    //         if(res.data == "Token is not valid"){
+    //             alert("Token expired log in again please");
+    //             window.location="/logIn"
+    //         }else{
+    //             alert("token still valid")
+    //         }
+    //     })
+    // }
+
     submit(e) {
         e.preventDefault();
         const fl = {
@@ -53,27 +122,72 @@ class Edit extends Component {
             Email: this.state.Email,
             FirstName: this.state.FirstName,
             LastName: this.state.LastName,
-            Passportnumber: this.state.Passportnumber
+            Passportnumber: this.state.Passportnumber,
+            Username: this.state.Username,
+
+            Telephone: this.state.Telephone,
+            Address: this.state.Address,
+            CountryCode: this.state.CountryCode,
         }
         const ma = {
             Email: this.state.Email
 
         }
-        axios.post('http://localhost:8000/user/FindEmail', ma)
+
+        const us = {
+            Username: this.state.Username
+
+        }
+
+        axios.post('http://localhost:8000/user/FindUsername', us, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
+            .then(res => {
+                
+                if (res.data != 0) {
+                    alert("User Name already exists choose another one")
+                    window.location = '/sign';
+                    return
+                }
+            })
+
+
+        axios.post('http://localhost:8000/user/FindEmail', ma, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
                 if (res.data == 0) {
-                    console.log(localStorage.getItem("Email"));
+                    if (res.data == "Token is not valid") {
+                        alert("Token Expired LogIn Again");
+                        window.location = "/logIn";
+                    } else {
+                        
 
-                    axios.post('http://localhost:8000/user/EditUser', fl)
-                        .then(res => {
-                        }).catch((err) => {
-                            alert("error happened")
-                        })
-                    window.location = 'http://localhost:3000/user/Edit';
-                    alert("User Edited Successfuly")
-                    localStorage.setItem("Email", fl.Email);
+                        axios.post('http://localhost:8000/user/EditUser', fl)
+                            .then(res => {
+                                alert(localStorage.getItem("Email"))
 
-                    // window.location = '/user/home';
+
+                            }).catch((err) => {
+                                alert("error happened")
+                            })
+
+                        if (fl.Email.length != 0) {
+
+                            localStorage.removeItem("Email")
+                            localStorage.setItem("Email", fl.Email);
+                        }
+
+                        window.location = 'http://localhost:3000/user/Edit';
+                        alert("User Edited Successfuly")
+
+
+                        // window.location = '/user/home';
+                    }
                 }
                 else {
                     alert("email is already exists choose another one")
@@ -107,7 +221,7 @@ class Edit extends Component {
                                     <Nav.Link href="/user/search"><i className="fa fa-search fa-lg"></i> Search</Nav.Link>
                                     <Nav.Link href="/user/all_flights"><i className="fa fa-list fa-lg"></i> Flights List</Nav.Link>
                                     <Nav.Link href="/user/reserve"><i className="fa fa-clipboard fa-lg"></i> My Flights</Nav.Link>
-                                    
+
                                     <Nav.Link href="/logIn" onClick={() => {
                                         localStorage.removeItem("token");
                                         localStorage.removeItem("Email");
@@ -134,6 +248,7 @@ class Edit extends Component {
                                         <input className="form-control" type="text" value={this.state.FirstName} onChange={this.onChangeFirstname} />
                                     </div>
                                 </div>
+
                                 <div className="form-group row" >
                                     <div className="col-12 col-sm-4">
                                         <label htmlFor="aligned-ID"  >Last Name </label>
@@ -142,14 +257,60 @@ class Edit extends Component {
                                         <input className="form-control" type="text" value={this.state.LastName} onChange={this.onChangeLastname} />
                                     </div>
                                 </div>
+
+
+
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+                                        <label htmlFor="aligned-ID"  >User Name </label>
+                                    </div>
+                                    <div className="col-12 col-sm-8">
+                                        <input className="form-control" type="text" value={this.state.Username} onChange={this.onChangeUsername} />
+                                    </div>
+                                </div>
+
+
                                 <div className="form-group row" >
                                     <div className="col-12 col-sm-4">
                                         <label htmlFor="aligned-ID"  >Passport Number </label>
                                     </div>
+
+
                                     <div className="col-12 col-sm-8">
                                         <input className="form-control" type="text" value={this.state.Passportnumber} onChange={this.onChangePassport} />
                                     </div>
+
+
                                 </div>
+
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+                                        <label htmlFor="aligned-ID">Country Code</label>
+                                    </div>
+                                    <div className="col-12 col-sm-8">
+                                        <input className="form-control" ype="number" name="Country Code" value={this.state.CountryCode} onChange={this.onChangeCountryCode} />                                            </div>
+                                </div>
+
+
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+                                        <label htmlFor="aligned-ID">Telephone</label>
+                                    </div>
+                                    <div className="col-12 col-sm-8">
+                                        <input className="form-control" ype="number" name="Telephone" value={this.state.Telephone} onChange={this.onChangeTelephone} />                                            </div>
+                                </div>
+
+                                <div className="form-group row" >
+                                    <div className="col-12 col-sm-4">
+                                        <label htmlFor="aligned-ID">Home Address</label>
+                                    </div>
+
+                                    <div className="col-12 col-sm-8">
+                                        <textarea className="form-control" type="text" name="Home Address" value={this.state.Address} onChange={this.onChangeAddress} />                                            </div>
+
+                                </div>
+
+
                                 <div className="form-group row" >
                                     <div className="col-12 col-sm-4">
                                         <label htmlFor="aligned-ID"  >Email </label>
@@ -162,11 +323,13 @@ class Edit extends Component {
                                 <br />
                                 <br />
                                 <br />
+
                                 <div className="form-group row" >
                                     <div className="offset-sm-4 col-12 col-sm-6 ">
                                         <button type="submit" className="btn btn-dark form-control" >Edit</button>
                                     </div>
                                 </div>
+
                             </fieldset>
                         </form>
 

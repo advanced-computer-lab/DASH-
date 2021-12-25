@@ -38,7 +38,7 @@ class FlightSearch extends Component {
     }
 
     flightsList() {
-        console.log(this.state.flights[0]);
+        
         return (this.state.flights.map(currentFlight => {
             return <Flight flight={currentFlight} deleteFlight={this.deleteFlight} />
         }))

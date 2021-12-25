@@ -49,15 +49,35 @@ class GetFlights extends Component {
         this.state = {
             flights: []
         };
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } 
+        })
     }
 
 
     componentDidMount() {
-        axios.get('http://localhost:8000/Flight/getAllFlights')
+        axios.get('http://localhost:8000/Flight/getAllFlights', {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then((res) => {
-                this.setState({ flights: res.data });
+                if (res.data == "Token is not valid") {
+                    alert("Token expired log in again please");
+                    window.location = "/logIn";
+                } else {
 
-            }) 
+                    this.setState({ flights: res.data });
+                }
+
+            })
             .catch((err) => {
                 console.log(err);
 
@@ -73,12 +93,25 @@ class GetFlights extends Component {
     deleteFlight(FlightNumber) {
         if (window.confirm('Are you sure you want to delete this Flight from the database')) {
             // Save it!
-            axios.post("http://localhost:8000/Flight/deleteFlight", { data: FlightNumber }).then(
-                res => (console.log(res.data))
+            axios.post("http://localhost:8000/Flight/deleteFlight", { data: FlightNumber },{
+                headers: {
+                    "x-auth-token": localStorage.getItem("token")
+                }
+            }).then(
+                res => {
+                    console.log(res);
+                    if(res.data =="Token is not valid"){
+                        alert("Token expired log in again please");
+                        window.location="/logIn";
+
+                    }
+                   
+                }
             ).catch(err => { console.log(err) });
-            this.setState({
-                flights: this.state.flights.filter(element => element.FlightNumber !== FlightNumber)
-            })
+
+                this.setState({
+                    flights: this.state.flights.filter(element => element.FlightNumber !== FlightNumber)
+                })
         } else {
             // Do nothing!
 
@@ -109,6 +142,13 @@ class GetFlights extends Component {
                                     <Nav.Link href="/add"><i class="fa fa-fighter-jet fa-lg"></i> Add flight </Nav.Link>
                                     <Nav.Link href="./search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
                                     <Nav.Link href="/getFlights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
+
+                                    <Nav.Link href="/logIn" onClick={() => {
+                                        localStorage.removeItem("token");
+                                        localStorage.removeItem("Email");
+                                        localStorage.removeItem("Type");
+                                    }} className="position-absolute end-0"><i className="fa fa-sign-out fa-lg"></i> Logout</Nav.Link>
+
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>

@@ -10,7 +10,7 @@ const flightController = require("./controller/FlightController");
 
 const Ticket = require("./models/Ticket");
 
-const config = require("config");
+
 //const bodyParser = require("body-parser");
 //const session = require("express-session");
 //const MongoDBSession = require('connect-mongodb-session')(session);
@@ -19,8 +19,9 @@ const config = require("config");
 // THIS IS WRONG NEVER DO THAT !! Only for the task we put the DB Link here!! NEVER DO THAAAT AGAIN !!
 dotenv.config();
 
-
-const MongoURI = config.get("MongoURI");
+const auth = require('./middleware/auth') ;
+const config = require("config");
+const MongoURI = process.env.Mongo_URI;
 
 
 //App variables
@@ -132,7 +133,7 @@ app.use('/Flight' , FlightRouter);
 
 app.use('/user',userRouter);
 app.use('/ticket',ticketRouter);
-// app.post('/logIn',userController.logIn);
+//app.post('/logIn',userController.logIn);
 // app.post('/signUp',userController.signUp);
 // app.post('user/find',verify,userController.findUser);
 // app.get('user/getFlights' ,verify,  flightController.getAllFlights);
@@ -149,6 +150,9 @@ app.use('/ticket',ticketRouter);
 //         }
 //     }); 
 
+app.post("/blabizo" , auth , (req,res)=>{
+    res.json(req.user)
+})
 
 
 app.listen(port, () => {
@@ -163,10 +167,13 @@ app.listen(port, () => {
     console.log("ASDFASDFASDFASDFASDFASDFAF");
     console.log(flightNum);
     console.log(userEmail);
-
-
-
+    
+    
+    
+    console.log("IDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
+    console.log(req.body.ticketId)
     Ticket.findOneAndDelete({_id: req.body.ticketId}, function (err, docs) {
+        console.log("")
         console.log(docs);
         const passengerE =  Number(docs.EconomySeatsAdult) + Number(docs.EconomySeatsChild);
         const passengerB =  Number(docs.BusinessSeatAdult) +  Number(docs.BusinessSeatChild);

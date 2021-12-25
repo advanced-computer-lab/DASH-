@@ -51,6 +51,16 @@ class EditFlight extends Component {
             arrTime: '',
 
         };
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } 
+        })
     }
 
 
@@ -131,11 +141,21 @@ class EditFlight extends Component {
 
 
 
-       
-        axios.post('http://localhost:8000/Flight/editFlight', fl)
+
+        axios.post('http://localhost:8000/Flight/editFlight', fl,{
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                alert("Flight Edited Successfuly")
-                window.location = 'http://localhost:3000/getFlights';
+                if(res.data =="Token is not valid"){
+                    alert("Token expired log in again please");
+                    window.location="/logIn";
+                }else{
+
+                    alert("Flight Edited Successfuly")
+                    window.location = '/getFlights';
+                }
 
             }).catch((err) => {
 
@@ -180,6 +200,14 @@ class EditFlight extends Component {
                                     <Nav.Link href="./search"><i class="fa fa-search fa-lg"></i> Search</Nav.Link>
                                     <Nav.Link href="/getFlights"><i class="fa fa-list fa-lg"></i> Flights List</Nav.Link>
                                 </Nav>
+
+                                <Nav.Link href="/logIn" onClick={() => {
+                                    localStorage.removeItem("token");
+                                    localStorage.removeItem("Email");
+                                    localStorage.removeItem("Type");
+                                }} className="position-absolute end-0"><i className="fa fa-sign-out fa-lg"></i> Logout</Nav.Link>
+
+
                             </Navbar.Collapse>
                         </Container>
                     </Navbar>

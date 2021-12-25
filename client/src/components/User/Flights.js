@@ -7,7 +7,8 @@ import { Component, MyComponent } from 'react';
 import { Navbar, Nav, Container, Table, Button, Modal } from 'react-bootstrap';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import InfoIcon from '@mui/icons-material/Info';
-import EditIcon from '@mui/icons-material/Edit';
+
+import StripeCheckout from 'react-stripe-checkout';
 
 const parse = require('html-react-parser');
 
@@ -20,6 +21,9 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
+var SeatsArrayE = [];
+var SeatsArrayB = [];
+var SeatsArrayF = [];
 
 function SetColor(index, AvailE, size, Class) {
     if (index >= (size - AvailE))
@@ -41,7 +45,7 @@ const MM = (props) => (
 
 
 
-    <Modal show={props.show}>
+    <Modal  show={props.show}>
         <Modal.Header>
 
             <b className="text-center">Booking Flight Number : {props.FlightNumber}</b>
@@ -49,16 +53,16 @@ const MM = (props) => (
 
         </Modal.Header>
         <Modal.Body>
-            <form onSubmit={props.submitModal}>
+            <form  onSubmit={props.submitModal}>
                 <strong>Number of economy seats</strong>
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min = '0'className="form-control " required="true" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.AdultE} onChange={props.func.onChangeAdultE} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min ='0' className="form-control " required="true" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.ChildE} onChange={props.func.onChangeChildE} />
                     </div>
 
                     <br />
@@ -75,11 +79,11 @@ const MM = (props) => (
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min = '0' className="form-control " required="true" value={props.Seats.AdultB} onChange={props.func.onChangeAdultB} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.AdultB} onChange={props.func.onChangeAdultB} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min = '0' className="form-control " required="true" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.ChildB} onChange={props.func.onChangeChildB} />
                     </div>
 
                     <br />
@@ -97,11 +101,11 @@ const MM = (props) => (
                     <strong>Number of first class seats</strong>
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min = '0' className="form-control " required="true" value={props.Seats.AdultF} onChange={props.func.onChangeAdultF} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.AdultF} onChange={props.func.onChangeAdultF} />
                     </div>
                     <label className="col-4 col-md-2 col-form-label">Child:</label>
                     <div className="col-8 col-md-4">
-                        <input type="number" min = '0' className="form-control " required="true" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
+                        <input type="number" className="form-control " required="true" value={props.Seats.ChildF} onChange={props.func.onChangeChildF} />
                     </div>
 
                     <Grid container spacing={2}>
@@ -113,7 +117,7 @@ const MM = (props) => (
                 <div className="form-group row ">
 
 
-                    <button type="submit" className="offset-md-4   col-md-4 btn btn-dark">Book</button>
+                    <button className="offset-md-4   col-md-4 btn btn-dark">Book</button>
 
                 </div>
 
@@ -124,11 +128,102 @@ const MM = (props) => (
 
 )
 
+var request;
+
+const onFinish = (token, flightNumber, amount) => {
+    axios.post("http://localhost:8000/user/SendEmailPay", { token: token, amount: amount, flightNumber: flightNumber, SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF },
+        {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        }
+    );
+    Book();
+}
+
+
+const Book = () => (
+    axios.post('http://localhost:8000/ticket/book', request,
+        {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        }
+    )
+        .then((res) => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } else {
+
+                alert("Flight Booked Successfuly" + " Seats Economy : " + SeatsArrayE + " Seats Business : " + SeatsArrayB + " Seats First : " + SeatsArrayF);
+                // else alert("blabizo");
+
+            }
+        }, (error) => {
+            alert("Error Happened ")
+        })
+)
+
+const Payment = (props) => (
+
+
+    <Modal show={props.showPay}>
+        <Modal.Header>
+
+
+
+            <b className="text-center">Reciept</b>
+            <Button onClick={() => { props.handleModalPay(props.FlightNumber) }} style={{ backgroundColor: "black" }}><CancelPresentationIcon style={{ color: 'white' }}></CancelPresentationIcon></Button>
+
+
+
+        </Modal.Header>
+        <Modal.Body>
+
+            <h6> Amount To Pay: {props.amount}$</h6>
+
+
+            <br />
+            <h6> Reserved Seats</h6>
+
+
+
+            {SeatsArrayE.map(seat => {
+                return <><h7>Seat: {seat} in Economy Class</h7><br /></>
+            }
+            )}
+
+            <br />
+            {SeatsArrayB.map(seat => {
+                return <><h7>Seat: {seat} in Business Class</h7><br /></>
+            }
+            )}
+
+            <br />
+            {SeatsArrayF.map(seat => {
+                return <><h7>Seat: {seat} in First Class</h7><br /></>
+            }
+            )}
+            <br />
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <StripeCheckout
+                    amount={props.amount * 100}
+                    image="https://dvh1deh6tagwk.cloudfront.net/finder-au/wp-uploads/2016/05/Airplane.Square.jpg"
+                    currency="USD"
+                    name="Dash Flights"
+                    token={(token) => onFinish(token, props.FlightNumber, props.amount)}
+                    stripeKey="pk_test_51K8riMCMGq5st9AY99SVdeJHjz4jGecBhK7VXnQd7MMRTxtObR6INME7mP9G0c17uIS4RFovG517MYMHN2apCC3n008c7qWirP"
+                />
+            </div>
+        </Modal.Body>
+
+    </Modal>
+
+)
 
 
 const Flight = (props) => (
-
-
 
     <tr >
         <td>{props.flight.FlightNumber}</td>
@@ -138,10 +233,11 @@ const Flight = (props) => (
         <td>{props.flight.arrTime}</td>
 
 
-        <td>
+        <td style={{ width: "18%" }}>
             <IconButton style={{ color: "white", fontSize: 18 }} onClick={() => { props.FlightDetails(props.flight.FlightNumber) }}>Details &nbsp; <InfoIcon style={{ color: "white" }}></InfoIcon></IconButton>
-
         </td>
+
+
 
     </tr>
 
@@ -163,6 +259,7 @@ class Flights extends Component {
         super(props);
         //const [open, setOpen] = React.useState(false);
         this.handleModal = this.handleModal.bind(this);
+        this.handleModalPay = this.handleModalPay.bind(this);
         this.test2 = this.test2.bind(this);
         this.FlightDetails = this.FlightDetails.bind(this);
 
@@ -175,12 +272,14 @@ class Flights extends Component {
         this.onChangeChildB = this.onChangeChildB.bind(this);
         this.onCounter = this.onCounter.bind(this);
         this.submitModal = this.submitModal.bind(this);
+        this.submitModalPay = this.submitModal.bind(this);
 
 
 
         this.state = {
             flights: [],
             show: false,
+            showPay: false,
             modalFlightNumber: '',
             showFlight: [],
             FlightNumber: '',
@@ -190,7 +289,9 @@ class Flights extends Component {
             arrTime: '',
             NumPass: '',
             CabinClass: '',
-        
+
+            amount: '',
+
             AvailE: 0,
             AvailB: 0,
             AvailF: 0,
@@ -207,12 +308,30 @@ class Flights extends Component {
             noFirstSeats: 0,
 
 
-        };
+        }
+
+        axios.get("http://localhost:8000/user/isAuth", {
+            headers: {
+                "x-auth-token": localStorage.getItem("token"),
+            }
+        }).then(res => {
+            if (res.data == "Token is not valid") {
+                alert("Token Expired LogIn Again");
+                window.location = "/logIn";
+            } 
+        })
     }
 
     handleModal(id) {
         this.setState({
             show: !this.state.show,
+            modalFlightNumber: id,
+        })
+    }
+
+    handleModalPay(id) {
+        this.setState({
+            showPay: !this.state.showPay,
             modalFlightNumber: id,
         })
     }
@@ -254,12 +373,15 @@ class Flights extends Component {
         })
     }
 
+    submitModalPay(e) {
+
+    }
 
     submitModal(e) {
         // if(this.state.modalFlightNumber==100) window.location='/user/home'
         e.preventDefault();
 
-        const request = {
+        request = {
             Email: localStorage.getItem("Email"),
             FlightNumber: this.state.modalFlightNumber,
             AdultE: this.state.AdultE,
@@ -290,43 +412,54 @@ class Flights extends Component {
 
             ReservedSeats: '',
         }
+
         const x = {
             FlightNumber: this.state.modalFlightNumber,
         }
 
-        axios.post('http://localhost:8000/Flight/av', x)
+        axios.post('http://localhost:8000/Flight/av', x, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
-                const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
-                const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
-                const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
-                const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
-                const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
+                if (res.data == "Token is not valid") {
+                    alert("Token Expired LogIn Again");
+                    window.location = "/logIn";
+                } else {
 
-                const total = pe + pb + pf;
-                request.totalPrice = total;
-                request.Departure = res.data.Departure;
-                request.Arrival = res.data.Arrival;
-                request.DepartureTime = res.data.DepartureTime;
-                request.ArrivalTime = res.data.ArrivalTime;
+                    const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
+                    const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
+                    const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
+                    const pe = (Number(res.data.priceE) * Number(request.AdultE)) + (Number(res.data.priceE) * Number(request.ChildE) * 0.5);
+                    const pb = (Number(res.data.priceB) * Number(request.AdultB)) + (Number(res.data.priceB) * Number(request.ChildB) * 0.5);
+                    const pf = (Number(res.data.priceF) * Number(request.AdultF)) + (Number(res.data.priceF) * Number(request.ChildF) * 0.5);
 
-                request.AvailE = res.data.AE;
-                request.AvailB = res.data.AB;
-                request.AvailF = res.data.AF;
+                    const total = pe + pb + pf;
+                    request.totalPrice = total;
+                    this.setState({ amount: total });
+                    request.Departure = res.data.Departure;
+                    request.Arrival = res.data.Arrival;
+                    request.DepartureTime = res.data.DepartureTime;
+                    request.ArrivalTime = res.data.ArrivalTime;
 
-                request.noEconomySeats = res.data.noEconomySeats;
-                request.noBusinessSeats = res.data.noBusinessSeats;
-                request.noFirstSeats = res.data.noFirstSeats;
+                    request.AvailE = res.data.AE;
+                    request.AvailB = res.data.AB;
+                    request.AvailF = res.data.AF;
 
-                console.log("ASDFASDFASDFASDF");
-                console.log(res.data.noFirstSeats)
-                if (total == 0) {
-                    alert("You have to Book at least 1 Seat!");
-                    return;
-                }
+                    request.noEconomySeats = res.data.noEconomySeats;
+                    request.noBusinessSeats = res.data.noBusinessSeats;
+                    request.noFirstSeats = res.data.noFirstSeats;
+
+                  
+                    if (total == 0) {
+                        this.setState({ showPay: false })
+                        alert("You have to Book at least 1 Seat!");
+                        return;
+                    }
 
 
-                if (window.confirm("The total price is :" + total + "$\n" + 'Are you sure you want to book this flight? ')) {
+
                     if (ae > -1 && ab > -1 && af > -1) {
 
                         var passengersE = (Number(request.AdultE) + Number(request.ChildE));
@@ -342,19 +475,17 @@ class Flights extends Component {
                         var arrB = [];
 
 
-                        console.log(beginF);
+                       
 
-                        console.log(request.AvailE);
-                        console.log(request.AvailB);
-                        console.log(request.AvailF);
+                        
 
-                        for (let i = beginE+1; i <= beginE + passengersE; i++)
+                        for (let i = beginE + 1; i <= beginE + passengersE; i++)
                             arrE.push("E" + i);
 
-                        for (let i = beginB+1; i <= beginB + passengersB; i++)
+                        for (let i = beginB + 1; i <= beginB + passengersB; i++)
                             arrB.push("B" + i);
 
-                        for (let i = beginF+1; i <= beginF + passengersF; i++)
+                        for (let i = beginF + 1; i <= beginF + passengersF; i++)
                             arrF.push("F" + i);
 
                         request.SeatsE = arrE;
@@ -362,38 +493,22 @@ class Flights extends Component {
                         request.SeatsF = arrF;
 
 
-                        console.log(arrE);
-                        console.log(arrF);
-                        console.log(arrB);
+                        
 
-                        var SeatsArrayE = arrE;
-                        var SeatsArrayB = arrB;
-                        var SeatsArrayF = arrF;
+                        SeatsArrayE = arrE;
+                        SeatsArrayB = arrB;
+                        SeatsArrayF = arrF;
 
-                        request.ReservedSeatsE = SeatsArrayE.toString(); 
-                        request.ReservedSeatsB = SeatsArrayB.toString(); 
-                        request.ReservedSeatsF = SeatsArrayF.toString(); 
+                        request.ReservedSeatsE = JSON.stringify(SeatsArrayE);
+                        request.ReservedSeatsB = JSON.stringify(SeatsArrayB);
+                        request.ReservedSeatsF = JSON.stringify(SeatsArrayF);
 
-                        axios.post('http://localhost:8000/ticket/book', request)
-                            .then((response) => {
+                        this.setState({ showPay: true })
 
-                                
-
-                                if (response) {alert("Flight Booked Successfuly" + " Seats Economy : " + arrE + " Seats Business : " + arrB+ " Seats First : " + arrF);
-                                window.location = '/user/all_flights'
-                        }
-
-
-                                else alert("blabizo");
-
-                            }, (error) => {
-                                alert("Error Happened ")
-                            });
                     } else {
+                        this.setState({ showPay: false })
                         alert('No enough seats for your request');
                     }
-                } else {
-
                 }
             }).catch(err => {
                 alert(err);
@@ -407,9 +522,19 @@ class Flights extends Component {
 
 
     componentDidMount() {
-        axios.get('http://localhost:8000/Flight/getAllFlights')
+        axios.get('http://localhost:8000/Flight/getAllFlights', {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then((res) => {
-                this.setState({ flights: res.data });
+                if (res.data == "Token is not valid") {
+                    alert("Token Expired LogIn Again");
+                    window.location = "/logIn";
+                } else {
+                    this.setState({ flights: res.data });
+                }
+                
 
             })
             .catch((err) => {
@@ -423,11 +548,21 @@ class Flights extends Component {
             return <Flight flight={currentFlight} FlightDetails={this.FlightDetails} handleModal={this.handleModal} />
         }))
     }
+
     FlightDetails(id) {
         var temp = { FlightNumber: id };
-        axios.post('http://localhost:8000/Flight/showFlight', temp)
+        axios.post('http://localhost:8000/Flight/showFlight', temp, {
+            headers: {
+                "x-auth-token": localStorage.getItem("token")
+            }
+        })
             .then(res => {
-                this.setState({ showFlight: res.data })
+                if(res.data =="Token is not valid"){
+                    alert("Token expired log in again please");
+                }else{
+                    
+                    this.setState({ showFlight: res.data });
+                }
 
 
             })
@@ -441,46 +576,35 @@ class Flights extends Component {
             var time1 = Date.parse(currentFlight.arrTime);
             var time2 = Date.parse(currentFlight.depTime);
 
-
-
-            return <div className="container-fluid">
+            return <div  sclassName="container-fluid">
                 <div className="row row-content">
-                    <form className="col-md-6 offset-md-3" style={{ padding: 30, boxShadow: "0px 5px 20px 0px rgba(0, 0, 0, 0.3)", borderRadius: 20 }}>
+                    <form className="col-md-6 offset-md-3" style={{backgroundColor:"rgba(255,255,255,0.5)" , padding: 30, boxShadow: "0px 5px 20px 0px rgba(0, 0, 0, 0.3)", borderRadius: 20 }}>
 
 
 
-                    <strong style={{ marginLeft: '185px' }}>Flight Details Flno: :{currentFlight.FlightNumber} </strong>
-                    <br></br>
-                    <br></br>
-                    
 
-                    <div className='row row-content' >
-                        <div className="col-6" style={{ textAlign: 'left' }} >
-                            <p>Baggage Allowance:{currentFlight.baggageallowance} </p>
-                            <strong>Prices for Adults :</strong>
-                            <p>Economy: {currentFlight.priceEconomy}$    </p>
-                            <p>Business: {currentFlight.pricebusiness}$ </p>
-                            <p> First: {currentFlight.priceFirst}$ </p>
-                            <strong >Available Seats:</strong>
-                            <p> Economy: {currentFlight.AvailE} seats </p>
+                        <p style={{ textAlign: 'center' }}><strong >Flight Number: :{currentFlight.FlightNumber} </strong></p>
+                        <br></br>
 
-                            
-                        </div>
-                        <div className="col-6" style={{ textAlign: 'left' }}>
-                        <p style={{ marginLeft: '90px' }}>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "  hours"} </p>
-                        <strong style={{ marginLeft: '90px' }}>Prices for Children:</strong>
-                             <p style={{ marginLeft: '90px' }}>Economy: {(currentFlight.priceEconomy) / 2}$</p>
-                            <p style={{ marginLeft: '90px' }}>First: {(currentFlight.priceFirst) / 2}$</p>
-                            <p style={{ marginLeft: '90px' }}>Business: {(currentFlight.pricebusiness) / 2}$ </p>
-                            <br></br>
-                            <p style={{ marginLeft: '90px' }}> Business: {currentFlight.AvailB} seats </p>
-                            
-                            
-                        </div>
-                       <p> First: {currentFlight.AvailF} seats</p>
+                        <div className="row row-content">
+
+                            <div className="col-12 col-md-6  " style={{ textAlign: 'left' }} >
+                                <p><strong>Baggage Allowance:{currentFlight.baggageallowance} </strong></p>
+                                <p><strong>Adults Economy:{currentFlight.priceEconomy}</strong></p>
+                                <p><strong>Adults First:{currentFlight.priceFirst}</strong></p>
+                                <p><strong>Adults Business:{currentFlight.pricebusiness} </strong></p>
+                            </div>
+                            <div className="col-12 col-md-6 " style={{ textAlign: 'left' }}>
+                                
+                                <p><strong>children Economy:{(currentFlight.priceEconomy) / 2}</strong></p>
+                                <p><strong>children First:{(currentFlight.priceFirst) / 2}</strong></p>
+                                <p><strong>children Business:{(currentFlight.pricebusiness) / 2} </strong></p>
+                                <p><strong>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </strong> </p>
+
+
+                            </div>
                             <div className="row row-content"><Button className="btn-dark " style={{ width: "100%", marginLeft: 13 }} onClick={() => {
                                 this.handleModal(currentFlight.FlightNumber)
-
                             }}>Book</Button> </div>
 
                         </div>
@@ -514,6 +638,16 @@ class Flights extends Component {
 
                 }}
                     submitModal={this.submitModal}
+                    handleModalPay={this.handleModalPay}
+
+                />
+
+                <Payment showPay={this.state.showPay}
+                    submitModal={this.submitModal}
+                    handleModalPay={this.handleModalPay}
+                    handleModal={this.handleModal}
+                    FlightNumber={currentFlight.FlightNumber}
+                    amount={this.state.amount}
                 />
 
             </div>
@@ -524,6 +658,9 @@ class Flights extends Component {
         }))
 
     }
+
+
+
 
     pop(id) {
 
@@ -536,7 +673,8 @@ class Flights extends Component {
         return (
 
 
-
+            
+           <body    style={ { height:"100vh",backgroundImage:'url("https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJhdmVsJTIwbWFwfGVufDB8fDB8fA%3D%3D&w=1000&q=80")' ,backgroundRepeat:"no-repeat" , backgroundSize:"cover" , backgroundColor:"rgba(0,0,0,0.1)"}} >
             <div className="container-fluid">
                 <div className="row">
 
@@ -572,6 +710,7 @@ class Flights extends Component {
                 <div className="row row-content  ">
                     <div className="cl-12 ">
 
+
                         {this.test2()}
 
 
@@ -603,6 +742,8 @@ class Flights extends Component {
 
                 </div>
             </div>
+
+            </body>
 
 
 

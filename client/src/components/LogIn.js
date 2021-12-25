@@ -54,6 +54,7 @@ export default function SignInSide() {
         Email:data.get('email'),
         Password:data.get('password')
     };
+    
     axios.post('http://localhost:8000/user/logIn', user)
     .then(res => {
         if (res.data.msg === "Invalid Password") {
