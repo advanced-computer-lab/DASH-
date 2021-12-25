@@ -27,8 +27,21 @@ class HomeGuest extends Component {
 
     constructor(props) {
         super(props);
+        this.vantaRef = React.createRef()
        
     }
+    componentDidMount() {
+        this.vantaEffect = CLOUDS({
+          el: this.vantaRef.current,
+          THREE: THREE
+    
+        })
+      }
+    
+      componentWillUnmount() {
+        if (this.vantaEffect) this.vantaEffect.destroy()
+      }
+    
    
     
 
@@ -40,7 +53,9 @@ class HomeGuest extends Component {
             <body >
                  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
 
-                 <div   >
+                 
+
+                <div style={{height:"100vh"}} ref={this.vantaRef}  >
                 <div className="container-fluid">
 
 
@@ -84,7 +99,7 @@ class HomeGuest extends Component {
                    
 
 
-                     <Card style={{  backgroundImage: `url("https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/33/fc/ed/sharm-el-sheikh.jpg?w=700&h=500&s=1")` ,
+                     {/* <Card style={{  backgroundImage: `url("https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/33/fc/ed/sharm-el-sheikh.jpg?w=700&h=500&s=1")` ,
                                  backgroundSize: "200px 200px" }} sx={{ maxWidth: 200 , maxHeight:200 }}>
       <CardContent   >
         <Typography style={{filter : "brightness(100%) " }} sx={{ fontSize: 17 }} color="whitesmoke" gutterBottom>
@@ -108,7 +123,7 @@ class HomeGuest extends Component {
       <CardActions>
         <Button size="small">Learn More</Button>
       </CardActions>
-    </Card>
+    </Card> */}
 
                      
 

@@ -1,6 +1,7 @@
 import '../Flight.css';
 import axios from 'axios';
 import { Component } from 'react';
+import React from 'react';
 
 //import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import InfoIcon from '@mui/icons-material/Info';
@@ -14,6 +15,10 @@ import { Navbar, Nav, Container, Button, Modal } from 'react-bootstrap';
 //import InputRange from 'react-input-range';
 
 import StripeCheckout from 'react-stripe-checkout';
+import CLOUDS from 'vanta/dist/vanta.clouds.min'
+
+import * as THREE from 'three'
+
 
 
 
@@ -153,7 +158,7 @@ const MM = (props) => (
 
         </Modal.Header>
         <Modal.Body>
-            <form onSubmit={props.submitModal}>
+            <form  onSubmit={props.submitModal}>
                 <strong>Number of economy seats</strong>
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
@@ -262,6 +267,7 @@ class SearchUser extends Component {
 
     constructor(props) {
         super(props);
+       
 
         this.submit = this.submit.bind(this);
         this.onChangeN = this.onChangeN.bind(this);
@@ -603,6 +609,17 @@ class SearchUser extends Component {
 
         })
     }
+    // componentDidMount() {
+    //     this.vantaEffect = CLOUDS({
+    //       el: this.vantaRef.current,
+    //       THREE: THREE
+    
+    //     })
+    //   }
+    
+    //   componentWillUnmount() {
+    //     if (this.vantaEffect) this.vantaEffect.destroy()
+    //   }
 
 
 
@@ -684,11 +701,11 @@ class SearchUser extends Component {
 
 
             return <div className="container-fluid ">
-                <form className="details">
+                <form style={{backgroundColor:"rgba(255,255,255,0.5)"}} className="details">
 
 
 
-                    <strong style={{ marginLeft: '185px' }}>Flight Details Flno: :{currentFlight.FlightNumber} </strong>
+                    <strong style={{ marginLeft: '185px' }}>Flight Number:{currentFlight.FlightNumber} </strong>
                     <br></br>
                     <br></br>
 
@@ -794,8 +811,11 @@ class SearchUser extends Component {
 
         return (
 
+            
+         <body style={{height:"100vh" ,backgroundImage:'url("https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJhdmVsJTIwbWFwfGVufDB8fDB8fA%3D%3D&w=1000&q=80")' ,backgroundRepeat:"no-repeat" , backgroundSize:"100%" }}>
+            
 
-            <div className="container-fluid">
+            <div  className="container-fluid">
 
 
 
@@ -832,17 +852,17 @@ class SearchUser extends Component {
 
                 <br />
 
-                <div className="row row-content">
+                <div  className="row row-content">
 
 
                     <div className="col-12 col-md-6">
 
 
-                        <form className="search" onSubmit={this.submit}>
+                        < form style={{backgroundColor:"rgba(255,255,255,0.5)"}} className="search" onSubmit={this.submit}>
 
                             <div className="form-group row">
                                 <div className="col-6 col-md-3">
-                                    <label htmlFor="aligned-ID"  >Flight Number </label>
+                                    <label style={{border:""}}  htmlFor="aligned-ID"  >Flight Number </label>
                                     &nbsp;&nbsp;
                                 </div>
                                 <div className="col-12 col-md-9">
@@ -1007,6 +1027,7 @@ class SearchUser extends Component {
 
 
             </div>
+            </body>
         );
 
 

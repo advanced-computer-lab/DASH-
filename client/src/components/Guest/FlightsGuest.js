@@ -271,11 +271,11 @@ class FlightsGuest extends Component {
 
             return <div className="container-fluid">
                 <div className="row row-content">
-                    <form className="col-md-6 offset-md-3" style={{ padding: 30, boxShadow: "0px 5px 20px 0px rgba(0, 0, 0, 0.3)", borderRadius: 20 }}>
+                    <form className="col-md-6 offset-md-3" style={{ backgroundColor:"rgba(255,255,255,0.5)",padding: 30, boxShadow: "0px 5px 20px 0px rgba(0, 0, 0, 0.3)", borderRadius: 20 }}>
 
 
 
-                    <strong style={{ marginLeft: '185px' }}>Flight Details Flno: :{currentFlight.FlightNumber} </strong>
+                    <strong style={{ marginLeft: '185px' }}>Flight Number :{currentFlight.FlightNumber} </strong>
                     <br></br>
                     <br></br>
                     
@@ -353,7 +353,7 @@ class FlightsGuest extends Component {
         return (
 
 
-
+            <body    style={ { height:"100vh",backgroundImage:'url("https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJhdmVsJTIwbWFwfGVufDB8fDB8fA%3D%3D&w=1000&q=80")' ,backgroundRepeat:"no-repeat" , backgroundSize:"cover" , backgroundColor:"rgba(0,0,0,0.1)"}} >
             <div className="container-fluid">
                 <div className="row">
 
@@ -415,6 +415,7 @@ class FlightsGuest extends Component {
 
                 </div>
             </div>
+            </body>
 
 
 

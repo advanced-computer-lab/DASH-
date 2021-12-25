@@ -45,7 +45,7 @@ const MM = (props) => (
 
 
 
-    <Modal show={props.show}>
+    <Modal  show={props.show}>
         <Modal.Header>
 
             <b className="text-center">Booking Flight Number : {props.FlightNumber}</b>
@@ -53,7 +53,7 @@ const MM = (props) => (
 
         </Modal.Header>
         <Modal.Body>
-            <form onSubmit={props.submitModal}>
+            <form  onSubmit={props.submitModal}>
                 <strong>Number of economy seats</strong>
                 <div className="form-group row">
                     <label className="col-4 col-md-2 col-form-label">Adult:</label>
@@ -576,30 +576,30 @@ class Flights extends Component {
             var time1 = Date.parse(currentFlight.arrTime);
             var time2 = Date.parse(currentFlight.depTime);
 
-            return <div className="container-fluid">
+            return <div  sclassName="container-fluid">
                 <div className="row row-content">
-                    <form className="col-md-6 offset-md-3" style={{ padding: 30, boxShadow: "0px 5px 20px 0px rgba(0, 0, 0, 0.3)", borderRadius: 20 }}>
+                    <form className="col-md-6 offset-md-3" style={{backgroundColor:"rgba(255,255,255,0.5)" , padding: 30, boxShadow: "0px 5px 20px 0px rgba(0, 0, 0, 0.3)", borderRadius: 20 }}>
 
 
 
 
-                        <p style={{ textAlign: 'center' }}>Flight Details Flno: :{currentFlight.FlightNumber} </p>
+                        <p style={{ textAlign: 'center' }}><strong >Flight Number: :{currentFlight.FlightNumber} </strong></p>
                         <br></br>
 
                         <div className="row row-content">
 
                             <div className="col-12 col-md-6  " style={{ textAlign: 'left' }} >
-                                <p>Baggage Allowance:{currentFlight.baggageallowance} </p>
-                                <p>Adults Economy:{currentFlight.priceEconomy}</p>
-                                <p>Adults First:{currentFlight.priceFirst}</p>
-                                <p>Adults Business:{currentFlight.pricebusiness} </p>
+                                <p><strong>Baggage Allowance:{currentFlight.baggageallowance} </strong></p>
+                                <p><strong>Adults Economy:{currentFlight.priceEconomy}</strong></p>
+                                <p><strong>Adults First:{currentFlight.priceFirst}</strong></p>
+                                <p><strong>Adults Business:{currentFlight.pricebusiness} </strong></p>
                             </div>
                             <div className="col-12 col-md-6 " style={{ textAlign: 'left' }}>
-
-                                <p>children Economy:{(currentFlight.priceEconomy) / 2}</p>
-                                <p>children First:{(currentFlight.priceFirst) / 2}</p>
-                                <p>children Business:{(currentFlight.pricebusiness) / 2} </p>
-                                <p>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </p>
+                                
+                                <p><strong>children Economy:{(currentFlight.priceEconomy) / 2}</strong></p>
+                                <p><strong>children First:{(currentFlight.priceFirst) / 2}</strong></p>
+                                <p><strong>children Business:{(currentFlight.pricebusiness) / 2} </strong></p>
+                                <p><strong>Trip duration:{(Math.abs((time2 - time1) / (1000 * 60 * 60)).toFixed(2)) + "hours"} </strong> </p>
 
 
                             </div>
@@ -673,8 +673,8 @@ class Flights extends Component {
         return (
 
 
-
-
+            
+           <body    style={ { height:"100vh",backgroundImage:'url("https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJhdmVsJTIwbWFwfGVufDB8fDB8fA%3D%3D&w=1000&q=80")' ,backgroundRepeat:"no-repeat" , backgroundSize:"cover" , backgroundColor:"rgba(0,0,0,0.1)"}} >
             <div className="container-fluid">
                 <div className="row">
 
@@ -742,6 +742,8 @@ class Flights extends Component {
 
                 </div>
             </div>
+
+            </body>
 
 
 

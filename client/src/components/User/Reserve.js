@@ -10,10 +10,17 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
+
 import List from '@mui/material/List';
 
 import Avatar from '@mui/material/Avatar';
 import FolderIcon from '@mui/icons-material/Folder';
+
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+
 
 
 import { Component, useState } from 'react';
@@ -38,6 +45,9 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 import StripeCheckout from 'react-stripe-checkout';
+import CLOUDS from 'vanta/dist/vanta.clouds.min'
+
+import * as THREE from 'three'
 
 const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -45,23 +55,25 @@ const Demo = styled('div')(({ theme }) => ({
 //import AddBoxIcon from '@mui/icons-material/AddBox';
 
 const onFinish = (token, flightNumber, amount, ticket, deleteFunc) => {
-    axios.post("http://localhost:8000/user/SendEmailPay", { token: token, amount: amount, flightNumber: flightNumber, SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF },{
+    axios.post("http://localhost:8000/user/SendEmailPay", { token: token, amount: amount, flightNumber: flightNumber, SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF }, {
         headers: {
             "x-auth-token": localStorage.getItem("token")
         }
-    }).then(res=>{
+    }).then(res => {
         if (res.data == "Token is not valid") {
             alert("Token expired log in again please");
-            window.location="/logIn"
+            window.location = "/logIn"
         }
     });
-    
+
     deleteFunc(ticket._id, ticket.FlightNumber)
     Book();
 }
 
+
+
 const Book = () => (
-    axios.post('http://localhost:8000/ticket/book', request,{
+    axios.post('http://localhost:8000/ticket/book', request, {
         headers: {
             "x-auth-token": localStorage.getItem("token")
         }
@@ -69,8 +81,8 @@ const Book = () => (
         .then((response) => {
             if (response.data == "Token is not valid") {
                 alert("Token expired log in again please");
-                window.location="/logIn"
-            }else{
+                window.location = "/logIn"
+            } else {
 
                 alert("Flight Booked Successfuly" + " Seats Economy : " + SeatsArrayE + " Seats Business : " + SeatsArrayB + " Seats First : " + SeatsArrayF);
                 // else alert("blabizo");
@@ -109,14 +121,14 @@ var GridArray = (props) => (
 
 
 const SendEmailDetails = (id, price, ticketNumber, SeatsArrayE, SeatsArrayB, SeatsArrayF) => (
-    axios.post("http://localhost:8000/user/SendEmailDetails", { TicketNumber: ticketNumber, Price: price, flightNumber: id, email: localStorage.getItem("Email"), SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF },{
+    axios.post("http://localhost:8000/user/SendEmailDetails", { TicketNumber: ticketNumber, Price: price, flightNumber: id, email: localStorage.getItem("Email"), SeatsE: SeatsArrayE, SeatsB: SeatsArrayB, SeatsF: SeatsArrayF }, {
         headers: {
             "x-auth-token": localStorage.getItem("token")
         }
-    }).then(res=>{
+    }).then(res => {
         if (res.data == "Token is not valid") {
             alert("Token expired log in again please");
-            window.location="/logIn"
+            window.location = "/logIn"
         }
     })
 )
@@ -204,38 +216,75 @@ const Payment = (props) => (
 
 
 const Flight = (props) => (
-    <tr >
-        <td>{props.ticket.TicketNumber}</td>
-        <td>{props.ticket.FlightNumber}</td>
-        <td>{props.ticket.Departure}</td>
-        <td>{props.ticket.Arrival}</td>
-        <td>{props.ticket.DepartureTime}</td>
-        <td>{props.ticket.ArrivalTime}</td>
 
-        {(JSON.parse(props.ticket.ReservedSeatsB).length != 0) ? <td>{props.ticket.BusinessSeatAdult + props.ticket.BusinessSeatChild}  [ {(JSON.parse(props.ticket.ReservedSeatsB).map(Seat => { return (Seat + " ") }))}]</td> : <td>-</td>}
-        {(JSON.parse(props.ticket.ReservedSeatsE).length != 0) ? <td>{props.ticket.EconomySeatsAdult + props.ticket.EconomySeatsChild}  [ {(JSON.parse(props.ticket.ReservedSeatsE).map(Seat => { return (Seat + " ") }))}]</td> : <td>-</td>}
-        {(JSON.parse(props.ticket.ReservedSeatsF).length != 0) ? <td>{props.ticket.FirstSeatAdult + props.ticket.FirstSeatChild}  [ {(JSON.parse(props.ticket.ReservedSeatsF).map(Seat => { return (Seat + " ") }))}]</td> : <td>-</td>}
-        <td>{props.ticket.Price}</td>
+    <Card sx={{  maxWidth: 500 }}>
+         
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <CardContent sx={{ flex: '1 0 auto' }}>
+                <Typography component="div" variant="h7">
+          <img style={{float:"right"}} width={150} height={150} src='https://www.traveller.com.au/content/dam/images/h/0/y/j/f/i/image.related.socialLead.620x349.h0yjip.png/1533186854579.jpg'></img> 
+                    Ticket Number: {props.ticket.TicketNumber}
+                </Typography>
+                <Typography  variant="subtitle1" color="text.secondary" component="div">
+                    Flight Number: {props.ticket.FlightNumber}<br />
+                    From: {props.ticket.Departure}  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; To: {props.ticket.Arrival}           <br />
+                    Departure: {props.ticket.DepartureTime}<br />
+                    Arrival: {props.ticket.ArrivalTime}<br />
+                    {(JSON.parse(props.ticket.ReservedSeatsB).length != 0) ? <><label> Business Seats: [  {(JSON.parse(props.ticket.ReservedSeatsB).map(Seat => { return (Seat + " ") }))}] </label><br/></> : <></>}
+                    {(JSON.parse(props.ticket.ReservedSeatsE).length != 0) ? <><label>  Economy Seats: [  {(JSON.parse(props.ticket.ReservedSeatsE).map(Seat => { return (Seat + " ") }))}] </label><br/></> : <></>}
+                    {(JSON.parse(props.ticket.ReservedSeatsF).length != 0) ? <label>  First Seats: [  {(JSON.parse(props.ticket.ReservedSeatsF).map(Seat => { return (Seat + " ") }))}]   </label> : <></>}<br/>
+                    Price: {props.ticket.Price}<br />
+                </Typography>
+                <IconButton style={{ fontSize: 20, color: "black" }} onClick={() => { props.handleModal(props.ticket.FlightNumber, props.ticket._id, props.ticket.Price, props.ticket.TicketNumber); flightNumber = props.ticket.FlightNumber; }}><HighlightOffIcon></HighlightOffIcon>Cancel </IconButton>
 
-        {/* <td>{props.flight.FlightNumber}</td>
-        <td>{props.flight.toAir}</td>
-        <td>{props.flight.fromAir}</td>
-        <td>{props.flight.noEconomySeats}</td>
-        <td>{props.flight.noBusinessSeats}</td>
-        <td>{props.flight.noFirstSeats}</td>
-        <td>{props.flight.depTime}</td>
-        <td>{props.flight.arrTime}</td>
-        <td>{props.flight.arrTime}</td> */}
+         <IconButton style={{ color: "black", fontSize: 18 }} onClick={() => { SendEmailDetails(props.ticket.FlightNumber, props.ticket.Price, props.ticket.TicketNumber, props.ticket.ReservedSeatsE, props.ticket.ReservedSeatsB, props.ticket.ReservedSeatsF) }}><EmailIcon style={{ color: "black" }}></EmailIcon>Email Details &nbsp;</IconButton>
+             <IconButton onClick={() => { props.handleModalEdit(props.ticket.FlightNumber, props.ticket._id, props.ticket.Price, props.ticket.TicketNumber, props.ticket); }} style={{ color: "black", fontSize: 18 }} ><EditIcon></EditIcon> &nbsp; Edit</IconButton>
+            </CardContent>
+         </Box>
+
+         {/* <Box style={{ }}>
+        
+        <CardMedia
+            component="img"
+            sx={{   width: 150, height: 150 }}
+            image="https://www.traveller.com.au/content/dam/images/h/0/y/j/f/i/image.related.socialLead.620x349.h0yjip.png/1533186854579.jpg"
+            alt="Live from space album cover"
+        />
+        </Box>  */}
+       
+    </Card>
+    // <tr >
+    //     <td>{props.ticket.TicketNumber}</td>
+    //     <td>{props.ticket.FlightNumber}</td>
+    //     <td>{props.ticket.Departure}</td>
+    //     <td>{props.ticket.Arrival}</td>
+    //     <td>{props.ticket.DepartureTime}</td>
+    //     <td>{props.ticket.ArrivalTime}</td>
+
+    //     {(JSON.parse(props.ticket.ReservedSeatsB).length != 0) ? <td>{props.ticket.BusinessSeatAdult + props.ticket.BusinessSeatChild}  [ {(JSON.parse(props.ticket.ReservedSeatsB).map(Seat => { return (Seat + " ") }))}]</td> : <td>-</td>}
+    //     {(JSON.parse(props.ticket.ReservedSeatsE).length != 0) ? <td>{props.ticket.EconomySeatsAdult + props.ticket.EconomySeatsChild}  [ {(JSON.parse(props.ticket.ReservedSeatsE).map(Seat => { return (Seat + " ") }))}]</td> : <td>-</td>}
+    //     {(JSON.parse(props.ticket.ReservedSeatsF).length != 0) ? <td>{props.ticket.FirstSeatAdult + props.ticket.FirstSeatChild}  [ {(JSON.parse(props.ticket.ReservedSeatsF).map(Seat => { return (Seat + " ") }))}]</td> : <td>-</td>}
+    //     <td>{props.ticket.Price}</td>
+
+    //     {/* <td>{props.flight.FlightNumber}</td>
+    //     <td>{props.flight.toAir}</td>
+    //     <td>{props.flight.fromAir}</td>
+    //     <td>{props.flight.noEconomySeats}</td>
+    //     <td>{props.flight.noBusinessSeats}</td>
+    //     <td>{props.flight.noFirstSeats}</td>
+    //     <td>{props.flight.depTime}</td>
+    //     <td>{props.flight.arrTime}</td>
+    //     <td>{props.flight.arrTime}</td> */}
 
 
-        <td>
-            <IconButton style={{ fontSize: 20, color: "white" }} onClick={() => { props.handleModal(props.ticket.FlightNumber, props.ticket._id, props.ticket.Price, props.ticket.TicketNumber); flightNumber = props.ticket.FlightNumber; }}><HighlightOffIcon></HighlightOffIcon>Cancel </IconButton>
+    //     <td>
+    //         <IconButton style={{ fontSize: 20, color: "white" }} onClick={() => { props.handleModal(props.ticket.FlightNumber, props.ticket._id, props.ticket.Price, props.ticket.TicketNumber); flightNumber = props.ticket.FlightNumber; }}><HighlightOffIcon></HighlightOffIcon>Cancel </IconButton>
 
-            <IconButton style={{ color: "white", fontSize: 18 }} onClick={() => { SendEmailDetails(props.ticket.FlightNumber, props.ticket.Price, props.ticket.TicketNumber, props.ticket.ReservedSeatsE, props.ticket.ReservedSeatsB, props.ticket.ReservedSeatsF) }}><EmailIcon style={{ color: "white" }}></EmailIcon>Email Details &nbsp;</IconButton>
-            <IconButton onClick={() => { props.handleModalEdit(props.ticket.FlightNumber, props.ticket._id, props.ticket.Price, props.ticket.TicketNumber, props.ticket); }} style={{ color: "white", fontSize: 18 }} ><EditIcon></EditIcon> &nbsp;</IconButton>
-        </td>
+    //         <IconButton style={{ color: "white", fontSize: 18 }} onClick={() => { SendEmailDetails(props.ticket.FlightNumber, props.ticket.Price, props.ticket.TicketNumber, props.ticket.ReservedSeatsE, props.ticket.ReservedSeatsB, props.ticket.ReservedSeatsF) }}><EmailIcon style={{ color: "white" }}></EmailIcon>Email Details &nbsp;</IconButton>
+    //         <IconButton onClick={() => { props.handleModalEdit(props.ticket.FlightNumber, props.ticket._id, props.ticket.Price, props.ticket.TicketNumber, props.ticket); }} style={{ color: "white", fontSize: 18 }} ><EditIcon></EditIcon> &nbsp;</IconButton>
+    //     </td>
 
-    </tr>
+    // </tr>
 
 )
 
@@ -334,6 +383,8 @@ const MM = (props) => (
 class Reserve extends Component {
     constructor(props) {
         super(props);
+        
+        
         this.handleModal = this.handleModal.bind(this);
         this.handleModalEdit = this.handleModalEdit.bind(this);
         this.DeleteTicket = this.DeleteTicket.bind(this);
@@ -403,6 +454,7 @@ class Reserve extends Component {
             modalFlightNumber: id,
         })
     }
+   
 
     handleModal(id, ticketIdd, price, ticketNumber) {
         this.setState({
@@ -476,8 +528,8 @@ class Reserve extends Component {
 
                     const total = pe + pb + pf;
                     request.totalPrice = total;
-                    
-                   
+
+
                     this.setState({ amount: (total - ticket.Price) });
                     request.Departure = res.data.Departure;
                     request.Arrival = res.data.Arrival;
@@ -492,7 +544,7 @@ class Reserve extends Component {
                     request.noBusinessSeats = res.data.noBusinessSeats;
                     request.noFirstSeats = res.data.noFirstSeats;
 
-                   
+
 
                     if (total == 0) {
                         this.setState({ showPay: false })
@@ -517,7 +569,7 @@ class Reserve extends Component {
                         var arrB = [];
 
 
-                       
+
 
                         for (let i = beginE + 1; i <= beginE + passengersE; i++)
                             arrE.push("E" + i);
@@ -533,7 +585,7 @@ class Reserve extends Component {
                         request.SeatsF = arrF;
 
 
-                       
+
 
                         SeatsArrayE = arrE;
                         SeatsArrayB = arrB;
@@ -617,8 +669,10 @@ class Reserve extends Component {
             ticketNum: ticketNumber
         })
     }
+    
 
     componentDidMount() {
+       
         axios.post('http://localhost:8000/Flight/getAllTickets', { Email: localStorage.getItem('Email') }, {
             headers: {
                 "x-auth-token": localStorage.getItem("token")
@@ -694,7 +748,7 @@ class Reserve extends Component {
                 {
                     flightNumber: this.state.modalFlightNumber,
                     email: localStorage.getItem("Email"),
-                    ticketId: this.state.ticketID,
+                    ticketId: this.state.ticketId,
                 }
             }, {
             headers: {
@@ -770,7 +824,7 @@ class Reserve extends Component {
                     for (let i = 0; i < res.data.length; i++)
                         res.data[i].open = false
                     this.setState({ flightResult: res.data })
-                    
+
                 }
             })
 
@@ -785,7 +839,7 @@ class Reserve extends Component {
         var AdultF = ticket.FirstSeatAdult
         var ChildF = ticket.FirstSeatChild
 
-        
+
         const x = {
             FlightNumber: flightNum,
         }
@@ -801,7 +855,7 @@ class Reserve extends Component {
                     window.location = "/logIn"
                 } else {
 
-                  
+
                     // const ae = Number(res.data.AE) - (Number(request.AdultE) + Number(request.ChildE));
                     // const ab = Number(res.data.AB) - (Number(request.AdultB) + Number(request.ChildB));
                     // const af = Number(res.data.AF) - (Number(request.AdultF) + Number(request.ChildF));
@@ -824,7 +878,7 @@ class Reserve extends Component {
     };
 
     generate(ticket) {
-       
+
         return this.state.flightResult.map((value, index) =>
             React.cloneElement(<><IconButton onClick={(props) => (this.handleModalBook(value.FlightNumber, index))}>
                 <ListItem>
@@ -896,9 +950,11 @@ class Reserve extends Component {
     render() {
         return (
 
-
-
-            <div className="container-fluid">
+            <body >
+               
+              
+             
+            <div   className="container-fluid">
                 <div className="row">
 
                     <Navbar expand="sm" bg="dark" variant="dark">
@@ -926,36 +982,19 @@ class Reserve extends Component {
 
                 </div>
 
+                <div className="col-12 text-center">
+                            <br />
+                            <h2 >My Tickets</h2>
+                        </div>
 
 
                 <br />
 
-                <div className="row row-content  ">
+                <div >
 
-                    <div className="col-12 ">
-
-                        <Table className="table table-dark d-felx " striped bordered hover size="xs">
-                            <thead >
-                                <tr >
-                                    <th>Ticket Number</th>
-                                    <th>Flight Number</th>
-                                    <th>Departure</th>
-                                    <th>Arrival</th>
-                                    <th>DepartureTime</th>
-                                    <th>ArrivalTime</th>
-                                    <th>Business Seats</th>
-                                    <th>Economy Seats</th>
-                                    <th>First Seats</th>
-                                    <th>Price</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.flightsList()}
-                            </tbody>
-
-
-                        </Table>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gridGap: 20 }} >
+                         
+                        {this.flightsList()}
                     </div>
 
                     <div >
@@ -1075,6 +1114,8 @@ class Reserve extends Component {
 
                 </div>
             </div>
+            
+            </body>
 
 
 

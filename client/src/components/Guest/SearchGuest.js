@@ -391,11 +391,11 @@ class SearchGuest extends Component {
 
 
             return <div className="container-fluid ">
-                <form className="details">
+                <form style={{backgroundColor:"rgba(255,255,255,0.5)"}} className="details">
 
 
 
-                    <strong style={{ marginLeft: '185px' }}>Flight Details Flno: :{currentFlight.FlightNumber} </strong>
+                    <strong style={{ marginLeft: '185px' }}>Flight Number:{currentFlight.FlightNumber} </strong>
                     <br></br>
                     <br></br>
                     
@@ -467,6 +467,9 @@ class SearchGuest extends Component {
         return (
 
 
+            <body style={{height:"100vh" ,backgroundImage:'url("https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dHJhdmVsJTIwbWFwfGVufDB8fDB8fA%3D%3D&w=1000&q=80")' ,backgroundRepeat:"no-repeat" , backgroundSize:"100%" }}>
+
+
             <div className="container-fluid">
 
 
@@ -508,7 +511,7 @@ class SearchGuest extends Component {
                     <div className="col-12 col-md-6">
 
 
-                        <form className="search" onSubmit={this.submit}>
+                        <form style={{backgroundColor:"rgba(255,255,255,0.5)"}} className="search" onSubmit={this.submit}>
 
                             <div className="form-group row">
                                 <div className="col-6 col-md-3">
@@ -674,6 +677,7 @@ class SearchGuest extends Component {
 
 
             </div>
+            </body>
         );
 
 
