@@ -5,7 +5,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import EditIcon from "@mui/icons-material/Edit"
 import 'font-awesome/css/font-awesome.min.css';
 import LoginIcon from '@mui/icons-material/Login';
-import { CardMedia } from '@mui/material';
+import { CardMedia, IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -18,6 +18,7 @@ import FlightLandIcon from '@mui/icons-material/FlightLand';
 import CLOUDS from 'vanta/dist/vanta.clouds.min'
 
 import * as THREE from 'three'
+import { height } from "@mui/system";
 
 
 
@@ -93,29 +94,77 @@ class HomeGuest extends Component {
                             <h2 >Guest Home</h2>
                         </div>
 
+     <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gridGap: 20 ,marginTop:"150px"   }}>
+         <div onClick={e =>  window.location = "/Guest/FlightsGuest"} >
+       <div style={{width:"200px", height:"200px" , marginLeft:"150px"  ,backgroundImage: `url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6PRRpuPWI3fVA8Zj-auv03aAAdavquJ4i3g&usqp=CAU")` ,
+                                 backgroundSize: "200px 200px"  }}>
+                                     
+                                    <p style={{color:"black",  marginLeft:"60px",fontSize:"20px"}}> <strong   >Offer</strong> </p>
 
-                     
+
+                                     <p style={{color:"black", fontSize:"20px"}}> <strong   >  Cairo     <FlightTakeoffIcon></FlightTakeoffIcon>          </strong> </p>
+
+                                     <p style={{color:"black",  fontSize:"20px"}}> <strong   >  Sharm El sheikh     <FlightLandIcon></FlightLandIcon>          </strong> </p>
+
+                                     <p style={{color:"black",  fontSize:"20px"}}> <strong   >  Starts from 100$               </strong> </p>
+                                     
+                                     
+                                     
+                                     </div> 
+                            </div>
+
+                                     <div onClick={e =>  window.location = "/Guest/FlightsGuest"} style={{width:"200px", height:"200px", marginLeft:"150px"  ,backgroundImage: `url("https://media.tacdn.com/media/attractions-splice-spp-674x446/07/b3/07/25.jpg")` ,
+                                 backgroundSize: "200px 200px"  }}>
+                                     
+                                    <p style={{color:"black",  marginLeft:"60px",fontSize:"20px"}}> <strong   >Offer</strong> </p>
+
+
+                                     <p style={{color:"black",  fontSize:"20px"}}> <strong   >  Cairo     <FlightTakeoffIcon></FlightTakeoffIcon>          </strong> </p>
+
+                                     <p style={{color:"black",  fontSize:"20px"}}> <strong   >  Luxor     <FlightLandIcon></FlightLandIcon>          </strong> </p>
+                                     
+                                     <p style={{color:"black",  fontSize:"20px"}}> <strong   >  Starts from 150$               </strong> </p>
+                                     
+                                     </div> 
+                                     <div onClick={e =>  window.location = "/Guest/FlightsGuest"} style={{width:"200px", height:"200px" , marginLeft:"150px"  ,backgroundImage: `url("https://media.tacdn.com/media/attractions-splice-spp-674x446/06/6a/e8/1c.jpg")` ,
+                                 backgroundSize: "200px 200px"  }}>
+                                     
+                                    <p style={{color:"black",  marginLeft:"60px",fontSize:"20px"}}> <strong   >Offer</strong> </p>
+
+
+                                     <p style={{color:"black",  fontSize:"20px"}}> <strong   >  Cairo     <FlightTakeoffIcon></FlightTakeoffIcon>          </strong> </p>
+
+                                     <p style={{color:"black",  fontSize:"20px"}}> <strong   >  Dahab    <FlightLandIcon></FlightLandIcon>          </strong> </p>
+                                     <p style={{color:"black",  fontSize:"20px"}}> <strong   >  Starts from 200$               </strong> </p>
+                                     
+                                     
+                                     
+                                     </div> 
+
+
+                                     </div>            
                      
                    
+{/* <IconButton>
 
-
-                     {/* <Card style={{  backgroundImage: `url("https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/33/fc/ed/sharm-el-sheikh.jpg?w=700&h=500&s=1")` ,
+                      <Card style={{  filter : "brightness(60%) ",backgroundImage: `url("https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/33/fc/ed/sharm-el-sheikh.jpg?w=700&h=500&s=1")` ,
                                  backgroundSize: "200px 200px" }} sx={{ maxWidth: 200 , maxHeight:200 }}>
       <CardContent   >
-        <Typography style={{filter : "brightness(100%) " }} sx={{ fontSize: 17 }} color="whitesmoke" gutterBottom>
+        <Typography  sx={{ fontSize: 17 }} color="white" gutterBottom>
             <FlightTakeoffIcon></FlightTakeoffIcon>
           cairo
         </Typography>
    
 
-        <Typography sx={{ fontSize: 17 }} color="whitesmoke" gutterBottom>
+        <Typography sx={{ fontSize: 17 }} color="white" gutterBottom>
             <FlightLandIcon></FlightLandIcon>
-          Sharm El sheikh
+
+          <strong>Sharm El sheikh </strong>
         </Typography>
 
-        <Typography sx={{ fontSize: 17 }} color="whitesmoke" gutterBottom>
+        <Typography sx={{ fontSize: 17 }} color="white" gutterBottom>
            
-          Start from 100$
+          <strong>Start from 100$ </strong>
         </Typography>
        
         
@@ -123,7 +172,9 @@ class HomeGuest extends Component {
       <CardActions>
         <Button size="small">Learn More</Button>
       </CardActions>
-    </Card> */}
+    </Card> 
+
+    </IconButton> */}
 
                      
 
