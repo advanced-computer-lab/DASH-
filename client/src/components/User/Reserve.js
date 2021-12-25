@@ -217,7 +217,7 @@ const Payment = (props) => (
 
 const Flight = (props) => (
 
-    <Card sx={{  maxWidth: 500 }}>
+    <Card sx={{  backgroundColor:"rgba(150,150,150,0.2)",maxWidth: 500 }}>
          
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flex: '1 0 auto' }}>
@@ -393,6 +393,8 @@ class Reserve extends Component {
         this.onChangeAvailF = this.onChangeAvailF.bind(this);
         this.handleModalBook = this.handleModalBook.bind(this);
         this.handleModalPay = this.handleModalPay.bind(this);
+        this.onChangeArrival = this.onChangeArrival.bind(this);
+        this.onChangeDep = this.onChangeDep.bind(this);
         this.DeleteTicketAlreadyReserved = this.DeleteTicketAlreadyReserved.bind(this);
 
         this.onChangeAdultE = this.onChangeAdultE.bind(this);
@@ -790,6 +792,17 @@ class Reserve extends Component {
             AvailF: e.target.value
         })
     }
+     onChangeArrival(e) {
+        this.setState({
+            arrTime: e.target.value
+        })
+    }
+
+    onChangeDep(e) {
+        this.setState({
+            depTime: e.target.value
+        })
+    }
 
     searchFlightDetails() {
 
@@ -1017,7 +1030,7 @@ class Reserve extends Component {
                                     <label  >Arrival time</label>
                                     &nbsp;&nbsp;
 
-                                    <input style={{ width: "70%", marginLeft: "2.5%" }} type="datetime-local" id="aligned-Arr" name="arr" />
+                                    <input style={{ width: "70%", marginLeft: "2.5%" }} type="datetime-local" id="aligned-Arr" name="arr" value={this.state.arrTime} onChange={this.onChangeArrival} />
                                     &nbsp;&nbsp;
                                 </div>
                                 <br />
@@ -1026,7 +1039,7 @@ class Reserve extends Component {
                                     <label  >Departure time</label>
                                     &nbsp;&nbsp;
 
-                                    <input style={{ width: "70%" }} type="datetime-local" id="aligned-Arr" name="arr" />
+                                    <input style={{ width: "70%" }} type="datetime-local" id="aligned-Arr" name="arr" value={this.state.depTime} onChange={this.onChangeDep} />
                                     &nbsp;&nbsp;
                                 </div>
                                 <br />
